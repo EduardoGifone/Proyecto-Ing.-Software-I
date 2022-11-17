@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Montserrat:wght@500&family=Open+Sans&display=swap');
+
+:root {
+    --azul: #005d89;
+    --grisClaro: #DFF2F8;
+    --patito: #FEC401;
+    --crema: #FFE783;
+
+    --fuente: "Montserrat", sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box; /* Hack para Box Model **/
+    scroll-snap-type: y mandatory;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-size: 16px; /* 1rem = 10px */
+    font-family: 'Krub', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+a, button {
+    text-decoration: none;
+    font-family: var(--fuente);
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--grisClaro);
+}
+
+body {
+    background-image: url(../images/fondito2.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Atribuciones */
+.esp_Der {
+    padding-right: 15px;
+}
+
+
+/* Navegacion general */
+.navegacionGeneral {
+    margin: 30px auto 0 auto;
+    width: 120rem;
+}
+
+.navegacionGeneral img {
+    width: 30px;
+    height: auto;
+    cursor: pointer;
+    filter: invert(100%) sepia(22%) saturate(113%) hue-rotate(81deg) brightness(116%) contrast(100%);
+}
+
+.navegacionGeneral header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.navegacionGeneral .navegacion_Principal {
+    margin: 0 auto;
+}
+
+.navegacion_Principal img {
+    width: 25px;
+}
+
+.navegacion_Principal a{
+    padding: 0 25px ;
+    transition: all 0.4s ease 0s;
+}
+
+.navegacion_Principal a:hover{
+    color: var(--crema);
+}
+
+
+.navegacionGeneral a img{
+    transition: all 0.4s ease 0s;
+}
+
+.navegacionGeneral a img:hover {
+    filter: invert(100%) sepia(22%) saturate(7256%) hue-rotate(308deg) brightness(114%) contrast(110%);
+}
+
+.first_navegation img:hover{
+    transform: scale(1.15);
+}
+
+.navegacion_Principal a img {
+    margin: 0 5px;
+    position: relative;
+    bottom: -5px;
+}
+
+/* Linea */
+
+.navegacionGeneral .line {
+    color: var(--grisClaro);
+    background-color: var(--grisClaro);
+    height: 0.2px;
+    margin: 20px 0;
+}
