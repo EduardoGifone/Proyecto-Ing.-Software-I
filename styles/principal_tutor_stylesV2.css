@@ -44,7 +44,7 @@ div {
 }
 
 /* Quitar */
-div:hover {
+table div:hover {
     background-color: red;
 }
 
@@ -58,4 +58,27 @@ div.espera {
 
 div.disponible {
     background-color: var(--azulCrema);
+}
+
+/* Actualizar horario */
+main {
+    text-align: center;
+}
+
+main label {
+    font-family: var(--fuente);
+    display: flex;
+    margin: 0 auto;
+    margin-bottom: 6rem;
+    width: 20rem;
+    padding: 10px 2.8rem;
+    background-color: var(--patito);
+    border-radius: 10px;
+    transition: .4s;
+}
+
+main label.boton_horario:hover {
+    transform: scale(1.10);
+    cursor: pointer;
+    background-color: rgba(236, 181, 0, 1);
 }
