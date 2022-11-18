@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Montserrat:wght@500&family=Open+Sans&display=swap');
+
+:root {
+    --azul: #005d89;
+    --grisClaro: #DFF2F8;
+    --patito: #FEC401;
+    --crema: #FFE783;
+
+    --verdeCrema: #6AE677;
+    --azulCrema: #6BD7E7;
+    --amarilloCrema: #FFE783;
+
+    --fuente: "Montserrat", sans-serif;
+}
+
+.tabla__horario {
+    margin: 50px auto;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+.tabla__horario th {
+    width: 130px;
+    padding: 5px;
+    background-color: var(--grisClaro);
+    height: 5.4rem
+}
+
+.tabla__horario td {
+    background-color: var(--grisClaro);
+    border: 3px solid var(--azul);
+}
+
+.tabla__horario th,
+.tabla__horario { 
+    border: 3px solid var(--azul);
+    border-collapse: collapse;
+}
+
+div {
+    width: 130px;
+    height: 2.7rem;
+    transition: .3s;
+}
+
+/* Quitar */
+div:hover {
+    background-color: red;
+}
+
+div.reservado {
+    background-color: var(--verdeCrema);
+}
+
+div.espera {
+    background-color: var(--amarilloCrema);
+}
+
+div.disponible {
+    background-color: var(--azulCrema);
+}
