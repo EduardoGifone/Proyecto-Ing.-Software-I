@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Montserrat:wght@500&family=Open+Sans&display=swap');
+
+:root {
+    --azul: #005d89;
+    --grisClaro: #DFF2F8;
+    --patito: #FEC401;
+    --crema: #FFE783;
+
+    --fuente: "Montserrat", sans-serif;
+}
+
+.tabla__horario {
+    margin: 50px auto;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+.tabla__horario th {
+    width: 130px;
+    padding: 5px;
+    background-color: var(--grisClaro);
+}
+
+.tabla__horario th.encabezado {
+    height: 5rem;
+}
+
+.tabla__horario td {
+    background-color: var(--grisClaro);
+    border: 3px solid var(--azul);
+}
+
+.tabla__horario th,
+.tabla__horario { 
+    border: 3px solid var(--azul);
+    border-collapse: collapse;
+}
+
+
