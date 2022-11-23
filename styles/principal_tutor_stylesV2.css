@@ -44,10 +44,8 @@ div {
 }
 
 /* Quitar */
-table div:hover {
-    background-color: red;
-}
 
+/*
 div.reservado {
     background-color: var(--verdeCrema);
 }
@@ -58,27 +56,93 @@ div.espera {
 
 div.disponible {
     background-color: var(--azulCrema);
-}
+}*/
 
 /* Actualizar horario */
-main {
-    text-align: center;
-}
-
-main label {
+main a {
     font-family: var(--fuente);
     display: flex;
+    justify-content: center;
     margin: 0 auto;
     margin-bottom: 6rem;
     width: 20rem;
-    padding: 10px 2.8rem;
+    padding: 10px 0;
     background-color: var(--patito);
     border-radius: 10px;
     transition: .4s;
+    color: #000;
 }
 
-main label.boton_horario:hover {
+main a.boton_horario:hover {
     transform: scale(1.10);
     cursor: pointer;
     background-color: rgba(236, 181, 0, 1);
+}
+
+/* horario actualizar */
+section.horario__actualizar {
+    background-color: var(--grisClaro);
+    border-radius: 10px;
+    padding: 0 50px;
+    position: absolute;
+    top: 2%;
+    left: 11.5%;
+    visibility: hidden; 
+    opacity: 0; 
+    transition: 0.5s;
+}
+
+section.horario__actualizar .boton_horario{
+    margin-top: -2rem;
+    margin-bottom: 4rem;
+}
+
+#blurNav,
+#blur {
+    transition: 0.5px;
+}
+
+#blurBackground {
+    transition: 0.5s;
+}
+
+#blurBackground.activate {
+    background-image: url(../images/fondito2blur.png);
+
+}
+
+#blurNav.activate,
+#blur.activate {
+    position: fixed!important;
+    filter: blur(20px);
+    pointer-events: none;
+    user-select: none;
+    position: relative;
+}
+
+#popup.activate {
+    visibility: visible;
+    opacity: 1;
+    transform: 0.5s;
+    top: 2%;
+}
+
+/* Colorear area de casillas marcadas */
+.horario__principal tr a,
+.horario__actualizar tr a{
+    background-color: var(--grisClaro);
+    margin: 0;
+    padding: 0;
+    width: 130px;
+    height: 2.7rem;
+    border-radius: 0;
+}
+
+section.horario__actualizar a:hover {
+    background-color: red;
+}
+
+section.horario__principal a.pintarAmarillo,
+section.horario__actualizar a.pintarAmarillo {
+    background-color: var(--amarilloCrema);
 }

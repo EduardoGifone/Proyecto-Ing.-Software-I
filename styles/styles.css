@@ -67,6 +67,8 @@ body {
 }
 
 .navegacionGeneral .navegacion_Principal {
+    position: sticky;
+    top: 0;
     margin: 0 auto;
 }
 
