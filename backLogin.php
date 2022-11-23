@@ -4,13 +4,14 @@ $correo = $_POST["user"];
 $contrasenia = $_POST["password"];
 
 //Realizar conexión con la base de datos
-$conexion = mysqli_connect("localhost", "root","","dbtutorias");
+// En mi caso le coloco el puerto 3307 por que estoy trabajando en ese puerto, usualmente es 3306
+$conexion = mysqli_connect("localhost", "root","","dbtutorias", 3307);
 //----------------------------------Crear consultas----------------------------------
 //Consultar como alumno
 $consultaAlumno = "SELECT*FROM Alumno where correoAlumno='$correo' and contrasenia='$contrasenia'";
 $resultadoAlumno = mysqli_query($conexion, $consultaAlumno);
 $filasAlumnos = mysqli_num_rows($resultadoAlumno);
-session_start();
+// session_start();
 //Verificar si se inició sesión como alumno
 if($filasAlumnos){
     //Llenar datos
@@ -18,7 +19,7 @@ if($filasAlumnos){
     while ($datosAlumno = mysqli_fetch_assoc($resultadoAlumno)) {
         $_SESSION["codigo"] = $datosAlumno["codigoAlumno"];
         $_SESSION["name"] = $datosAlumno["nombres"];
-        $_SESSION["surname"] = $datosAlumno["apellidos"]; 
+        $_SESSION["surname"] = $datosAlumno["apellidos"];   
     }
     //Mandar al menu
     header("location: index.html");
@@ -38,7 +39,8 @@ else{
             $_SESSION["surname"] = $datosTutor["apellidos"]; 
         }
         //Mandar al menu
-        header("location:index.html");
+        header("location: principal_tutorV2.html");
+        
     }
     else{
         //Los datos ingresados son incorrectos, mandar al login
