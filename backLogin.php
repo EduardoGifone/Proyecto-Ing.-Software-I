@@ -11,7 +11,8 @@ $conexion = mysqli_connect("localhost", "root","","dbtutorias", 3307);
 $consultaAlumno = "SELECT*FROM Alumno where correoAlumno='$correo' and contrasenia='$contrasenia'";
 $resultadoAlumno = mysqli_query($conexion, $consultaAlumno);
 $filasAlumnos = mysqli_num_rows($resultadoAlumno);
-// session_start();
+//Iniciar sesion para capturar desde datos.php informacion necesaria
+session_start();
 //Verificar si se inició sesión como alumno
 if($filasAlumnos){
     //Llenar datos
@@ -39,7 +40,7 @@ else{
             $_SESSION["surname"] = $datosTutor["apellidos"]; 
         }
         //Mandar al menu
-        header("location: principal_tutorV2.html");
+        header("location: principal_tutor.html");
         
     }
     else{

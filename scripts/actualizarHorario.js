@@ -47,5 +47,23 @@ btnActualizar.onclick = function() {
         } 
     }
     toggle();
-    console.log(arrayHorariosDisp   )
+    console.log(arrayHorariosDisp)
+    //Llamar a la funcion para ['MI10-11','JU14-15'] -> [[Miercoles,10,11],[Jueves,14,15]]
+    const dispoMejorFormat = dividirArrayDisponibilidades(arrayHorariosDisp);
+    // Hacer la peticion ajax
+    var parametros = {
+        "disponibilidades": dispoMejorFormat
+    };
+    //Llamar al backend
+    $.ajax({
+        data: parametros,
+        url: 'scripts/datos.php',
+        type: 'POST',
+        success: function(mensaje_mostrar){
+                $('#mostrar').html(mensaje_mostrar);
+            }
+    }).done(function(res){
+        console.log(res);
+    })
+
 }

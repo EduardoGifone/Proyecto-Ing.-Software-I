@@ -1,17 +1,17 @@
 var arrayDisp = ['LU10-11','MI14-15','JU18-19']
 
-// Mapas (diccionarios)
-let Dias = new Map();
-Dias.set("LU","Lunes");
-Dias.set("MA","Martes");
-Dias.set("MI","Miercoles");
-Dias.set("JU","Jueves");
-Dias.set("VI","Viernes");
-Dias.set("SA","Sabado");
-Dias.set("DO","Domingo");
+function dividirArrayDisponibilidades(arrayDisp) {
 
+    // Mapas (diccionarios)
+    let Dias = new Map();
+    Dias.set("LU","Lunes");
+    Dias.set("MA","Martes");
+    Dias.set("MI","Miercoles");
+    Dias.set("JU","Jueves");
+    Dias.set("VI","Viernes");
+    Dias.set("SA","Sabado");
+    Dias.set("DO","Domingo");
 
-function dividirArrayDisponibilidades(arrayDisp, Dias) {
     var disponibilidades = [];
     for(let i = 0; i < arrayDisp.length; i++){
         var disponibilidad = [];
@@ -34,5 +34,5 @@ function dividirArrayDisponibilidades(arrayDisp, Dias) {
     return(disponibilidades)
 }
 
-let A = dividirArrayDisponibilidades(arrayDisp, Dias);
-console.log(A);
+//let A = dividirArrayDisponibilidades(arrayDisp, Dias);
+//console.log(A);
