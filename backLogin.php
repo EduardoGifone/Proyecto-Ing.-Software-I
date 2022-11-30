@@ -23,7 +23,7 @@ if($filasAlumnos){
         $_SESSION["surname"] = $datosAlumno["apellidos"];   
     }
     //Mandar al menu
-    header("location: index.html");
+    header("location: principal_alumno.php");
 }
 else{
     //Verificar si se inicio sesión como tutor
@@ -40,7 +40,7 @@ else{
             $_SESSION["surname"] = $datosTutor["apellidos"]; 
         }
         //Mandar al menu
-        header("location: principal_tutor.html");
+        header("location: principal_tutor.php");
         
     }
     else{
