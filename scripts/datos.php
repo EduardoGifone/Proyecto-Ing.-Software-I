@@ -11,6 +11,12 @@ $disponibilidades = $_POST["disponibilidades"];
 
 //Realizar la conexion a la bd y la consulta INSERT
 $conexion = mysqli_connect("localhost", "root","","dbtutorias", 3307);
+
+//Reiniciar su horario: borrar en la BD todos las anteriores disponibilidades para el tutor
+$consulta = "DELETE FROM disponibilidad WHERE codigoTutor = '$tutor_id'";
+mysqli_query($conexion,$consulta);
+
+//Realizar un insert de todas las casillas marcadas
 for($i = 0; $i < count($disponibilidades); $i++){
     $dia = $disponibilidades[$i][0];
     $Hini = $disponibilidades[$i][1];

@@ -9,11 +9,11 @@ function toggle() {
     popup.classList.toggle('activate');
 }
 
+// Pintar y despintar de amarillo los casilleros a conveniencia
 var celdas = document.getElementsByClassName("celda")
 console.log(celdas)
 
 for(let i = 0; i < celdas.length; i++){
-   // console.log(celdas[i].classList.add("pintarAmarillo"));
     celdas[i].dataset.numero = i;
 
     celdas[i].onclick = function() {
@@ -33,6 +33,7 @@ var arrayHorariosDisp = [];
 btnActualizar.onclick = function() {
     for(let i = 0; i < celdasP.length; i++){
         if("pintarAmarillo" == celdas[i].classList[2]){
+            //se pinta la celdasP de amarillo
             celdasP[i].classList.add("pintarAmarillo");
             // agregar la clase de los horarios disponibles
             if(arrayHorariosDisp.indexOf(celdas[i].classList[1]) == -1){
