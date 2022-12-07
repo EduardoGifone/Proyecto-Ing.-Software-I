@@ -5,7 +5,7 @@ $contrasenia = $_POST["password"];
 
 //Realizar conexión con la base de datos
 // En mi caso le coloco el puerto 3307 por que estoy trabajando en ese puerto, usualmente es 3306
-$conexion = mysqli_connect("localhost", "root","","dbtutorias", 3307);
+$conexion = mysqli_connect("localhost", "root","","dbtutorias");
 //----------------------------------Crear consultas----------------------------------
 //Consultar como alumno
 $consultaAlumno = "SELECT*FROM Alumno where correoAlumno='$correo' and contrasenia='$contrasenia'";
@@ -20,7 +20,8 @@ if($filasAlumnos){
     while ($datosAlumno = mysqli_fetch_assoc($resultadoAlumno)) {
         $_SESSION["codigo"] = $datosAlumno["codigoAlumno"];
         $_SESSION["name"] = $datosAlumno["nombres"];
-        $_SESSION["surname"] = $datosAlumno["apellidos"];   
+        $_SESSION["surname"] = $datosAlumno["apellidos"]; 
+        $_SESSION["codTutor"] = $datosAlumno["codigoTutor"];  
     }
     //Mandar al menu
     header("location: principal_alumno.php");

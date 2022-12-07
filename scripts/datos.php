@@ -10,7 +10,7 @@ $tutor_id = $_SESSION['codigo'];
 $disponibilidades = $_POST["disponibilidades"];
 
 //Realizar la conexion a la bd y la consulta INSERT
-$conexion = mysqli_connect("localhost", "root","","dbtutorias", 3307);
+$conexion = mysqli_connect("localhost", "root","","dbtutorias");
 
 //Reiniciar su horario: borrar en la BD todos las anteriores disponibilidades para el tutor
 $consulta = "DELETE FROM disponibilidad WHERE codigoTutor = '$tutor_id'";
