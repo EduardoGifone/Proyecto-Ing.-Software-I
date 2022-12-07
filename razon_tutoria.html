@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/razon_tutoria_style.css">
+    <title>Razon Tutoria</title>
+</head>
+<body>
+    <section>
+        <div class="container_tutoria">
+            <form action="" class="razon_tutoria">
+                <div class="razon__fecha_hora">
+                    <p class="razon__txt">Fecha: 28/01/23</p>
+                    <p class="razon__txt">Hora: 8:00 pm</p>
+                </div>
+
+                <label for="nombres" class="form_label">Nombres</label>
+                <input id="nombres" type="text" required class="razon_input">
+
+                <label for="apellidos" class="form_label">Apellidos</label>
+                <input id="apellidos" type="text" required class="razon_input">
+
+                <label for="razon" class="form_label">Razon de la tutoria</label>
+                <textarea id="razon" class="razon_input razon_input--textarea"></textarea>
+
+                <div class="buttons">
+                    <button class="button button--yellow" type="submit">Solicitar</button>
+                    <button class="button button--red" type="submit">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</body>
+</html>
