@@ -45,7 +45,7 @@ else{
     }
     else{
         //Los datos ingresados son incorrectos, mandar al login
-        header("location: login.html");
+        header("location: index.html");
     }
 }
 ?>
