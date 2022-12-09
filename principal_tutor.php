@@ -60,7 +60,7 @@ if($filasdisponibilidad > 0){
                 <a href="" class="esp_Der">
                     <img src="images/user.png" alt="">
                 </a>
-                <a href="">
+                <a href="destroySession.php">
                     <img src="images/closeSesion.png" alt="">
                 </a>
             </div>

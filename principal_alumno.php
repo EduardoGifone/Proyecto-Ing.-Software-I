@@ -1,12 +1,12 @@
 <?php
 
 // include '../Proyecto-Ing.-Software-I/config.php';
-$conexion = mysqli_connect("localhost", "root","","dbtutorias", 3307);
+$conexion = mysqli_connect("localhost", "root","","dbtutorias");
 session_start();
 
 // Obtener el codigo del estudiante
 $alumno_cod = $_SESSION['codigo'];
-$id_tutor = 1545;  //obtener
+$id_tutor = $_SESSION["codTutor"];  //obtener
 
 $consulta = "SELECT * FROM disponibilidad WHERE codigoTutor = '$id_tutor'";
 $resultadoConsulta = mysqli_query($conexion, $consulta);
@@ -59,7 +59,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                 <a href="" class="esp_Der">
                     <img src="images/user.png" alt="">
                 </a>
-                <a href="">
+                <a href="destroySession.php">
                     <img src="images/closeSesion.png" alt="">
                 </a>
             </div>
