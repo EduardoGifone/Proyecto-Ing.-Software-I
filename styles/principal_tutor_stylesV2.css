@@ -136,7 +136,17 @@ section.horario__actualizar .boton_horario{
     width: 130px;
     height: 2.7rem;
     border-radius: 0;
+    cursor: auto;
 }
+
+.horario__alumno tr a.pintarAmarillo{
+    cursor: pointer;
+}
+
+.horario__actualizar tr a {
+    cursor: pointer;
+}
+
 
 section.horario__actualizar a:hover {
     background-color: red;

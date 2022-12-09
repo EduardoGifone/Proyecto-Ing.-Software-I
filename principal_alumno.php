@@ -84,7 +84,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     </section>
 
     <main>
-        <section class="horario__principal" id="blur">
+        <section class="horario__principal horario__alumno" id="blur">
             <table border="1" class="tabla__horario">
                 <tr>
                     <th class="encabezado">HORAS</th>

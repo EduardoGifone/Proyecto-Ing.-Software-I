@@ -23,16 +23,18 @@ $Dias = array(
     "Domingo" => "DO"
 
 );
-while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
+if($filasdisponibilidad > 0){
+    while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     
-    //Obtener datos de los arreglos
-    $dia = $datosDisp["dia"];
-    $Hini = $datosDisp["horaInicio"];
-    $Hfin = $datosDisp["horaFin"];
-    $CodigoDisp = $Dias[$dia].$Hini.'-'.$Hfin;
-    //agregar disponibilidades al arreglo
-    array_push($disponibilidades,$CodigoDisp);
-    
+        //Obtener datos de los arreglos
+        $dia = $datosDisp["dia"];
+        $Hini = $datosDisp["horaInicio"];
+        $Hfin = $datosDisp["horaFin"];
+        $CodigoDisp = $Dias[$dia].$Hini.'-'.$Hfin;
+        //agregar disponibilidades al arreglo
+        array_push($disponibilidades,$CodigoDisp);
+        
+    }
 }
 // var_dump($disponibilidades);
 ?>
