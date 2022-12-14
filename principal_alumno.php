@@ -1,16 +1,24 @@
 <?php
 
 // include '../Proyecto-Ing.-Software-I/config.php';
-$conexion = mysqli_connect("localhost", "root","","dbtutorias");
+include 'config.php';
 session_start();
 
 // Obtener el codigo del estudiante
 $alumno_cod = $_SESSION['codigo'];
-$id_tutor = $_SESSION["codTutor"];  //obtener
+$alumno_nombre = $_SESSION['name'];
+$alumno_apellido = $_SESSION['surname'];
+$alumno_codigo = $_SESSION['codigo'];
+$id_tutor = $_SESSION["codTutor"];  //obtener en base al alumno
 
 $consulta = "SELECT * FROM disponibilidad WHERE codigoTutor = '$id_tutor'";
 $resultadoConsulta = mysqli_query($conexion, $consulta);
 $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
+
+//Consultar si hay citas pendientes
+$consultaCita = "SELECT * FROM cita WHERE codigoAlumno = '$alumno_codigo' and estado = 'pendiente'";
+$resultadoConsultaCita = mysqli_query($conexion, $consultaCita);
+$filasCitasDisponibles = mysqli_num_rows($resultadoConsultaCita);
 
 //para almacenar los codigos de las disponibilidades
 $disponibilidades = [];
@@ -48,9 +56,11 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/principal_tutor_stylesV2.css">
+    <link rel="stylesheet" href="styles/ocultarYMostrar.css">
+    <link rel="stylesheet" href="styles/razon_tutoria_style.css">
 </head>
-<body id="blurBackground">
-    <section class="navegacionGeneral" id="blurNav">
+<body id="blurBackgroundA">
+    <section class="navegacionGeneral" id="blurNavA">
         <header class="first_navegation">
             <a href="#">
                 <img src="images/notificacion.png" alt="logo">
@@ -84,7 +94,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     </section>
 
     <main>
-        <section class="horario__principal horario__alumno" id="blur">
+        <section class="horario__principal horario__alumno" id="blurA">
             <table border="1" class="tabla__horario">
                 <tr>
                     <th class="encabezado">HORAS</th>
@@ -345,18 +355,186 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                     </td>
                 </tr>
             </table>
-            <a href="#" onclick="toggle()" class="boton_horario">Actualizar horario</a>
+            <a href="#" onclick="toggleA()" class="boton_horario">Actualizar horario</a>
+        </section>
+        <section class="formulario" id="popupA">
+            <form action="" class="razon_tutoria">
+                <div class="razon__fecha_hora">
+                    <p class="razon__txt" id="razon-Dia">Fecha: 28/01/23</p>
+                    <p class="razon__txt" id="razon-Hora">Hora: 8:00 pm</p>
+                </div>
+
+                <label for="nombres" class="form_label">Nombres</label>
+                <input id="nombres" name="nombres" type="text" required class="razon_input razon_input--nombres" readonly="readonly">
+
+                <label for="apellidos" class="form_label">Apellidos</label>
+                <input id="apellidos" name="apellidos" type="text" required class="razon_input razon_input--apellidos">
+
+                <label for="razon" class="form_label">Razon de la tutoria</label>
+                <textarea id="razon" name="razon" class="razon_input razon_input--textarea"></textarea>
+
+                <div class="buttons">
+                    <button class="button button--yellow" onclick="toggleAmarillo()" type="submit">Solicitar</button>
+                    <button class="button button--red" onclick="toggleRed()" type="submit">Cancelar</button>
+                </div>
+            </form>
         </section>
     </main>
 
+    <script src="scripts/dividirDisponibilidades.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script>
-        var arregloEnJson = '<?php echo json_encode($disponibilidades);?>';
-        var ACodDisp = JSON.parse(arregloEnJson);
-        
-        for(let i = 0; i < ACodDisp.length; i++){
-            var celda = document.getElementById(ACodDisp[i]);
-            celda.classList.add("pintarAmarillo");
+        function obtenerDatosCasilleroSeleccionado() {
+
+        //Obtener las horas y dia
+        let datosHorario;
+        var casillasVerdes = document.getElementsByClassName("pintarVerde") 
+        if(casillasVerdes.length > 0){
+            //obtener informacion del casillero : LU10-11
+            hora = casillasVerdes[0].id;
+            //Llamar a la funcion LU10-11 -> ['Lunes','10','11']
+            datosHorario = dividirInfoDisponibilidad(hora);
         }
+        console.log(datosHorario);
+        return datosHorario;
+        }
+    </script>
+    <script>
+        //Solo colocar las actividades que realizara, no colocar otro toggle() por que para ese
+        // nuevo toggle recien se activara en la siguiente vez que se presione el boton
+        function toggleRed() {
+            var casillasVerdes = document.getElementsByClassName("pintarVerde") 
+            for(let i = 0; i < casillasVerdes.length; i++){
+                casillasVerdes[i].classList.remove("pintarVerde");
+                console.log('Se removio')
+            }
+            var blur=document.getElementById('blurBackgroundA');
+            blur.classList.toggle('activate');
+            var blur=document.getElementById('blurNavA');
+            blur.classList.toggle('activate');
+            var blur=document.getElementById('blurA');
+            blur.classList.toggle('activate');
+            var popup = document.getElementById('popupA');
+            popup.classList.toggle('activate');
+        }
+
+        function toggleAmarillo() {
+
+            //Obtener los nombres y apellidos
+            var name = '<?php echo $alumno_nombre;?>';
+            var apellido = '<?php echo $alumno_apellido;?>';
+
+            //Realizar la peticion ajax
+            let datosHorario = obtenerDatosCasilleroSeleccionado();
+            let horaInicio = datosHorario[1];
+            let horaFin = datosHorario[2];
+            let dia = datosHorario[0];
+            var codAlumno = '<?php echo $alumno_codigo;?>';
+            var razon =  document.getElementById("razon").value;
+            console.log('Aqui viene la razon')
+            console.log(razon);
+            //Obtener parametros para la peticion
+            var parametros = {
+                "horaInicio" : horaInicio,
+                "horaFin" : horaFin,
+                "dia" : dia,
+                "codigoAlumno" : codAlumno,
+                "razon" : razon
+            };
+            //Llamar al backend
+            $.ajax({
+                data: parametros,
+                url: 'scripts/datosCita.php',
+                type: 'POST',
+                success: function(mensaje_mostrar){
+                        $('#mostrar').html(mensaje_mostrar);
+                    }
+            }).done(function(res){
+                console.log(res);
+            })
+
+
+            var blur=document.getElementById('blurBackgroundA');
+            blur.classList.toggle('activate');
+            var blur=document.getElementById('blurNavA');
+            blur.classList.toggle('activate');
+            var blur=document.getElementById('blurA');
+            blur.classList.toggle('activate');
+            var popup = document.getElementById('popupA');
+            popup.classList.toggle('activate');
+        }
+
+        function toggleA() {
+
+            var blur=document.getElementById('blurBackgroundA');
+            blur.classList.toggle('activate');
+            var blur=document.getElementById('blurNavA');
+            blur.classList.toggle('activate');
+            var blur=document.getElementById('blurA');
+            blur.classList.toggle('activate');
+            var popup = document.getElementById('popupA');
+            popup.classList.toggle('activate');
+        }
+    </script>
+    <script>
+        // Pintar y despintar de amarillo los casilleros a conveniencia
+        var celdas = document.getElementsByClassName("celdaP")
+
+        for(let i = 0; i < celdas.length; i++){
+            celdas[i].dataset.numero = i;
+
+            celdas[i].onclick = function() {
+                if(celdas[i].classList[2] != "pintarVerde" && celdas[i].classList[1] == "pintarAmarillo")
+                {
+                    toggleA()
+                    this.classList.add("pintarVerde");
+                    
+                }
+                
+                //obtener informacion de la interfaz y colocarla
+                let datosHorario = obtenerDatosCasilleroSeleccionado();
+                console.log('--------')
+                console.log(datosHorario)
+                let hIni = datosHorario[1];
+                let hFin = datosHorario[2];
+                let day = datosHorario[0];
+
+                let Hora = "Hora : " + hIni + ":00 - " + hFin + ":00";
+                let Dia = "Dia : " + day;
+                document.getElementById("razon-Dia").innerHTML = Hora
+                document.getElementById("razon-Hora").innerHTML = Dia
+
+            }
+        }
+
+    </script>
+    <script>
+        //Restringir si hay alguna solicitud de cita ya pendiente 
+        var citasPendientes = '<?php echo json_encode($filasCitasDisponibles);?>';
+        console.log(citasPendientes)
+
+        if(citasPendientes > 0){
+            console.log('Tenemos una cita pendiente')
+            //Colorear el cuadro respectivo
+        }
+        else{
+            var arregloEnJson = '<?php echo json_encode($disponibilidades);?>';
+            var ACodDisp = JSON.parse(arregloEnJson);
+            
+            for(let i = 0; i < ACodDisp.length; i++){
+                var celda = document.getElementById(ACodDisp[i]);
+                celda.classList.add("pintarAmarillo");
+            }
+        }
+
+    </script>
+    <script>
+        //Obtener valores de las casillas para preescribirlos en la solicitud
+        //Obtener nombre y apellido
+        var name = '<?php echo $alumno_nombre;?>';
+        var apellido = '<?php echo $alumno_apellido;?>';
+        document.getElementById("nombres").value = name;
+        document.getElementById("apellidos").value = apellido;
     </script>
 </body>
 </html>

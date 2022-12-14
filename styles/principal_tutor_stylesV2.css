@@ -37,28 +37,12 @@
     border-collapse: collapse;
 }
 
-div {
+.horario__principal div {
     width: 130px;
     height: 2.7rem;
     transition: .3s;
 }
 
-/* Quitar */
-
-/*
-div.reservado {
-    background-color: var(--verdeCrema);
-}
-
-div.espera {
-    background-color: var(--amarilloCrema);
-}
-
-div.disponible {
-    background-color: var(--azulCrema);
-}*/
-
-/* Actualizar horario */
 main a {
     font-family: var(--fuente);
     display: flex;
@@ -80,13 +64,16 @@ main a.boton_horario:hover {
 }
 
 /* horario actualizar */
+section.formulario,
 section.horario__actualizar {
     background-color: var(--grisClaro);
     border-radius: 10px;
     padding: 0 50px;
-    position: absolute;
-    top: 2%;
-    left: 11.5%;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-left: -587px;
+    margin-top: -341.5px;
     visibility: hidden; 
     opacity: 0; 
     transition: 0.5s;
@@ -108,11 +95,11 @@ section.horario__actualizar .boton_horario{
 
 #blurBackground.activate {
     background-image: url(../images/fondito2blur.png);
-
 }
 
 #blurNav.activate,
 #blur.activate {
+    width: 100%;
     position: fixed!important;
     filter: blur(20px);
     pointer-events: none;
@@ -120,11 +107,14 @@ section.horario__actualizar .boton_horario{
     position: relative;
 }
 
+#blur.activate {
+    top: 120px;
+}
+
 #popup.activate {
     visibility: visible;
     opacity: 1;
     transform: 0.5s;
-    top: 2%;
 }
 
 /* Colorear area de casillas marcadas */
@@ -155,4 +145,9 @@ section.horario__actualizar a:hover {
 section.horario__principal a.pintarAmarillo,
 section.horario__actualizar a.pintarAmarillo {
     background-color: var(--amarilloCrema);
+}
+
+section.horario__principal a.pintarVerde,
+section.horario__actualizar a.pintarVerde {
+    background-color: var(--verdeCrema);
 }

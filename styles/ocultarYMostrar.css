@@ -1,0 +1,48 @@
+/* horario actualizar */
+section.formulario,
+section.horario__actualizar {
+    background-color: var(--grisClaro);
+    border-radius: 10px;
+    padding: 0 50px;
+    position: absolute;
+    top: 2%;
+    left: 11.5%;
+    visibility: hidden; 
+    opacity: 0; 
+    transition: 0.5s;
+}
+
+section.horario__actualizar .boton_horario{
+    margin-top: -2rem;
+    margin-bottom: 4rem;
+}
+
+#blurNavA,
+#blurA {
+    transition: 0.5px;
+}
+
+#blurBackgroundA {
+    transition: 0.5s;
+}
+
+#blurBackgroundA.activate {
+    background-image: url(../images/fondito2blur.png);
+
+}
+
+#blurNavA.activate,
+#blurA.activate {
+    position: fixed!important;
+    filter: blur(20px);
+    pointer-events: none;
+    user-select: none;
+    position: relative;
+}
+
+#popupA.activate {
+    visibility: visible;
+    opacity: 1;
+    transform: 0.5s;
+    top: 2%;
+}
