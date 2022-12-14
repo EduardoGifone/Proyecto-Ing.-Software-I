@@ -60,41 +60,41 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     <link rel="stylesheet" href="styles/razon_tutoria_style.css">
 </head>
 <body id="blurBackgroundA">
-    <section class="navegacionGeneral" id="blurNavA">
-        <header class="first_navegation">
-            <a href="#">
-                <img src="images/notificacion.png" alt="logo">
-            </a>
-            <div>
-                <a href="" class="esp_Der">
-                    <img src="images/user.png" alt="">
-                </a>
-                <a href="destroySession.php">
-                    <img src="images/closeSesion.png" alt="">
-                </a>
-            </div>
-        </header>
-        <hr class="line">
-        <header>
-            <nav class="navegacion_Principal">
+    <div id="blurA">
+        <section class="navegacionGeneral">
+            <header class="first_navegation">
                 <a href="#">
-                    <img src="images/tutoria.png" alt="">
-                    Tutoria
+                    <img src="images/notificacion.png" alt="logo">
                 </a>
-                <a href="#">
-                    <img src="images/muro.png" alt="">
-                    Muro
-                </a>
-                <a href="#">
-                    <img src="images/comunidad.png" alt="">
-                    Comunidad
-                </a>
-            </nav>
-        </header>
-    </section>
-
-    <main>
-        <section class="horario__principal horario__alumno" id="blurA">
+                <div>
+                    <a href="" class="esp_Der">
+                        <img src="images/user.png" alt="">
+                    </a>
+                    <a href="destroySession.php">
+                        <img src="images/closeSesion.png" alt="">
+                    </a>
+                </div>
+            </header>
+            <hr class="line">
+            <header>
+                <nav class="navegacion_Principal">
+                    <a href="#">
+                        <img src="images/tutoria.png" alt="">
+                        Tutoria
+                    </a>
+                    <a href="#">
+                        <img src="images/muro.png" alt="">
+                        Muro
+                    </a>
+                    <a href="#">
+                        <img src="images/comunidad.png" alt="">
+                        Comunidad
+                    </a>
+                </nav>
+            </header>
+        </section>
+        <section class="horario__principal horario__alumno">
+            <h2>Seleccione el espacio amarillo que desee para solicitar una cita</h2>
             <table border="1" class="tabla__horario">
                 <tr>
                     <th class="encabezado">HORAS</th>
@@ -355,33 +355,33 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                     </td>
                 </tr>
             </table>
-            <a href="#" onclick="toggleA()" class="boton_horario">Actualizar horario</a>
         </section>
-        <section class="formulario" id="popupA">
-            <form action="" class="razon_tutoria">
-                <div class="razon__fecha_hora">
-                    <p class="razon__txt" id="razon-Dia">Fecha: 28/01/23</p>
-                    <p class="razon__txt" id="razon-Hora">Hora: 8:00 pm</p>
-                </div>
+    </div>
+    <section class="formulario" id="dialog">
+        <form action="" class="razon_tutoria">
+            <div class="razon__fecha_hora">
+                <p class="razon__txt" id="razon-Dia">Fecha: 28/01/23</p>
+                <p class="razon__txt" id="razon-Hora">Hora: 8:00 pm</p>
+            </div>
 
-                <label for="nombres" class="form_label">Nombres</label>
-                <input id="nombres" name="nombres" type="text" required class="razon_input razon_input--nombres" readonly="readonly">
+            <label for="nombres" class="form_label">Nombres</label>
+            <input id="nombres" name="nombres" type="text" required class="razon_input razon_input--nombres" readonly="readonly">
 
-                <label for="apellidos" class="form_label">Apellidos</label>
-                <input id="apellidos" name="apellidos" type="text" required class="razon_input razon_input--apellidos">
+            <label for="apellidos" class="form_label">Apellidos</label>
+            <input id="apellidos" name="apellidos" type="text" required class="razon_input razon_input--apellidos">
 
-                <label for="razon" class="form_label">Razon de la tutoria</label>
-                <textarea id="razon" name="razon" class="razon_input razon_input--textarea"></textarea>
+            <label for="razon" class="form_label">Razon de la tutoria</label>
+            <textarea id="razon" name="razon" class="razon_input razon_input--textarea"></textarea>
 
-                <div class="buttons">
-                    <button class="button button--yellow" onclick="toggleAmarillo()" type="submit">Solicitar</button>
-                    <button class="button button--red" onclick="toggleRed()" type="submit">Cancelar</button>
-                </div>
-            </form>
-        </section>
-    </main>
+            <div class="buttons">
+                <button class="button button--yellow" onclick="toggleAmarillo()" type="submit">Solicitar</button>
+                <button class="button button--red" onclick="toggleRed()" type="submit">Cancelar</button>
+            </div>
+        </form>
+    </section>
 
     <script src="scripts/dividirDisponibilidades.js"></script>
+    <script src="scripts/popup.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script>
         function obtenerDatosCasilleroSeleccionado() {
@@ -408,14 +408,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                 casillasVerdes[i].classList.remove("pintarVerde");
                 console.log('Se removio')
             }
-            var blur=document.getElementById('blurBackgroundA');
-            blur.classList.toggle('activate');
-            var blur=document.getElementById('blurNavA');
-            blur.classList.toggle('activate');
-            var blur=document.getElementById('blurA');
-            blur.classList.toggle('activate');
-            var popup = document.getElementById('popupA');
-            popup.classList.toggle('activate');
+            closeDialogA()
         }
 
         function toggleAmarillo() {
@@ -453,27 +446,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                 console.log(res);
             })
 
-
-            var blur=document.getElementById('blurBackgroundA');
-            blur.classList.toggle('activate');
-            var blur=document.getElementById('blurNavA');
-            blur.classList.toggle('activate');
-            var blur=document.getElementById('blurA');
-            blur.classList.toggle('activate');
-            var popup = document.getElementById('popupA');
-            popup.classList.toggle('activate');
-        }
-
-        function toggleA() {
-
-            var blur=document.getElementById('blurBackgroundA');
-            blur.classList.toggle('activate');
-            var blur=document.getElementById('blurNavA');
-            blur.classList.toggle('activate');
-            var blur=document.getElementById('blurA');
-            blur.classList.toggle('activate');
-            var popup = document.getElementById('popupA');
-            popup.classList.toggle('activate');
+            closeDialogA()
         }
     </script>
     <script>
@@ -486,7 +459,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             celdas[i].onclick = function() {
                 if(celdas[i].classList[2] != "pintarVerde" && celdas[i].classList[1] == "pintarAmarillo")
                 {
-                    toggleA()
+                    showDialogA()
                     this.classList.add("pintarVerde");
                     
                 }

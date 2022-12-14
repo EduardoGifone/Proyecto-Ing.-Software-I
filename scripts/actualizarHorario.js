@@ -47,7 +47,7 @@ btnActualizar.onclick = function() {
             }
         } 
     }
-    toggle();
+    closeDialog();
     console.log(arrayHorariosDisp)
     //Llamar a la funcion para ['MI10-11','JU14-15'] -> [[Miercoles,10,11],[Jueves,14,15]]
     const dispoMejorFormat = dividirArrayDisponibilidades(arrayHorariosDisp);

@@ -43,7 +43,10 @@
     transition: .3s;
 }
 
-main a {
+.horario__actualizar button,
+.horario__actualizar a,
+.horario__principal button,
+.horario__principal a {
     font-family: var(--fuente);
     display: flex;
     justify-content: center;
@@ -57,14 +60,17 @@ main a {
     color: #000;
 }
 
-main a.boton_horario:hover {
+.horario__actualizar button.boton_horario:hover,
+.horario__actualizar a.boton_horario:hover,
+.horario__principal button.boton_horario:hover,
+.horario__principal a.boton_horario:hover {
     transform: scale(1.10);
     cursor: pointer;
     background-color: rgba(236, 181, 0, 1);
 }
 
 /* horario actualizar */
-section.formulario,
+/*section.formulario,*/
 section.horario__actualizar {
     background-color: var(--grisClaro);
     border-radius: 10px;
@@ -84,7 +90,6 @@ section.horario__actualizar .boton_horario{
     margin-bottom: 4rem;
 }
 
-#blurNav,
 #blur {
     transition: 0.5px;
 }
@@ -97,7 +102,6 @@ section.horario__actualizar .boton_horario{
     background-image: url(../images/fondito2blur.png);
 }
 
-#blurNav.activate,
 #blur.activate {
     width: 100%;
     position: fixed!important;
@@ -107,11 +111,7 @@ section.horario__actualizar .boton_horario{
     position: relative;
 }
 
-#blur.activate {
-    top: 120px;
-}
-
-#popup.activate {
+#dialog.show {
     visibility: visible;
     opacity: 1;
     transform: 0.5s;
