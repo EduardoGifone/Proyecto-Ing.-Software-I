@@ -1,0 +1,66 @@
+html {
+    /*font-size: 62.5%;*/
+    box-sizing: border-box; /* Hack para Box Model **/
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+section.horario__principal {
+    text-align: center;
+}
+
+section.horario__principal h2{
+    color: var(--grisClaro);
+    margin: 80px 0 30px 0;
+}
+
+/* horario actualizar */
+section.formulario,
+section.horario__actualizar {
+    background-color: var(--grisClaro);
+    border-radius: 10px;
+    padding: 0 50px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    visibility: hidden; 
+    opacity: 0; 
+    transition: 0.5s;
+}
+
+section.horario__actualizar .boton_horario{
+    margin-top: -2rem;
+    margin-bottom: 4rem;
+}
+
+#blurNavA,
+#blurA {
+    transition: 0.5px;
+}
+
+#blurBackgroundA {
+    transition: 0.5s;
+}
+
+#blurBackgroundA.activate {
+    background-image: url(../images/fondito2blur.png);
+
+}
+
+#blurNavA.activate,
+#blurA.activate {
+    width: 100%;
+    position: fixed!important;
+    filter: blur(20px);
+    pointer-events: none;
+    user-select: none;
+    position: relative;
+}
+
+#dialog.shows {
+    visibility: visible;
+    opacity: 1;
+    transform: 0.5s;
+}
