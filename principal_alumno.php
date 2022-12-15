@@ -1,8 +1,11 @@
 <?php
-
+session_start();
+if (is_null($_SESSION["tipoUsuario"])){
+    header("location: login.html");
+}
 // include '../Proyecto-Ing.-Software-I/config.php';
 $conexion = mysqli_connect("localhost", "root","","dbtutorias");
-session_start();
+
 
 // Obtener el codigo del estudiante
 $alumno_cod = $_SESSION['codigo'];
