@@ -5,7 +5,7 @@ $contrasenia = $_POST["password"];
 
 //Realizar conexión con la base de datos
 // En mi caso le coloco el puerto 3307 por que estoy trabajando en ese puerto, usualmente es 3306
-// $conexion = mysqli_connect("localhost", "root","","dbtutorias");
+//$conexion = mysqli_connect("localhost", "root","","dbtutorias");
 include 'config.php';
 //----------------------------------Crear consultas----------------------------------
 //Consultar como alumno
@@ -47,7 +47,7 @@ else{
     }
     else{
         //Los datos ingresados son incorrectos, mandar al login
-        header("location: index.html");
+        header("location: login.html");
     }
 }
 ?>
