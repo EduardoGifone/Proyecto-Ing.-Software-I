@@ -1,18 +1,22 @@
-<?php
+<?php 
+//--------------Recuperar datos de "razon_tutoria" y enviar a la base de datos--------------
+//Recuperar datos
+/*
+$nombres = $_POST["nombres"];
+$apellidos = $_POST["apellidos"];
 
-session_start();
-//Obtener informacion de la peticion ajax
+$razon = $_POST["razon"];
 $horaInicio = $_POST["horaInicio"];
 $horaFin = $_POST["horaFin"];
-$dia = strtolower($_POST["dia"]);
-$codigo = $_POST["codigoAlumno"];
-$razon = $_POST["razon"];
+$nroDia = $_POST["nroDia"]; // (1:lunes, 2:martes,..., 7:domingo)
 $codigoAlumno = $_SESSION["codigo"];
+*/
+$codigoAlumno = '192999';
+$razon = "Proyecto de tesis";
+$horaInicio = 14;
+$horaFin = $horaInicio + 1;
+$nroDia = 4;
 $limite = 5;
-
-//Generar número de día
-$days = array(1=>"lunes",2=>"martes",3=>"miercoles",4=>"jueves",5=>"viernes",6=>"sabado",7=>"domingo");
-$nroDia = array_search($dia,$days);
 //--------------------- Obtener fecha actual ---------------------
 //Establecer zona horario (Perú)
 date_default_timezone_set('America/Lima');
@@ -21,7 +25,6 @@ $fechaHoy = date('N-d-m-Y-H-i');    //(numberDay, day, month, year, hour, minute
 $lista = explode('-', $fechaHoy);
 $diference = $nroDia - $lista[0];
 $var = 1;
-
 //---------------- Validar día seleccionado ----------------
 if ($diference < 0){    //El día seleccionado ya pasó
     echo "El día ya pasó";
@@ -42,7 +45,7 @@ if ($var){
     date_add($fecha, date_interval_create_from_date_string($diference." days"));
     $newDate = date_format($fecha,"Y-m-d");
     //Conectar con la base de datos
-    include '../config.php';
+    include 'config.php';
     //Crear consulta
     $consulta = "INSERT INTO cita values('$newDate','$horaInicio','$horaFin','$codigoAlumno','PENDIENTE','$razon',null)";
     //Ejecutar consulta
@@ -53,7 +56,4 @@ if ($var){
         echo "Error en Mysql";
     } 
 }
-//Resultado que se enviara mediante la peticion ajax
-// $return = "Hola, soy el alumno ".$codigo." y quiero una cita el dia".$dia." de ".$horaInicio." a ".$horaFin." ya que ".$razon;
-// echo $return;
 ?>
