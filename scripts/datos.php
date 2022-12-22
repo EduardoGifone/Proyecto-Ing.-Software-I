@@ -9,9 +9,6 @@ $tutor_id = $_SESSION['codigo'];
 //Obtener informacion de la peticion ajax
 $disponibilidades = $_POST["disponibilidades"];
 
-//Realizar la conexion a la bd y la consulta INSERT
-$conexion = mysqli_connect("localhost", "root","","dbtutorias");
-
 //Reiniciar su horario: borrar en la BD todos las anteriores disponibilidades para el tutor
 $consulta = "DELETE FROM disponibilidad WHERE codigoTutor = '$tutor_id'";
 mysqli_query($conexion,$consulta);

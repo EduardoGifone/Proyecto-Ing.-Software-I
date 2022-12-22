@@ -22,6 +22,21 @@ $consultaCita = "SELECT * FROM cita WHERE codigoAlumno = '$alumno_codigo' and es
 $resultadoConsultaCita = mysqli_query($conexion, $consultaCita);
 $filasCitasDisponibles = mysqli_num_rows($resultadoConsultaCita);
 
+echo "<p>$filasCitasDisponibles</p>";
+
+$fechaConsulta = '';
+$horaInicio = '';
+$horaFin = '';
+if($filasCitasDisponibles){
+    echo "<p>$filasCitasDisponibles</p>";
+    while ($citaAlumno = mysqli_fetch_assoc($resultadoConsultaCita)) {
+        $fechaConsulta = $citaAlumno["fecha"];
+        $horaInicio = $citaAlumno["horaInicio"];  
+        $horaFin = $citaAlumno["horaFin"];  
+    }
+}
+
+
 //para almacenar los codigos de las disponibilidades
 $disponibilidades = [];
 $Dias = array(
@@ -32,7 +47,6 @@ $Dias = array(
     "Viernes" => "VI",
     "Sabado" => "SA",
     "Domingo" => "DO"
-
 );
 while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     
@@ -382,8 +396,8 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
         </form>
     </section>
 
-    <script src="scripts/dividirDisponibilidades.js"></script>
     <script src="scripts/popup.js"></script>
+    <script src="scripts/dividirDisponibilidades.js"></script>  
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script>
         function obtenerDatosCasilleroSeleccionado() {
@@ -481,16 +495,25 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
 
             }
         }
-
+        console.log('a')
     </script>
     <script>
-        //Restringir si hay alguna solicitud de cita ya pendiente 
-        var citasPendientes = '<?php echo json_encode($filasCitasDisponibles);?>';
-        console.log(citasPendientes)
 
+        //Obtener las citas pendientes del alumno
+        var citasPendientes = '<?php echo $filasCitasDisponibles;?>'
+        console.log(citasPendientes)
+        //Restringir si hay alguna solicitud de cita ya pendiente 
         if(citasPendientes > 0){
             console.log('Tenemos una cita pendiente')
+            //Obtener variables de PHP para generar el id de la casilla correspondiente
+            var dia = deFechaANombreDia('<?php echo $fechaConsulta;?>');
+            var horaInicio = '<?php echo $horaInicio;?>';
+            var horaFin = '<?php echo $horaFin;?>';
+            //Obtener ID en base a su dia, hora de inicio y hora de fin
+            let codigo = ObtenerCodigoDisponibilidad(dia,horaInicio,horaFin)
             //Colorear el cuadro respectivo
+            casilla = document.getElementById(codigo)
+            casilla.classList.add("pintarVerde")
         }
         else{
             var arregloEnJson = '<?php echo json_encode($disponibilidades);?>';

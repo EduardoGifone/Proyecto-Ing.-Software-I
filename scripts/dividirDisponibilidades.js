@@ -1,5 +1,4 @@
 var arrayDisp = ['LU10-11','MI14-15','JU18-19']
-
 function dividirArrayDisponibilidades(arrayDisp) {
 
     var disponibilidades = [];
@@ -10,6 +9,22 @@ function dividirArrayDisponibilidades(arrayDisp) {
         disponibilidades.push(disponibilidad);
     }
     return(disponibilidades)
+}
+
+function ObtenerCodigoDisponibilidad(nombreDia,horaInicio,horaFin){
+    // Mapas (diccionarios)
+    let Dias = new Map();
+    Dias.set("Lunes","LU");
+    Dias.set("Martes","MA");
+    Dias.set("Miercoles","MI");
+    Dias.set("Jueves","JU");
+    Dias.set("Viernes","VI");
+    Dias.set("Sabado","SA");
+    Dias.set("Domingo","DO");
+
+    let codigo = Dias.get(nombreDia)+horaInicio+'-'+horaFin;
+    console.log(codigo)
+    return codigo
 }
 
 //disponibilidadC del codigo
@@ -39,8 +54,20 @@ const dividirInfoDisponibilidad = (dispCodigo) => {
     disponibilidad.push(Hrs[1]);
 
     return disponibilidad;
-
 }
 
-//let A = dividirArrayDisponibilidades(arrayDisp, Dias);
-//console.log(A);
+function deFechaANombreDia(fecha){
+    const fechaComoCadena = fecha+' 00:00:00'; // día lunes
+    const dias = [
+    'Domingo',
+    'Lunes',
+    'Martes',
+    'Miercoles',
+    'Jueves',
+    'Viernes',
+    'Sabado',
+    ];
+    const numeroDia = new Date(fechaComoCadena).getDay();
+    const nombreDia = dias[numeroDia];
+    return nombreDia;
+}
