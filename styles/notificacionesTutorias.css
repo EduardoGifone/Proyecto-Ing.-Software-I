@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Montserrat:wght@500&family=Open+Sans&display=swap');
+
+:root {
+    --azul: #005d89;
+    --grisClaro: #DFF2F8;
+    --patito: #FEC401;
+    --crema: #FFE783;
+    --verdeClaro: #6BE676;
+    --rojo: #EE1B35;
+
+    --fuente: "Montserrat", sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box; /* Hack para Box Model **/
+    scroll-snap-type: y mandatory;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--fuente);
+}
+
+/* ------------------------ */
+
+/* Disenio a la interfaz general de citas */ 
+div.notificacionesCita {
+    background: var(--azul);
+    width: 250px;
+    height: 300px;
+    padding: 10px;
+    /* Permitir el scroll dentro de este div */
+    overflow-y: scroll;
+
+    border-style: solid;
+    border-color: white;
+    border-width: 2px;
+    border-radius: 6px;
+}
+
+/* Solo para una cita especifica */
+.notificacionesCita .notificacionCita{
+    background: white;
+    margin: 10px 10px 20px 10px;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Estilo para la fecha y hora */
+.notificacionCita .fechaHora{
+    display: flex;
+    justify-content: space-around;
+    color: white;
+    background-color: var(--verdeClaro);
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.fechaHora p{
+    margin: 4px 0;
+    font-size: 12px;
+}
+
+/* Estilos para la razon y el nombre */
+.notificacionCita .razonTutoria,
+.notificacionCita .nombreTutorado {
+    font-size: 10px;
+    padding: 1px;
+    margin: 6px 0;
+    /* Estilos para bordes */
+    border-style: solid;
+    border-color: gray;
+    border-width: 2px;
+    border-radius: 6px;
+}
+
+.razonTutoria p,
+.nombreTutorado p {
+    margin: 0;
+}
+
+/* Estilos de los botones */
+.botones {
+    padding: 5px 0;
+    margin: 5px 0 0 0;
+    height: 30px;
+}
+
+.botones .boton {
+    font-size: 12px;
+    border-style: none;
+    width: 80px;
+    padding: 3px;
+    color: white;
+    border-radius: 10px;
+    transition: .4s;
+}
+
+.botones .btn_izq {
+    margin-right: 5px;
+    background-color: var(--patito);
+}
+
+.botones .btn_der {
+    margin-left: 5px;
+    background-color: var(--rojo);
+}
+
+.botones .boton:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+/* Hacer que dicha informacion se oculte */
+div.notificacionesCita {
+    opacity: 0;
+    /*top: 1600px;*/
+    top: 100px;
+    left: 160px;
+    position: fixed;
+    visibility: hidden;
+    transition: 0.5s;
+}
+
+#dialogNoti.show {
+    visibility: visible;
+    opacity: 1;
+    transition: 0.5s;
+}
+
+#blur.activate {
+    filter: blur(3px);
+    pointer-events: all;
+    transition: 0.5s;
+}
+
+#blur {
+    transition: 0.5s;
+}
+
+/* RUTINA 2 : Aceptar una cita */
+.notificacionesCita .noMostrar {
+    display: none;  /*es como si no existiera*/
+}

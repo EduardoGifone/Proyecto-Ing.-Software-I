@@ -13,26 +13,33 @@ $alumno_apellido = $_SESSION['surname'];
 $alumno_codigo = $_SESSION['codigo'];
 $id_tutor = $_SESSION["codTutor"];  //obtener en base al alumno
 
+// RUTINA 5 : Actualizar horario del alumno despues de confirmar una cita
+// Primero colocar en RECHAZADO todas las citas que estan en pendiente pero 
+// que ya paso de fecha
+$consulta = "UPDATE cita SET estado = 'RECHAZADO' WHERE codigoAlumno = '$alumno_cod' AND fecha < NOW()";
+mysqli_query($conexion,$consulta);
+
+//Mostrar la disponibilidad del tutor
 $consulta = "SELECT * FROM disponibilidad WHERE codigoTutor = '$id_tutor'";
 $resultadoConsulta = mysqli_query($conexion, $consulta);
 $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
 
-//Consultar si hay citas pendientes
-$consultaCita = "SELECT * FROM cita WHERE codigoAlumno = '$alumno_codigo' and estado = 'pendiente'";
+//Consultar si hay citas pendientes y confirmadas
+$consultaCita = "SELECT * FROM cita WHERE codigoAlumno = '$alumno_codigo' and estado = 'pendiente' or estado = 'confirmado'";
 $resultadoConsultaCita = mysqli_query($conexion, $consultaCita);
 $filasCitasDisponibles = mysqli_num_rows($resultadoConsultaCita);
-
-echo "<p>$filasCitasDisponibles</p>";
 
 $fechaConsulta = '';
 $horaInicio = '';
 $horaFin = '';
+$estado = '';
 if($filasCitasDisponibles){
-    echo "<p>$filasCitasDisponibles</p>";
+    //echo "<p>$filasCitasDisponibles</p>";
     while ($citaAlumno = mysqli_fetch_assoc($resultadoConsultaCita)) {
         $fechaConsulta = $citaAlumno["fecha"];
         $horaInicio = $citaAlumno["horaInicio"];  
         $horaFin = $citaAlumno["horaFin"];  
+        $estado = $citaAlumno["estado"];
     }
 }
 
@@ -60,6 +67,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     
 }
 // var_dump($disponibilidades);
+
 ?>
 
 <!DOCTYPE html>
@@ -495,25 +503,35 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
 
             }
         }
-        console.log('a')
     </script>
     <script>
 
         //Obtener las citas pendientes del alumno
-        var citasPendientes = '<?php echo $filasCitasDisponibles;?>'
-        console.log(citasPendientes)
+        var citasDisponibles = '<?php echo $filasCitasDisponibles;?>'
+        console.log(citasDisponibles)
         //Restringir si hay alguna solicitud de cita ya pendiente 
-        if(citasPendientes > 0){
-            console.log('Tenemos una cita pendiente')
+        if(citasDisponibles > 0){
+            var estado = '<?php echo $estado;?>';
             //Obtener variables de PHP para generar el id de la casilla correspondiente
             var dia = deFechaANombreDia('<?php echo $fechaConsulta;?>');
             var horaInicio = '<?php echo $horaInicio;?>';
             var horaFin = '<?php echo $horaFin;?>';
             //Obtener ID en base a su dia, hora de inicio y hora de fin
             let codigo = ObtenerCodigoDisponibilidad(dia,horaInicio,horaFin)
-            //Colorear el cuadro respectivo
-            casilla = document.getElementById(codigo)
-            casilla.classList.add("pintarVerde")
+        
+            // RUTINA 5 : Actualizar horario del alumno despues de confirmar una cita
+            if (estado == 'CONFIRMADO'){
+                console.log('Tenemos una cita confirmada')
+                //Colorear el cuadro respectivo
+                casilla = document.getElementById(codigo)
+                casilla.classList.add("pintarAzul")
+            }
+            if (estado == 'PENDIENTE'){
+                console.log('Tenemos una cita pendiente')
+                //Colorear el cuadro respectivo
+                casilla = document.getElementById(codigo)
+                casilla.classList.add("pintarVerde")
+            }
         }
         else{
             var arregloEnJson = '<?php echo json_encode($disponibilidades);?>';

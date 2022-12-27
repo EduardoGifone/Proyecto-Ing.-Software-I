@@ -151,3 +151,8 @@ section.horario__principal a.pintarVerde,
 section.horario__actualizar a.pintarVerde {
     background-color: var(--verdeCrema);
 }
+
+section.horario__principal a.pintarAzul,
+section.horario__actualizar a.pintarAzul {
+    background-color: var(--azulCrema);
+}

@@ -40,6 +40,52 @@ if($filasdisponibilidad > 0){
     }
 }
 // var_dump($disponibilidades);
+
+
+// MOSTRAR LA INTERFAZ DE NOTIFICACIONES : SUBRUTINA 1
+$consulta = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$id_tutor'";
+$resConCitasPendientes = mysqli_query($conexion, $consulta);
+$filasCitas = mysqli_num_rows($resConCitasPendientes);
+
+/*echo "<p>$filasCitas</p>";*/
+
+$InformacionCitasPendientes = [];
+while($datosDisp = mysqli_fetch_assoc($resConCitasPendientes)){
+    $InformacionCitasPendiente = array();
+
+    array_push($InformacionCitasPendiente, $datosDisp["nombres"]);
+    array_push($InformacionCitasPendiente, $datosDisp["apellidos"]);
+    array_push($InformacionCitasPendiente, $datosDisp["codigoAlumno"]);
+    array_push($InformacionCitasPendiente, $datosDisp["fecha"]);
+    array_push($InformacionCitasPendiente, $datosDisp["razon"]);
+    array_push($InformacionCitasPendiente, $datosDisp["horaInicio"]);
+    array_push($InformacionCitasPendiente, $datosDisp["horaFin"]);
+
+    array_push($InformacionCitasPendientes,$InformacionCitasPendiente);
+}
+
+// RUTINA 4 : Actualizar horario del tutor después de confirmar una cita
+$consultaCitasConfirmadas = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$id_tutor' AND estado = 'CONFIRMADO'";
+$resCitasConfirmadas = mysqli_query($conexion, $consultaCitasConfirmadas);
+$filasCitasConf = mysqli_num_rows($resCitasConfirmadas);
+echo "<p>$filasCitasConf</p>";
+
+$InformacionCitasConfirmadas = [];
+while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
+    $InformacionCitaConfirmada = array();
+
+    array_push($InformacionCitaConfirmada, $datosDisp["nombres"]);
+    array_push($InformacionCitaConfirmada, $datosDisp["apellidos"]);
+    array_push($InformacionCitaConfirmada, $datosDisp["codigoAlumno"]);
+    array_push($InformacionCitaConfirmada, $datosDisp["fecha"]);
+    array_push($InformacionCitaConfirmada, $datosDisp["razon"]);
+    array_push($InformacionCitaConfirmada, $datosDisp["horaInicio"]);
+    array_push($InformacionCitaConfirmada, $datosDisp["horaFin"]);
+    array_push($InformacionCitaConfirmada, $datosDisp["estado"]);
+
+    array_push($InformacionCitasConfirmadas,$InformacionCitaConfirmada);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -52,12 +98,13 @@ if($filasdisponibilidad > 0){
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/principal_tutor_stylesV2.css">
+    <link rel="stylesheet" href="styles/notificacionesTutorias.css">
 </head>
 <body id="blurBackground">
     <div id="blur">
         <section class="navegacionGeneral">
             <header class="first_navegation">
-                <a href="#">
+                <a href="#" onclick="efectoBlurANotificacion()">
                     <img src="images/notificacion.png" alt="logo">
                 </a>
                 <div>
@@ -619,6 +666,40 @@ if($filasdisponibilidad > 0){
         </table>
         <button href="#" class="boton_horario" id="BtnActualizar">Actualizar</button>
     </section>
+    <div class="notificacionesCita" id="dialogNoti">
+    <!-- // MOSTRAR LA INTERFAZ DE NOTIFICACIONES : SUBRUTINA 1 -->
+    <?php
+    $i = 0;
+    foreach($InformacionCitasPendientes as &$InformacionPendiente){
+        $nombreAlumno = $InformacionPendiente[0];
+        $apellidoAlumno = $InformacionPendiente[1];
+        $codigoAlumno = $InformacionPendiente[2];
+        $fecha = $InformacionPendiente[3];
+        $razon = $InformacionPendiente[4];
+        $horaInicio = $InformacionPendiente[5];
+        $horaFin = $InformacionPendiente[6];
+
+        print "<div class='notificacionCita' id = '$i'>
+                    <div class='fechaHora'>
+                        <p class='fecha'>Fecha '$fecha'</p>
+                        <p class='hora'>Hora: $horaInicio:00</p>
+                    </div>
+                    <div class='nombreTutorado'>
+                        <p>$nombreAlumno $apellidoAlumno</p>
+                    </div>
+                    <div class='razonTutoria'>
+                        <p>$razon</p>
+                    </div>
+                    <div class='botones'>
+                        <button class='boton btn_izq' onclick='responderCita($codigoAlumno, `$fecha`, $horaInicio, $i, 1)'>Aceptar</button>
+                        <button class='boton btn_der' onclick='responderCita($codigoAlumno, `$fecha`, $horaInicio, $i, 0)'>No aceptar</button>
+                    </div>
+                </div>";
+        //echo '<hr>';
+        $i++;
+    }
+    ?>
+    </div>
 
     <script src="scripts/popup.js"></script>
     <script>
@@ -635,5 +716,78 @@ if($filasdisponibilidad > 0){
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="scripts/dividirDisponibilidades.js"></script>
     <script src="scripts/actualizarHorario.js"></script>
+
+    <script>
+        // MOSTRAR LA INTERFAZ DE NOTIFICACIONES : SUBRUTINA 1
+        var citasPendientesJson = '<?php echo json_encode($InformacionCitasPendientes);?>'
+        var InformacionCitasPendientes = JSON.parse(citasPendientesJson);
+        console.log('Arreglo de citas pendientes');
+        console.log(InformacionCitasPendientes);
+
+        // ACEPTAR UNA CITA : RUTINA 2 y 3
+        function responderCita(codigoAlumno, fecha, horaInicio, idSolicitud, numRespuesta){
+            var solicitud = document.getElementById(idSolicitud);
+            solicitud.classList.add('noMostrar')
+
+            var respuesta = 'Rechazado';
+            if(numRespuesta == 1){
+                respuesta = 'Aceptado';
+            }
+            
+            //Realizar una peticion ajax
+            //Obtener parametros para la peticion
+            var parametros = {
+                "codigoAlumno" : codigoAlumno,
+                "fecha" : fecha,
+                "horaInicio" : horaInicio,
+                "respuesta" : respuesta
+            };
+            //Llamar al backend
+            $.ajax({
+                data: parametros,
+                url: 'scripts/datosRespuestaCita.php',
+                type: 'POST',
+                success: function(mensaje_mostrar){
+                        $('#mostrar').html(mensaje_mostrar);
+                    }
+            }).done(function(res){
+                console.log(res);
+            })
+        }
+    </script>
+
+    <script>
+        console.log("Hay citas confirmadas")
+        // RUTINA 4 : Actualizar horario del tutor después de confirmar una cita
+        var citasConfirmadasJson = '<?php echo json_encode($InformacionCitasConfirmadas);?>';
+        var InformacionCitasConfirmadas = JSON.parse(citasConfirmadasJson);
+        console.log(InformacionCitasConfirmadas)
+
+        //Restringir si hay alguna solicitud de cita ya pendiente 
+        if(count(InformacionCitasConfirmadas) > 0){
+            var estado = InformacionCitasConfirmadas[7];
+            //Obtener variables de PHP para generar el id de la casilla correspondiente
+            var dia = deFechaANombreDia(InformacionCitasConfirmadas[3]);
+            var horaInicio = InformacionCitasConfirmadas[5]
+            var horaFin = InformacionCitasConfirmadas[6]
+            //Obtener ID en base a su dia, hora de inicio y hora de fin
+            let codigo = ObtenerCodigoDisponibilidad(dia,horaInicio,horaFin)
+        
+            // RUTINA 5 : Actualizar horario del alumno despues de confirmar una cita
+            if (estado == 'CONFIRMADO'){
+                console.log('Tenemos una cita confirmada')
+                //Colorear el cuadro respectivo
+                casilla = document.getElementById(codigo)
+                casilla.classList.add("pintarAzul")
+            }
+            if (estado == 'PENDIENTE'){
+                console.log('Tenemos una cita pendiente')
+                //Colorear el cuadro respectivo
+                casilla = document.getElementById(codigo)
+                casilla.classList.add("pintarVerde")
+            }
+        }
+
+    </script>
 </body>
 </html>
