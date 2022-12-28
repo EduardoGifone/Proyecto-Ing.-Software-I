@@ -68,7 +68,7 @@ while($datosDisp = mysqli_fetch_assoc($resConCitasPendientes)){
 $consultaCitasConfirmadas = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$id_tutor' AND estado = 'CONFIRMADO'";
 $resCitasConfirmadas = mysqli_query($conexion, $consultaCitasConfirmadas);
 $filasCitasConf = mysqli_num_rows($resCitasConfirmadas);
-echo "<p>$filasCitasConf</p>";
+// echo "<p>$filasCitasConf</p>";
 
 $InformacionCitasConfirmadas = [];
 while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
