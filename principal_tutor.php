@@ -10,7 +10,7 @@ include 'config.php';
 // Obtener el codigo del estudiante
 $id_tutor = $_SESSION['codigo'];
 
-$consulta = "SELECT * FROM disponibilidad WHERE codigoTutor = '$id_tutor'";
+$consulta = "SELECT * FROM disponibilidad WHERE codigoTutor = '$id_tutor' AND estado='libre'";
 $resultadoConsulta = mysqli_query($conexion, $consulta);
 $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
 
