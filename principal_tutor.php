@@ -10,7 +10,7 @@ include 'config.php';
 // Obtener el codigo del estudiante
 $id_tutor = $_SESSION['codigo'];
 
-$consulta = "SELECT * FROM disponibilidad WHERE codigoTutor = '$id_tutor'";
+$consulta = "SELECT * FROM disponibilidad WHERE codigoTutor = '$id_tutor' AND estado='libre'";
 $resultadoConsulta = mysqli_query($conexion, $consulta);
 $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
 
@@ -68,7 +68,7 @@ while($datosDisp = mysqli_fetch_assoc($resConCitasPendientes)){
 $consultaCitasConfirmadas = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$id_tutor' AND estado = 'CONFIRMADO'";
 $resCitasConfirmadas = mysqli_query($conexion, $consultaCitasConfirmadas);
 $filasCitasConf = mysqli_num_rows($resCitasConfirmadas);
-echo "<p>$filasCitasConf</p>";
+// echo "<p>$filasCitasConf</p>";
 
 $InformacionCitasConfirmadas = [];
 while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
