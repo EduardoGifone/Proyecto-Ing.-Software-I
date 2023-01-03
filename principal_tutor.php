@@ -26,6 +26,17 @@ $Dias = array(
     "Domingo" => "DO"
 
 );
+
+$Days = array(
+    "Monday" => "LU",
+    "Tuesday" =>"MA",
+    "Wednesday" => "MI",
+    "Thursday" => "JU",
+    "Friday" => "VI",
+    "Saturday" => "SA",
+    "Sunday" => "DO"
+
+);
 if($filasdisponibilidad > 0){
     while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     
@@ -43,7 +54,7 @@ if($filasdisponibilidad > 0){
 
 
 // MOSTRAR LA INTERFAZ DE NOTIFICACIONES : SUBRUTINA 1
-$consulta = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$id_tutor'";
+$consulta = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$id_tutor' AND estado = 'PENDIENTE'";
 $resConCitasPendientes = mysqli_query($conexion, $consulta);
 $filasCitas = mysqli_num_rows($resConCitasPendientes);
 
@@ -65,7 +76,34 @@ while($datosDisp = mysqli_fetch_assoc($resConCitasPendientes)){
 }
 
 // RUTINA 4 : Actualizar horario del tutor después de confirmar una cita
-$consultaCitasConfirmadas = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$id_tutor' AND estado = 'CONFIRMADO'";
+
+//Obtener las fechas del lunes y el domingo de esta semana para mostrar solo las citas de esta semana
+function ObtenerLunesYDomingoFechasEstaSemana(){
+    $nroDiaToday = date('N');
+    $MondayThisWeek = time() - ( (7-($nroDiaToday)) * 24 * 60 * 60 );  
+    $SundayThisWeek = time() - ( (7-($nroDiaToday+6)) * 24 * 60 * 60 ); 
+
+    $MondayThisWeek_fecha = date('Y-m-d', $MondayThisWeek);
+    $SundayThisWeek_fecha = date('Y-m-d', $SundayThisWeek);
+
+    $fechasLunesDomingo = array();
+    array_push($fechasLunesDomingo, $MondayThisWeek_fecha);
+    array_push($fechasLunesDomingo, $SundayThisWeek_fecha);
+
+    return $fechasLunesDomingo;
+}
+
+$fechasLunesDomingo = ObtenerLunesYDomingoFechasEstaSemana();
+//Restringir solo obtener las citas confirmadas para esta semana
+
+//SUBRUTINA 4.1 : Obtener nombre del dia partiendo de la fecha
+function obtenerNombreDiaFechaActual($fecha){
+    $fechats = strtotime($fecha);
+    $nombreFecha = date('l', $fechats);
+    return $nombreFecha;
+}
+
+$consultaCitasConfirmadas = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$id_tutor' AND estado = 'CONFIRMADO' AND fecha >= '$fechasLunesDomingo[0]' AND fecha <= '$fechasLunesDomingo[1]'";
 $resCitasConfirmadas = mysqli_query($conexion, $consultaCitasConfirmadas);
 $filasCitasConf = mysqli_num_rows($resCitasConfirmadas);
 // echo "<p>$filasCitasConf</p>";
@@ -83,8 +121,26 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
     array_push($InformacionCitaConfirmada, $datosDisp["horaFin"]);
     array_push($InformacionCitaConfirmada, $datosDisp["estado"]);
 
+    //Agregar el id de la casilla perteneciente a dicha cita
+    //obtener acronimo del dia
+    $nombreDia = obtenerNombreDiaFechaActual($datosDisp["fecha"]);
+    if ($nombreDia != ''){
+        $claveDia = $Days[$nombreDia];
+        
+        //Obtener datos de los arreglos
+        $dia = $nombreDia;
+        //echo "<p>$datosDisp['fecha']</p>";
+        $Hini = $datosDisp["horaInicio"];
+        $Hfin = $datosDisp["horaFin"];
+        $CodigoDisp = $Days[$dia].$Hini.'-'.$Hfin;
+        array_push($InformacionCitaConfirmada, $CodigoDisp);
+    }
+
     array_push($InformacionCitasConfirmadas,$InformacionCitaConfirmada);
 }
+
+//Agregar los id's de las citas confirmadas a los arreglos de informacion
+
 
 ?>
 
@@ -99,6 +155,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/principal_tutor_stylesV2.css">
     <link rel="stylesheet" href="styles/notificacionesTutorias.css">
+    <link rel="stylesheet" href="styles/razon_tutoria_style.css">
 </head>
 <body id="blurBackground">
     <div id="blur">
@@ -701,6 +758,30 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
     ?>
     </div>
 
+    <section class="formulario" id="dialog">
+        <form action="" class="razon_tutoria">
+            <div class="razon__fecha_hora">
+                <p class="razon__txt" id="razon-Dia">Fecha: 28/01/23</p>
+                <p class="razon__txt" id="razon-Hora">Hora: 8:00 pm</p>
+            </div>
+
+            <label for="nombres" class="form_label">Nombres</label>
+            <input id="nombres" name="nombres" type="text" required class="razon_input razon_input--nombres" readonly="readonly">
+
+            <label for="apellidos" class="form_label">Apellidos</label>
+            <input id="apellidos" name="apellidos" type="text" required class="razon_input razon_input--apellidos">
+
+            <label for="razon" class="form_label">Razon de la tutoria</label>
+            <textarea id="razon" name="razon" class="razon_input razon_input--textarea"></textarea>
+
+            <div class="buttons">
+                <button class="button button--yellow" onclick="toggleAmarillo()" type="submit">Solicitar</button>
+                <button class="button button--red" onclick="toggleRed()" type="submit">Cancelar</button>
+            </div>
+        </form>
+    </section>
+
+
     <script src="scripts/popup.js"></script>
     <script>
         var arregloEnJson = '<?php echo json_encode($disponibilidades);?>';
@@ -757,37 +838,30 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
     </script>
 
     <script>
-        console.log("Hay citas confirmadas")
         // RUTINA 4 : Actualizar horario del tutor después de confirmar una cita
         var citasConfirmadasJson = '<?php echo json_encode($InformacionCitasConfirmadas);?>';
         var InformacionCitasConfirmadas = JSON.parse(citasConfirmadasJson);
         console.log(InformacionCitasConfirmadas)
 
-        //Restringir si hay alguna solicitud de cita ya pendiente 
-        if(count(InformacionCitasConfirmadas) > 0){
-            var estado = InformacionCitasConfirmadas[7];
-            //Obtener variables de PHP para generar el id de la casilla correspondiente
-            var dia = deFechaANombreDia(InformacionCitasConfirmadas[3]);
-            var horaInicio = InformacionCitasConfirmadas[5]
-            var horaFin = InformacionCitasConfirmadas[6]
-            //Obtener ID en base a su dia, hora de inicio y hora de fin
-            let codigo = ObtenerCodigoDisponibilidad(dia,horaInicio,horaFin)
-        
-            // RUTINA 5 : Actualizar horario del alumno despues de confirmar una cita
-            if (estado == 'CONFIRMADO'){
-                console.log('Tenemos una cita confirmada')
-                //Colorear el cuadro respectivo
-                casilla = document.getElementById(codigo)
-                casilla.classList.add("pintarAzul")
-            }
-            if (estado == 'PENDIENTE'){
-                console.log('Tenemos una cita pendiente')
-                //Colorear el cuadro respectivo
-                casilla = document.getElementById(codigo)
-                casilla.classList.add("pintarVerde")
-            }
+        for(let i = 0; i < InformacionCitasConfirmadas.length; i++){
+            var celda = document.getElementById(InformacionCitasConfirmadas[i][8]);
+            celda.classList.add("pintarAzul");
         }
 
+        // RUTINA 8 : Mostrar informacion del alumno al hacer click en una casilla azul
+        var celdas = document.getElementsByClassName("celdaP")
+        console.log(celdas)
+        for(let i = 0; i < celdas.length; i++){
+            celdas[i].dataset.numero = i;
+            var codCeldaClickeada = celdas[i].classList[1];
+
+            celdas[i].onclick = function() {
+                var name = InformacionCitasConfirmadas[1][0]
+                var apellido = InformacionCitasConfirmadas[1][1]
+                document.getElementById("nombres").value = name;
+                document.getElementById("apellidos").value = apellido;
+            }
+        }
     </script>
 </body>
 </html>
