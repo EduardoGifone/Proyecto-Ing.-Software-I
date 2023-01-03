@@ -18,7 +18,7 @@ for($i = 0; $i < count($disponibilidades); $i++){
     $dia = $disponibilidades[$i][0];
     $Hini = $disponibilidades[$i][1];
     $Hfin = $disponibilidades[$i][2];
-    $consult = "INSERT INTO disponibilidad(codigoTutor, dia, horaInicio, horaFin) values('$tutor_id','$dia',$Hini,$Hfin)";
+    $consult = "INSERT INTO disponibilidad(codigoTutor, dia, horaInicio, horaFin, estado) values('$tutor_id','$dia',$Hini,$Hfin,'libre')";
 
     if(mysqli_query($conexion, $consult)){
         echo '<h1>Datos ingresados</h1>';
