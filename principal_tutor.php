@@ -80,10 +80,9 @@ while($datosDisp = mysqli_fetch_assoc($resConCitasPendientes)){
 //Obtener las fechas del lunes y el domingo de esta semana para mostrar solo las citas de esta semana
 function ObtenerLunesYDomingoFechasEstaSemana(){
     $nroDiaToday = date('N');
-    //echo "<p>$nroDiaToday</p>";
-    //de momento le pongo 5, vere que pasa maniana
-    $MondayThisWeek = time() - ( (5-($nroDiaToday)) * 24 * 60 * 60 );  
-    $SundayThisWeek = time() - ( (5-($nroDiaToday+6)) * 24 * 60 * 60 ); 
+  
+    $MondayThisWeek = time() - ( (($nroDiaToday)-1) * 24 * 60 * 60 );  
+    $SundayThisWeek = time() - ( (($nroDiaToday-6)-1) * 24 * 60 * 60 ); 
 
     $MondayThisWeek_fecha = date('Y-m-d', $MondayThisWeek);
     $SundayThisWeek_fecha = date('Y-m-d', $SundayThisWeek);
@@ -105,9 +104,6 @@ function obtenerNombreDiaFechaActual($fecha){
     return $nombreFecha;
 }
 
-
-echo "<p>$fechasLunesDomingo[0]</p>";
-echo "<p>$fechasLunesDomingo[1]</p>";
 $consultaCitasConfirmadas = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$id_tutor' AND estado = 'CONFIRMADO' AND fecha >= '$fechasLunesDomingo[0]' AND fecha <= '$fechasLunesDomingo[1]'";
 $resCitasConfirmadas = mysqli_query($conexion, $consultaCitasConfirmadas);
 $filasCitasConf = mysqli_num_rows($resCitasConfirmadas);
@@ -762,7 +758,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
     }
     ?>
     </div>
-
+  
     <section class="formulario" id="dialogInformacionCita">
         <form action="" class="razon_tutoria">
             <div class="razon__fecha_hora">
