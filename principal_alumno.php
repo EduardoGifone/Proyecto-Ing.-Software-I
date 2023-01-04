@@ -85,7 +85,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     <link rel="stylesheet" href="styles/ocultarYMostrar.css">
     <link rel="stylesheet" href="styles/razon_tutoria_style.css">
 </head>
-<body id="blurBackgroundA">
+<body id="blurBackgroundA" class="principal_alumno">
     <div id="blurA">
         <section class="navegacionGeneral">
             <header class="first_navegation">

@@ -1,3 +1,56 @@
+window.addEventListener('click', function(e){
+    var notif = document.getElementById('dialogInformacionCita')
+    if (notif.classList[1] == 'show'){
+        if (notif.contains(e.target)){
+        } else{
+            closeDialogInformacion()
+            
+        }
+    }   /*
+    const scrollY = document.documentElement.style.getPropertyValue('--scroll-y');
+    const body = document.body;
+    body.style.top = `-${scrollY}`;
+    console.log('click: '+body.style.top);
+
+    body.style.top = '';
+    window.scrollTo(0, parseInt('-102px') * -1);*/
+})
+
+const showDialogInformacion = () => {
+    console.log('showDialogInformacion')
+    var blur = document.getElementById('blur');
+    blur.classList.toggle('activate')
+    var blur=document.getElementById('blurBackground');
+    blur.classList.toggle('activate');
+
+    //para que asi no se agregue show al instante
+    setTimeout(() => {
+        document.getElementById('dialogInformacionCita').classList.add('show')
+    }, 1);
+
+    const scrollY = document.documentElement.style.getPropertyValue('--scroll-y');
+    const body = document.body;
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollY}`;
+    console.log('open: '+body.style.top);
+};
+
+const closeDialogInformacion = () => {
+    var blur = document.getElementById('blur');
+    blur.classList.toggle('activate')
+    var blur=document.getElementById('blurBackground');
+    blur.classList.toggle('activate');
+
+    const body = document.body;
+    const scrollY = body.style.top;
+    body.style.position = '';
+    body.style.top = '';
+    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    document.getElementById('dialogInformacionCita').classList.remove('show');
+    console.log(`-${scrollY}`)
+}
+
+
 const efectoBlurANotificacion = () => {
     var notif = document.getElementById('dialogNoti')
     if (notif.classList[1] == 'show'){

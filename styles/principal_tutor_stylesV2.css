@@ -13,6 +13,8 @@
     --fuente: "Montserrat", sans-serif;
 }
 
+
+
 .tabla__horario {
     margin: 50px auto;
     border-spacing: 0;
@@ -90,6 +92,22 @@ section.horario__actualizar .boton_horario{
     margin-bottom: 4rem;
 }
 
+/* Cuando quiero cerrar el efecto blur, el enlace a
+no me lo permite asi que le quito el evento */
+
+/* Si tiene algun color entonces si se le da el evento*/
+/* estp para que no se recargue la pagina */
+section a{
+    pointer-events: none;
+}
+
+.navegacionGeneral a,
+.horario__actualizar a,
+.principal_alumno a.pintarAmarillo,
+.principal_tutor a.pintarAzul {
+    pointer-events: all;
+}
+
 #blur {
     transition: 0.5px;
 }
@@ -109,6 +127,12 @@ section.horario__actualizar .boton_horario{
     pointer-events: none;
     user-select: none;
     position: relative;
+}
+
+/* Cuando quiero cerrar el efecto blur, el enlace a
+no me lo permite asi que le quito el evento */
+#blur.activate a{
+    pointer-events: none;
 }
 
 #dialog.show {

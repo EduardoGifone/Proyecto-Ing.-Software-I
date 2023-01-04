@@ -77,6 +77,7 @@ select:focus {
     border-radius: 20px;
     color: white;
     border-style: none;
+    transition: .4s;
 }
 
 .button--red {
@@ -87,8 +88,33 @@ select:focus {
     background-color: #FFC400;
 }
 
+/* RUTINA 8:  SECCION PARA MOSTRAR INFORMACION DEL ALUMNO AL TUTOR */
 
 /* Ocultar la informacion de la tutoria */
 .formulario {
     visibility: hidden;
 }
+
+/* Evitar que se escriba algo */ 
+#dialogInformacionCita #razon {
+    pointer-events: none;
+}
+
+#dialogInformacionCita .button--yellow,
+#dialogInformacionCita .button--red{
+    display: flex;
+    justify-content: center;
+    width: 120px;
+}
+
+.button:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+#dialogInformacionCita.show {
+    visibility: visible;
+    opacity: 1;
+    transform: 0.5s;
+}
+

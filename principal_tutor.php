@@ -162,7 +162,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
     <link rel="stylesheet" href="styles/notificacionesTutorias.css">
     <link rel="stylesheet" href="styles/razon_tutoria_style.css">
 </head>
-<body id="blurBackground">
+<body id="blurBackground" class="principal_tutor">
     <div id="blur">
         <section class="navegacionGeneral">
             <header class="first_navegation">
@@ -763,7 +763,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
     ?>
     </div>
 
-    <section class="formulario" id="dialog">
+    <section class="formulario" id="dialogInformacionCita">
         <form action="" class="razon_tutoria">
             <div class="razon__fecha_hora">
                 <p class="razon__txt" id="razon-Dia">Fecha: 28/01/23</p>
@@ -780,12 +780,11 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             <textarea id="razon" name="razon" class="razon_input razon_input--textarea"></textarea>
 
             <div class="buttons">
-                <button class="button button--yellow" onclick="toggleAmarillo()" type="submit">Solicitar</button>
-                <button class="button button--red" onclick="toggleRed()" type="submit">Cancelar</button>
+                <button class="button button--yellow" onclick="toggleAmarillo()" type="submit">Finalizar</button>
+                <button class="button button--red" onclick="toggleRed()" type="submit">Suspender</button>
             </div>
         </form>
     </section>
-
 
     <script src="scripts/popup.js"></script>
     <script>
@@ -872,16 +871,39 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
 
         // RUTINA 8 : Mostrar informacion del alumno al hacer click en una casilla azul
         var celdas_P = document.getElementsByClassName("celdaP")
+        console.log('Celdas P mostrandose en la rutina 8')
         console.log(celdas_P)
         for(let i = 0; i < celdas_P.length; i++){
             celdas_P[i].dataset.numero = i;
-            var codCeldaClickeada = celdas_P[i].classList[1];
-
+            
+            
             celdas_P[i].onclick = function() {
-                var name = InformacionCitasConfirmadas[1][0]
-                var apellido = InformacionCitasConfirmadas[1][1]
-                document.getElementById("nombres").value = name;
-                document.getElementById("apellidos").value = apellido;
+                
+                //Restringir que al clickear otras celdas no pase nada
+                if (celdas_P[i].classList[2] == 'pintarAzul'){
+
+                    //Obtener id de celda clickeada
+                    var codCeldaClickeada = celdas_P[i].classList;
+
+                    //Comparar con las los valores de las citas confirmadas
+                    for(var j = 0; j < InformacionCitasConfirmadas.length; j++){
+                        if(InformacionCitasConfirmadas[j][8] == codCeldaClickeada[1]){
+                            //Obtener los valores que necesitamos
+                            var name = InformacionCitasConfirmadas[j][0]
+                            var apellido = InformacionCitasConfirmadas[j][1]
+                            var razonTuto = InformacionCitasConfirmadas[j][4]
+                        }
+                    }
+
+                    //Mostrar el que si corresponde
+                    document.getElementById("nombres").value = name;
+                    document.getElementById("apellidos").value = apellido;
+                    document.getElementById("razon").value = razonTuto;
+                
+                    //Mostrar y ocultar la ventana de informacion cuando sea necesario
+                    showDialogInformacion()
+
+                }
             }
         }
     </script>
