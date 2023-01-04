@@ -80,8 +80,10 @@ while($datosDisp = mysqli_fetch_assoc($resConCitasPendientes)){
 //Obtener las fechas del lunes y el domingo de esta semana para mostrar solo las citas de esta semana
 function ObtenerLunesYDomingoFechasEstaSemana(){
     $nroDiaToday = date('N');
-    $MondayThisWeek = time() - ( (7-($nroDiaToday)) * 24 * 60 * 60 );  
-    $SundayThisWeek = time() - ( (7-($nroDiaToday+6)) * 24 * 60 * 60 ); 
+    //echo "<p>$nroDiaToday</p>";
+    //de momento le pongo 5, vere que pasa maniana
+    $MondayThisWeek = time() - ( (5-($nroDiaToday)) * 24 * 60 * 60 );  
+    $SundayThisWeek = time() - ( (5-($nroDiaToday+6)) * 24 * 60 * 60 ); 
 
     $MondayThisWeek_fecha = date('Y-m-d', $MondayThisWeek);
     $SundayThisWeek_fecha = date('Y-m-d', $SundayThisWeek);
@@ -103,10 +105,13 @@ function obtenerNombreDiaFechaActual($fecha){
     return $nombreFecha;
 }
 
+
+echo "<p>$fechasLunesDomingo[0]</p>";
+echo "<p>$fechasLunesDomingo[1]</p>";
 $consultaCitasConfirmadas = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$id_tutor' AND estado = 'CONFIRMADO' AND fecha >= '$fechasLunesDomingo[0]' AND fecha <= '$fechasLunesDomingo[1]'";
 $resCitasConfirmadas = mysqli_query($conexion, $consultaCitasConfirmadas);
 $filasCitasConf = mysqli_num_rows($resCitasConfirmadas);
-// echo "<p>$filasCitasConf</p>";
+echo "<p>$filasCitasConf</p>";
 
 $InformacionCitasConfirmadas = [];
 while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
@@ -736,7 +741,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         $horaInicio = $InformacionPendiente[5];
         $horaFin = $InformacionPendiente[6];
 
-        print "<div class='notificacionCita' id = '$i'>
+        print "<div class='notificacionCita $fecha $horaInicio $i' id = '$i'>
                     <div class='fechaHora'>
                         <p class='fecha'>Fecha '$fecha'</p>
                         <p class='hora'>Hora: $horaInicio:00</p>
@@ -805,10 +810,26 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         console.log('Arreglo de citas pendientes');
         console.log(InformacionCitasPendientes);
 
+
+        function revisarOtrasCitasEnMismaHora(fecha, horaInicio){
+
+            var citasMostradas = document.getElementsByClassName('notificacionCita');
+            console.log(citasMostradas)
+            for(var i = 0; i < citasMostradas.length; i++){
+                console.log(citasMostradas[i].classList[1]+'  '+fecha)
+                console.log(citasMostradas[i].classList[2]+'  '+horaInicio)
+                if(citasMostradas[i].classList[1] == fecha & citasMostradas[i].classList[2] == horaInicio){
+                    var citaMostaraElem = document.getElementById(citasMostradas[i].classList[3]);
+                    citaMostaraElem.classList.add('noMostrar')
+                }
+            }
+        }
+
         // ACEPTAR UNA CITA : RUTINA 2 y 3
         function responderCita(codigoAlumno, fecha, horaInicio, idSolicitud, numRespuesta){
             var solicitud = document.getElementById(idSolicitud);
             solicitud.classList.add('noMostrar')
+            revisarOtrasCitasEnMismaHora(fecha, horaInicio)
 
             var respuesta = 'Rechazado';
             if(numRespuesta == 1){
@@ -841,6 +862,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         // RUTINA 4 : Actualizar horario del tutor después de confirmar una cita
         var citasConfirmadasJson = '<?php echo json_encode($InformacionCitasConfirmadas);?>';
         var InformacionCitasConfirmadas = JSON.parse(citasConfirmadasJson);
+        console.log('Citas confirmadas')
         console.log(InformacionCitasConfirmadas)
 
         for(let i = 0; i < InformacionCitasConfirmadas.length; i++){
@@ -849,13 +871,13 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         }
 
         // RUTINA 8 : Mostrar informacion del alumno al hacer click en una casilla azul
-        var celdas = document.getElementsByClassName("celdaP")
-        console.log(celdas)
-        for(let i = 0; i < celdas.length; i++){
-            celdas[i].dataset.numero = i;
-            var codCeldaClickeada = celdas[i].classList[1];
+        var celdas_P = document.getElementsByClassName("celdaP")
+        console.log(celdas_P)
+        for(let i = 0; i < celdas_P.length; i++){
+            celdas_P[i].dataset.numero = i;
+            var codCeldaClickeada = celdas_P[i].classList[1];
 
-            celdas[i].onclick = function() {
+            celdas_P[i].onclick = function() {
                 var name = InformacionCitasConfirmadas[1][0]
                 var apellido = InformacionCitasConfirmadas[1][1]
                 document.getElementById("nombres").value = name;

@@ -86,3 +86,9 @@ select:focus {
 .button--yellow {
     background-color: #FFC400;
 }
+
+
+/* Ocultar la informacion de la tutoria */
+.formulario {
+    visibility: hidden;
+}
