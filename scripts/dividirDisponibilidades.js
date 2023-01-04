@@ -1,9 +1,7 @@
 var arrayDisp = ['LU10-11','MI14-15','JU18-19']
 function dividirArrayDisponibilidades(arrayDisp) {
-
     var disponibilidades = [];
     for(let i = 0; i < arrayDisp.length; i++){
-
         var disponibilidad = dividirInfoDisponibilidad(arrayDisp[i])
         // agregar el datos del i horario disponible
         disponibilidades.push(disponibilidad);

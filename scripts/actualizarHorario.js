@@ -17,7 +17,10 @@ for(let i = 0; i < celdas.length; i++){
     celdas[i].dataset.numero = i;
 
     celdas[i].onclick = function() {
-        if("pintarAmarillo" == celdas[i].classList[2]){
+        //se cambio de celdas[i] a this, ya que habia un error
+        console.log('Un clicksito '+this.classList+' i:'+i)
+        if("pintarAmarillo" == this.classList[2]){
+            console.log('elimnar clicksito')
             this.classList.remove("pintarAmarillo");
         }
         else{
@@ -32,7 +35,9 @@ var celdasP = document.getElementsByClassName("celdaP")
 var arrayHorariosDisp = [];
 btnActualizar.onclick = function() {
     for(let i = 0; i < celdasP.length; i++){
+        console.log(celdas[i].classList)
         if("pintarAmarillo" == celdas[i].classList[2]){
+            console.log("pintando amarillo hor principal")
             //se pinta la celdasP de amarillo
             celdasP[i].classList.add("pintarAmarillo");
             // agregar la clase de los horarios disponibles
@@ -66,5 +71,4 @@ btnActualizar.onclick = function() {
     }).done(function(res){
         console.log(res);
     })
-
 }

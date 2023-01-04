@@ -25,8 +25,9 @@ $resultadoConsulta = mysqli_query($conexion, $consulta);
 $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
 
 //Consultar si hay citas pendientes y confirmadas
-$consultaCita = "SELECT * FROM cita WHERE codigoAlumno = '$alumno_codigo' and estado = 'pendiente' or estado = 'confirmado'";
-$resultadoConsultaCita = mysqli_query($conexion, $consultaCita);
+echo "<p>$alumno_codigo</p>";
+$consultaCitaPend = "SELECT * FROM cita WHERE codigoAlumno = '$alumno_codigo' and (estado = 'pendiente' or estado = 'confirmado')";
+$resultadoConsultaCita = mysqli_query($conexion, $consultaCitaPend);
 $filasCitasDisponibles = mysqli_num_rows($resultadoConsultaCita);
 
 $fechaConsulta = '';
@@ -40,6 +41,7 @@ if($filasCitasDisponibles){
         $horaInicio = $citaAlumno["horaInicio"];  
         $horaFin = $citaAlumno["horaFin"];  
         $estado = $citaAlumno["estado"];
+        echo "<p>$fechaConsulta</p>";
     }
 }
 
@@ -83,7 +85,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     <link rel="stylesheet" href="styles/ocultarYMostrar.css">
     <link rel="stylesheet" href="styles/razon_tutoria_style.css">
 </head>
-<body id="blurBackgroundA">
+<body id="blurBackgroundA" class="principal_alumno">
     <div id="blurA">
         <section class="navegacionGeneral">
             <header class="first_navegation">
@@ -508,9 +510,10 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
 
         //Obtener las citas pendientes del alumno
         var citasDisponibles = '<?php echo $filasCitasDisponibles;?>'
-        console.log(citasDisponibles)
+        console.log('citas para este: '+citasDisponibles)
         //Restringir si hay alguna solicitud de cita ya pendiente 
         if(citasDisponibles > 0){
+            console.log('tamos aqui ya que citasDisponibles > 0')
             var estado = '<?php echo $estado;?>';
             //Obtener variables de PHP para generar el id de la casilla correspondiente
             var dia = deFechaANombreDia('<?php echo $fechaConsulta;?>');
@@ -518,15 +521,15 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             var horaFin = '<?php echo $horaFin;?>';
             //Obtener ID en base a su dia, hora de inicio y hora de fin
             let codigo = ObtenerCodigoDisponibilidad(dia,horaInicio,horaFin)
-        
+            console.log('estado'+estado)
             // RUTINA 5 : Actualizar horario del alumno despues de confirmar una cita
-            if (estado == 'CONFIRMADO'){
+            if (estado == 'CONFIRMADO' | estado == 'Confirmado' ){
                 console.log('Tenemos una cita confirmada')
                 //Colorear el cuadro respectivo
                 casilla = document.getElementById(codigo)
                 casilla.classList.add("pintarAzul")
             }
-            if (estado == 'PENDIENTE'){
+            if (estado == 'PENDIENTE' | estado == 'Pendiente'){
                 console.log('Tenemos una cita pendiente')
                 //Colorear el cuadro respectivo
                 casilla = document.getElementById(codigo)
