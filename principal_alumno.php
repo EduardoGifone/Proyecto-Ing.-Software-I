@@ -87,38 +87,44 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
 </head>
 <body id="blurBackgroundA" class="principal_alumno">
     <div id="blurA">
-        <section class="navegacionGeneral">
-            <header class="first_navegation">
-                <a href="#">
-                    <img src="images/notificacion.png" alt="logo">
-                </a>
-                <div>
-                    <a href="" class="esp_Der">
-                        <img src="images/user.png" alt="">
+        <div class="container_nav">
+            <section class="navegacionGeneral">
+                <header class="first_navegation">
+                    <a href="#" onclick="efectoBlurANotificacion()">
+                        <img src="images/notificacion.png" alt="logo">
                     </a>
-                    <a href="destroySession.php">
-                        <img src="images/closeSesion.png" alt="">
-                    </a>
-                </div>
-            </header>
-            <hr class="line">
-            <header>
-                <nav class="navegacion_Principal">
-                    <a href="#">
-                        <img src="images/tutoria.png" alt="">
-                        Tutoria
-                    </a>
-                    <a href="#">
-                        <img src="images/muro.png" alt="">
-                        Muro
-                    </a>
-                    <a href="#">
-                        <img src="images/comunidad.png" alt="">
-                        Comunidad
-                    </a>
-                </nav>
-            </header>
-        </section>
+                    <div>
+                        <a href="" class="esp_Der">
+                            <img src="images/user.png" alt="">
+                        </a>
+                        <a href="destroySession.php">
+                            <img src="images/closeSesion.png" alt="">
+                        </a>
+                    </div>
+                </header>
+                <hr class="line">
+                <header class="header_principal">
+                    <nav class="navegacion_Principal">
+                        <a href="#">
+                            <img src="images/tutoria.png" alt="">
+                            Tutoria
+                        </a>
+                        <a href="#">
+                            <img src="images/muro.png" alt="">
+                            Muro
+                        </a>
+                        <a href="#">
+                            <img src="images/comunidad.png" alt="">
+                            Comunidad
+                        </a>
+                        <a href="#">
+                            <img src="images/descargar.png" alt="">
+                            Archivados
+                        </a>
+                    </nav>
+                </header>
+            </section>
+        </div>
         <section class="horario__principal horario__alumno">
             <h2>Seleccione el espacio amarillo que desee para solicitar una cita</h2>
             <table border="1" class="tabla__horario">
@@ -555,5 +561,6 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
         document.getElementById("nombres").value = name;
         document.getElementById("apellidos").value = apellido;
     </script>
+    <script src="./scripts/scroll.js"></script>
 </body>
 </html>
