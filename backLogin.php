@@ -1,53 +1,58 @@
 <?php
-//Recuperar datos del formulariodel login
-$correo = $_POST["user"];
-$contrasenia = $_POST["password"];
-
-//Realizar conexión con la base de datos
-// En mi caso le coloco el puerto 3307 por que estoy trabajando en ese puerto, usualmente es 3306
-//$conexion = mysqli_connect("localhost", "root","","dbtutorias");
-include 'config.php';
-//----------------------------------Crear consultas----------------------------------
-//Consultar como alumno
-$consultaAlumno = "SELECT*FROM Alumno where correoAlumno='$correo' and contrasenia='$contrasenia'";
-$resultadoAlumno = mysqli_query($conexion, $consultaAlumno);
-$filasAlumnos = mysqli_num_rows($resultadoAlumno);
-//Iniciar sesion para capturar desde datos.php informacion necesaria
+// echo "Mensaje de prueba";
+//Recuperar datos
+$user = $_POST["usuario"];
+$pass = $_POST["password"];
+//Iniciar sesion
 session_start();
-//Verificar si se inició sesión como alumno
-if($filasAlumnos){
-    //Llenar datos
-    $_SESSION["tipoUsuario"] = "alumno";
-    while ($datosAlumno = mysqli_fetch_assoc($resultadoAlumno)) {
-        $_SESSION["codigo"] = $datosAlumno["codigoAlumno"];
-        $_SESSION["name"] = $datosAlumno["nombres"];
-        $_SESSION["surname"] = $datosAlumno["apellidos"]; 
-        $_SESSION["codTutor"] = $datosAlumno["codigoTutor"];  
-    }
-    //Mandar al menu
-    header("location: principal_alumno.php");
-}
-else{
-    //Verificar si se inicio sesión como tutor
-    //Consultar como tutor
-    $consultaTutor = "SELECT*FROM Tutor where correoTutor='$correo' and contrasenia='$contrasenia'";
-    $resultadoTutor = mysqli_query($conexion, $consultaTutor);
-    $filasTutor = mysqli_num_rows($resultadoTutor);
-    if($filasTutor){
-        $_SESSION["tipoUsuario"] = "tutor";
-        while ($datosTutor = mysqli_fetch_assoc($resultadoTutor)) {
-            //Llenar datos
-            $_SESSION["codigo"] =  $datosTutor["codigoTutor"];
-            $_SESSION["name"] = $datosTutor["nombres"];
-            $_SESSION["surname"] = $datosTutor["apellidos"]; 
+//Conectar con la base de datos
+$conexion = mysqli_connect("localhost", "root","","dbtutorias");
+//Verificar existencia de usuario
+$queryAlumno = "SELECT * FROM alumno where correoAlumno='$user'";
+$resultadoAlumno = mysqli_query($conexion, $queryAlumno);
+if (mysqli_num_rows($resultadoAlumno)){
+    //Validar contraseña
+    $queryPass = "SELECT * FROM alumno where contrasenia = '$pass' and correoAlumno='$user' ";
+    $resultadoPass = mysqli_query($conexion, $queryPass);
+    $filasAlumno = mysqli_num_rows($resultadoPass);
+    if ($filasAlumno){
+        $_SESSION["tipoUsuario"] = "alumno";
+        while ($datosAlumno = mysqli_fetch_assoc($resultadoPass)) {
+            $_SESSION["codigo"] = $datosAlumno["codigoAlumno"];
+            $_SESSION["name"] = $datosAlumno["nombres"];
+            $_SESSION["surname"] = $datosAlumno["apellidos"]; 
+            $_SESSION["codTutor"] = $datosAlumno["codigoTutor"];  
         }
-        //Mandar al menu
-        header("location: principal_tutor.php");
-        
+        echo "menuAlumno";
     }
     else{
-        //Los datos ingresados son incorrectos, mandar al login
-        header("location: login.html");
+        echo "Contraseña incorrecta";
+    }
+}
+else{
+    // Consultar como docente
+    $queryTutor = "SELECT * FROM tutor where correoTutor='$user'";
+    $resultadoTutor = mysqli_query($conexion, $queryTutor);
+    if (mysqli_num_rows($resultadoTutor)){
+        //Verificar contraseña
+        $queryTutorPassword = "SELECT * FROM tutor WHERE contrasenia='$pass' and correoTutor='$user'";
+        $resultadoPasswordTutor = mysqli_query($conexion, $queryTutorPassword);
+        if(mysqli_num_rows($resultadoPasswordTutor)){
+            $_SESSION["tipoUsuario"] = "tutor";
+            while ($datosTutor = mysqli_fetch_assoc($resultadoPasswordTutor)) {
+                //Llenar datos
+                $_SESSION["codigo"] =  $datosTutor["codigoTutor"];
+                $_SESSION["name"] = $datosTutor["nombres"];
+                $_SESSION["surname"] = $datosTutor["apellidos"]; 
+            }
+            echo "menuTutor";
+        }
+        else{
+            echo "contraseña incorrecta";
+        }
+    }
+    else{
+        echo "El correo ingresado no existe";
     }
 }
 ?>

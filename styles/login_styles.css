@@ -122,7 +122,7 @@ form .campo_txt {
     width: 100%;
 }
 
-input[type="submit"] {
+input[type="button"] {
     width: 100%;
     height: 50px;
     border: 1px solid;
@@ -137,7 +137,7 @@ input[type="submit"] {
     margin-bottom: 30px;
 }
 
-input[type="submit"]:hover {
+input[type="button"]:hover {
     border-color: var(--patito);
     transition: .3s;
 }
