@@ -15,17 +15,33 @@ body {
     background-size: cover;
     margin: 0;
     padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container_login {
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 200px;
+}
+
+.robot {
+    background-image: url(../images/presentacion_inicio.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 600px;
+    height: 600px;
 }
 
 .center {
     font-family: var(--fuente);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     border-radius: 10px;
     background: white;
-    width: 320px;
+    width: 350px;
 }
 
 .center h1 {

@@ -42,4 +42,9 @@
     padding: 10px 20px;
     border-radius: 10px;
     font-weight: 600;
+    transition: all 200ms linear;
+}
+
+.button:hover {
+    transform: scale(1.1);
 }
