@@ -1,3 +1,4 @@
+/*Estilos del contenedor principal*/
 .container{
     max-width: 1700px;
     margin: 40px auto;
@@ -8,6 +9,7 @@
     flex-wrap: wrap;
 }
 
+/*Estilos para cada clase archivada*/
 .archivado{
     max-width: 380px;
     min-width: 350px;
@@ -38,6 +40,7 @@
     font-weight: 700;
 }
 
+/*Estulos de la imagen de archivado*/
 .archivado__img{
     width: 120px;
     height: 120px;

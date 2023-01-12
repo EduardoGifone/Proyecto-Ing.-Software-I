@@ -1,12 +1,15 @@
+/*Estilos del html principal*/
 html {
     /*font-size: 62.5%;*/
     box-sizing: border-box; /* Hack para Box Model **/
 }
 
+/*Estulos para todos*/
 *, *:before, *:after {
     box-sizing: inherit;
 }
 
+/*Estulos de horario principal*/
 section.horario__principal {
     text-align: center;
 }
@@ -35,6 +38,7 @@ section.horario__actualizar .boton_horario{
     margin-bottom: 4rem;
 }
 
+/*Estilos del blru*/
 #blurNavA,
 #blurA {
     transition: 0.5px;
