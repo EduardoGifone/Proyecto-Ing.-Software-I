@@ -1,21 +1,5 @@
 
-window.addEventListener('click', function(e){
-    var notif = document.getElementById('dialogInformacionCita')
-    if (notif.classList[1] == 'show'){
-        if (notif.contains(e.target)){
-        } else{
-            closeDialogAll('dialogInformacionCita', 'blur', 'blurBackground') 
-        }
-    }   /*
-    const scrollY = document.documentElement.style.getPropertyValue('--scroll-y');
-    const body = document.body;
-    body.style.top = `-${scrollY}`;
-    console.log('click: '+body.style.top);
-
-    body.style.top = '';
-    window.scrollTo(0, parseInt('-102px') * -1);*/
-})
-
+// Para hacer aparecer el contenedor que queremos y difuminar el resto
 const ShowDialogAll = (idContenedorAMostrar, Blur, BlurBackground) => {
     console.log('---------------------')
     console.log(idContenedorAMostrar)
@@ -37,6 +21,7 @@ const ShowDialogAll = (idContenedorAMostrar, Blur, BlurBackground) => {
     console.log(body.style.top)
 }
 
+//Para cerrar el contenedor y regresar a la pantalla anterior
 const closeDialogAll = (idContenedorAMostrar, Blur, BlurBackground) => {
     var blur = document.getElementById(Blur);
     console.log('se esta aplicando closeDialog')
@@ -53,6 +38,7 @@ const closeDialogAll = (idContenedorAMostrar, Blur, BlurBackground) => {
     console.log(`-${scrollY}`)
 }
 
+//Para al hacer click en el icono de campanita se habran o cierren las notif
 const efectoBlurANotificacion = () => {
     var notif = document.getElementById('dialogNoti')
     if (notif.classList[1] == 'show'){
@@ -64,6 +50,8 @@ const efectoBlurANotificacion = () => {
     }
 }
 
+// Para cerrar al dar en un campo que no sea el contenedor dado
+
 window.addEventListener('click', function(e){
     var notif = document.getElementById('dialogNoti')
     if (notif.classList[1] == 'show'){
@@ -74,6 +62,18 @@ window.addEventListener('click', function(e){
     }   
 })
 
+
+window.addEventListener('click', function(e){
+    var notif = document.getElementById('dialogInformacionCita')
+    if (notif.classList[1] == 'show'){
+        if (notif.contains(e.target)){
+        } else{
+            closeDialogAll('dialogInformacionCita', 'blur', 'blurBackground') 
+        }
+    }   
+})
+
+// Permitir que la pantalla se reajuste como se deba
 window.addEventListener('scroll', () => {
     document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}px`);
 });

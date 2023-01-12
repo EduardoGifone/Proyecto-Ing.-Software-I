@@ -1,4 +1,5 @@
 // Pintar y despintar de amarillo los casilleros a conveniencia
+// cada vez que el tutor de click en la casilla que requiera
 var celdas = document.getElementsByClassName("celda")
 console.log(celdas)
 
@@ -17,6 +18,9 @@ for(let i = 0; i < celdas.length; i++){
         }
     }
 }
+
+//Cuando el tutor dé click en actualizar para actualizar toda su disponibilidad
+//se enviara esa informacion mediante AJAX a PHP y luego a la BD
 
 var btnActualizar = document.getElementById("BtnActualizar")
 var celdasP = document.getElementsByClassName("celdaP")

@@ -1,4 +1,5 @@
-var arrayDisp = ['LU10-11','MI14-15','JU18-19']
+//var arrayDisp = ['LU10-11','MI14-15','JU18-19']
+
 function dividirArrayDisponibilidades(arrayDisp) {
     var disponibilidades = [];
     for(let i = 0; i < arrayDisp.length; i++){
@@ -7,22 +8,6 @@ function dividirArrayDisponibilidades(arrayDisp) {
         disponibilidades.push(disponibilidad);
     }
     return(disponibilidades)
-}
-
-function ObtenerCodigoDisponibilidad(nombreDia,horaInicio,horaFin){
-    // Mapas (diccionarios)
-    let Dias = new Map();
-    Dias.set("Lunes","LU");
-    Dias.set("Martes","MA");
-    Dias.set("Miercoles","MI");
-    Dias.set("Jueves","JU");
-    Dias.set("Viernes","VI");
-    Dias.set("Sabado","SA");
-    Dias.set("Domingo","DO");
-
-    let codigo = Dias.get(nombreDia)+horaInicio+'-'+horaFin;
-    console.log(codigo)
-    return codigo
 }
 
 //disponibilidadC del codigo
@@ -52,6 +37,22 @@ const dividirInfoDisponibilidad = (dispCodigo) => {
     disponibilidad.push(Hrs[1]);
 
     return disponibilidad;
+}
+
+function ObtenerCodigoDisponibilidad(nombreDia,horaInicio,horaFin){
+    // Mapas (diccionarios)
+    let Dias = new Map();
+    Dias.set("Lunes","LU");
+    Dias.set("Martes","MA");
+    Dias.set("Miercoles","MI");
+    Dias.set("Jueves","JU");
+    Dias.set("Viernes","VI");
+    Dias.set("Sabado","SA");
+    Dias.set("Domingo","DO");
+
+    let codigo = Dias.get(nombreDia)+horaInicio+'-'+horaFin;
+    console.log(codigo)
+    return codigo
 }
 
 function deFechaANombreDia(fecha){

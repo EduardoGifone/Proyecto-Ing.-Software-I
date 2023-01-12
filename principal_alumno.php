@@ -3,10 +3,11 @@ session_start();
 if (is_null($_SESSION["tipoUsuario"])){
     header("location: login.html");
 }
-// include '../Proyecto-Ing.-Software-I/config.php';
+
+//Conectarse a la base de datos
 include 'config.php';
 
-// Obtener el codigo del estudiante
+// Obtener los datos del estudiante
 $alumno_cod = $_SESSION['codigo'];
 $alumno_nombre = $_SESSION['name'];
 $alumno_apellido = $_SESSION['surname'];
@@ -45,7 +46,6 @@ if($filasCitasDisponibles){
     }
 }
 
-
 //para almacenar los codigos de las disponibilidades
 $disponibilidades = [];
 $Dias = array(
@@ -57,6 +57,8 @@ $Dias = array(
     "Sabado" => "SA",
     "Domingo" => "DO"
 );
+//Iterar dentro de $resultadoConsulta y obtener el codigo de disponibilidades
+//Para mostrar al alumno las disponibilidades de su tutor
 while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     
     //Obtener datos de los arreglos
@@ -66,9 +68,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     $CodigoDisp = $Dias[$dia].$Hini.'-'.$Hfin;
     //agregar disponibilidades al arreglo
     array_push($disponibilidades,$CodigoDisp);
-    
 }
-// var_dump($disponibilidades);
 
 ?>
 
@@ -401,6 +401,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             </table>
         </section>
     </div>
+    <!-- LA interfaz para solicitar una cita -->
     <section class="formulario" id="dialog">
         <form action="" class="razon_tutoria">
             <div class="razon__fecha_hora">
@@ -424,109 +425,14 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
         </form>
     </section>
 
-    <script src="scripts/popup.js"></script>
-    <script src="scripts/dividirDisponibilidades.js"></script>  
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="./scripts/principalAlumnoFunciones.js"></script>
+    <script src="./scripts/popup.js"></script>
+    <script src="./scripts/dividirDisponibilidades.js"></script>  
+    <script src="./scripts/scroll.js"></script>
+    
+    <!--  PINTAR LAS CASILLAS DE AMARILLO,AZUL O VERDE SI CORRESPONDE -->
     <script>
-        function obtenerDatosCasilleroSeleccionado() {
-
-        //Obtener las horas y dia
-        let datosHorario;
-        var casillasVerdes = document.getElementsByClassName("pintarVerde") 
-        if(casillasVerdes.length > 0){
-            //obtener informacion del casillero : LU10-11
-            hora = casillasVerdes[0].id;
-            //Llamar a la funcion LU10-11 -> ['Lunes','10','11']
-            datosHorario = dividirInfoDisponibilidad(hora);
-        }
-        console.log(datosHorario);
-        return datosHorario;
-        }
-    </script>
-    <script>
-        //Solo colocar las actividades que realizara, no colocar otro toggle() por que para ese
-        // nuevo toggle recien se activara en la siguiente vez que se presione el boton
-        function toggleRed() {
-            var casillasVerdes = document.getElementsByClassName("pintarVerde") 
-            for(let i = 0; i < casillasVerdes.length; i++){
-                casillasVerdes[i].classList.remove("pintarVerde");
-                console.log('Se removio')
-            }
-            closeDialogAll('dialog','blurA','blurBackgroundA')
-        }
-
-        function toggleAmarillo() {
-
-            //Obtener los nombres y apellidos
-            var name = '<?php echo $alumno_nombre;?>';
-            var apellido = '<?php echo $alumno_apellido;?>';
-
-            //Realizar la peticion ajax
-            let datosHorario = obtenerDatosCasilleroSeleccionado();
-            let horaInicio = datosHorario[1];
-            let horaFin = datosHorario[2];
-            let dia = datosHorario[0];
-            var codAlumno = '<?php echo $alumno_codigo;?>';
-            console.log('cod Alumno : '+codAlumno)
-            var razon =  document.getElementById("razon").value;
-            console.log('Aqui viene la razon')
-            console.log(razon);
-            //Obtener parametros para la peticion
-            var parametros = {
-                "horaInicio" : horaInicio,
-                "horaFin" : horaFin,
-                "dia" : dia,
-                "codigoAlumno" : codAlumno,
-                "razon" : razon
-            };
-            //Llamar al backend
-            $.ajax({
-                data: parametros,
-                url: 'scripts/datosCita.php',
-                type: 'POST',
-                success: function(mensaje_mostrar){
-                        $('#mostrar').html(mensaje_mostrar);
-                    }
-            }).done(function(res){
-                console.log(res);
-            })
-
-            closeDialogAll('dialog','blurA','blurBackgroundA')
-        }
-    </script>
-    <script>
-        // Pintar y despintar de amarillo los casilleros a conveniencia
-        var celdas = document.getElementsByClassName("celdaP")
-
-        for(let i = 0; i < celdas.length; i++){
-            celdas[i].dataset.numero = i;
-
-            celdas[i].onclick = function() {
-                if(celdas[i].classList[2] != "pintarVerde" && celdas[i].classList[1] == "pintarAmarillo")
-                {
-                    ShowDialogAll('dialog', 'blurA','blurBackgroundA')
-                    this.classList.add("pintarVerde");
-                    
-                }
-                
-                //obtener informacion de la interfaz y colocarla
-                let datosHorario = obtenerDatosCasilleroSeleccionado();
-                console.log('--------')
-                console.log(datosHorario)
-                let hIni = datosHorario[1];
-                let hFin = datosHorario[2];
-                let day = datosHorario[0];
-
-                let Hora = "Hora : " + hIni + ":00 - " + hFin + ":00";
-                let Dia = "Dia : " + day;
-                document.getElementById("razon-Dia").innerHTML = Hora
-                document.getElementById("razon-Hora").innerHTML = Dia
-
-            }
-        }
-    </script>
-    <script>
-
         //Obtener las citas pendientes del alumno
         var citasDisponibles = '<?php echo $filasCitasDisponibles;?>'
         console.log('citas para este: '+citasDisponibles)
@@ -564,9 +470,55 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                 celda.classList.add("pintarAmarillo");
             }
         }
-
     </script>
+
+    <!-- MOSTRAR LA INTERFAZ PARA SOLICITAR CITA CON LOS VALORES ADECUADOS -->
     <script>
+        // Generar la interfaz para solicitar una cita
+        var celdas = document.getElementsByClassName("celdaP")
+
+        for(let i = 0; i < celdas.length; i++){
+            celdas[i].dataset.numero = i;
+
+            celdas[i].onclick = function() {
+                if(celdas[i].classList[2] != "pintarVerde" && celdas[i].classList[1] == "pintarAmarillo")
+                {
+                    ShowDialogAll('dialog', 'blurA','blurBackgroundA')
+                    this.classList.add("pintarVerde");
+                    
+                }
+                
+                //obtener informacion de la interfaz y colocarla
+                let datosHorario = obtenerDatosCasilleroSeleccionado();
+                console.log('--------')
+                console.log(datosHorario)
+                let hIni = datosHorario[1];
+                let hFin = datosHorario[2];
+                let day = datosHorario[0];
+
+                let Hora = "Hora : " + hIni + ":00 - " + hFin + ":00";
+                let Dia = "Dia : " + day;
+                document.getElementById("razon-Dia").innerHTML = Hora
+                document.getElementById("razon-Hora").innerHTML = Dia
+
+            }
+        }
+
+        function obtenerDatosCasilleroSeleccionado() {
+
+            //Obtener las horas y dia
+            let datosHorario;
+            var casillasVerdes = document.getElementsByClassName("pintarVerde") 
+            if(casillasVerdes.length > 0){
+                //obtener informacion del casillero : LU10-11
+                hora = casillasVerdes[0].id;
+                //Llamar a la funcion LU10-11 -> ['Lunes','10','11']
+                datosHorario = dividirInfoDisponibilidad(hora);
+            }
+            console.log(datosHorario);
+            return datosHorario;
+        }
+
         //Obtener valores de las casillas para preescribirlos en la solicitud
         //Obtener nombre y apellido
         var name = '<?php echo $alumno_nombre;?>';
@@ -574,6 +526,60 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
         document.getElementById("nombres").value = name;
         document.getElementById("apellidos").value = apellido;
     </script>
-    <script src="./scripts/scroll.js"></script>
+
+    <!-- REALIZAR ACCION AL SOLICITAR O CANCELAR UNA CITA -->
+    <script>
+        //Funcion al pulsar un boton amarillo para solicitar una cita
+        function toggleAmarillo() {
+
+        //Obtener los nombres y apellidos
+        var name = '<?php echo $alumno_nombre;?>';
+        var apellido = '<?php echo $alumno_apellido;?>';
+
+        //Realizar la peticion ajax
+        let datosHorario = obtenerDatosCasilleroSeleccionado();
+        let horaInicio = datosHorario[1];
+        let horaFin = datosHorario[2];
+        let dia = datosHorario[0];
+        var codAlumno = '<?php echo $alumno_codigo;?>';
+        console.log('cod Alumno : '+codAlumno)
+        var razon =  document.getElementById("razon").value;
+        console.log('Aqui viene la razon')
+        console.log(razon);
+        //Obtener parametros para la peticion
+        var parametros = {
+            "horaInicio" : horaInicio,
+            "horaFin" : horaFin,
+            "dia" : dia,
+            "codigoAlumno" : codAlumno,
+            "razon" : razon
+        };
+        //Llamar al backend para actualizar los datos
+        $.ajax({
+            data: parametros,
+            url: 'scripts/datosCita.php',
+            type: 'POST',
+            success: function(mensaje_mostrar){
+                    $('#mostrar').html(mensaje_mostrar);
+                }
+        }).done(function(res){
+            console.log(res);
+        })
+        //cerrar la ventana de realizar una solicitud y volver a la pantalla principal
+        closeDialogAll('dialog','blurA','blurBackgroundA')
+        }
+
+        //Solo colocar las actividades que realizara, no colocar otro toggle() por que para ese
+        // nuevo toggle recien se activara en la siguiente vez que se presione el boton
+        function toggleRed() {
+            var casillasVerdes = document.getElementsByClassName("pintarVerde") 
+            for(let i = 0; i < casillasVerdes.length; i++){
+                casillasVerdes[i].classList.remove("pintarVerde");
+                console.log('Se removio')
+            }
+            closeDialogAll('dialog','blurA','blurBackgroundA')
+        }
+    </script>
 </body>
 </html>
+
