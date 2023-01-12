@@ -1,14 +1,3 @@
-function toggle() {
-    var blur=document.getElementById('blurBackground');
-    blur.classList.toggle('activate');
-    var blur=document.getElementById('blurNav');
-    blur.classList.toggle('activate');
-    var blur=document.getElementById('blur');
-    blur.classList.toggle('activate');
-    var popup = document.getElementById('popup');
-    popup.classList.toggle('activate');
-}
-
 // Pintar y despintar de amarillo los casilleros a conveniencia
 var celdas = document.getElementsByClassName("celda")
 console.log(celdas)
@@ -52,8 +41,8 @@ btnActualizar.onclick = function() {
             }
         } 
     }
-    closeDialog();
-    console.log(arrayHorariosDisp)
+    closeDialogAll('dialog','blur','blurBackground');
+    //console.log(arrayHorariosDisp)
     //Llamar a la funcion para ['MI10-11','JU14-15'] -> [[Miercoles,10,11],[Jueves,14,15]]
     const dispoMejorFormat = dividirArrayDisponibilidades(arrayHorariosDisp);
     // Hacer la peticion ajax
@@ -69,6 +58,6 @@ btnActualizar.onclick = function() {
                 $('#mostrar').html(mensaje_mostrar);
             }
     }).done(function(res){
-        console.log(res);
+        //console.log(res);
     })
 }
