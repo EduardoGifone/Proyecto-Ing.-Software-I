@@ -1,5 +1,7 @@
+/*Importar fuente de letras*/
 @import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Montserrat:wght@500&family=Open+Sans&display=swap');
 
+/*Varialbes globales*/
 :root {
     --azul: #005d89;
     --grisClaro: #DFF2F8;
@@ -11,16 +13,19 @@
     --fuente: "Montserrat", sans-serif;
 }
 
+/*Estilos del html prinvcipal*/
 html {
     font-size: 62.5%;
     box-sizing: border-box; /* Hack para Box Model **/
     scroll-snap-type: y mandatory;
 }
 
+/*Estulso para todos*/
 *, *:before, *:after {
     box-sizing: inherit;
 }
 
+/*Estilos para el body*/
 body {
     margin: 0;
     padding: 0;

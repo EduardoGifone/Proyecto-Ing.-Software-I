@@ -1,5 +1,7 @@
+/*Importar fuente de letras*/
 @import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Montserrat:wght@500&family=Open+Sans&display=swap');
 
+/*Varialbes globales*/
 :root {
     --azul: #005d89;
     --grisClaro: #DFF2F8;
@@ -13,8 +15,7 @@
     --fuente: "Montserrat", sans-serif;
 }
 
-
-
+/*Estilos de la tabla del horario*/
 .tabla__horario {
     margin: 50px auto;
     border-spacing: 0;
@@ -45,6 +46,7 @@
     transition: .3s;
 }
 
+/*Estulos de actualizar horario*/
 .horario__actualizar button,
 .horario__actualizar a,
 .horario__principal button,
