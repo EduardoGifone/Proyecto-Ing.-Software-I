@@ -104,10 +104,13 @@ function obtenerNombreDiaFechaActual($fecha){
     return $nombreFecha;
 }
 
+//echo "<p>$fechasLunesDomingo[0]</p>";
+//echo "<p>$fechasLunesDomingo[1]</p>";
+
 $consultaCitasConfirmadas = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$id_tutor' AND estado = 'CONFIRMADO' AND fecha >= '$fechasLunesDomingo[0]' AND fecha <= '$fechasLunesDomingo[1]'";
 $resCitasConfirmadas = mysqli_query($conexion, $consultaCitasConfirmadas);
 $filasCitasConf = mysqli_num_rows($resCitasConfirmadas);
-echo "<p>$filasCitasConf</p>";
+//echo "<p>$filasCitasConf</p>";
 
 $InformacionCitasConfirmadas = [];
 while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
@@ -178,26 +181,33 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 <hr class="line">
                 <header class="header_principal">
                     <nav class="navegacion_Principal">
-                        <a href="#">
+                        <a href="principal_tutor.php">
                             <img src="images/tutoria.png" alt="">
                             Tutoria
                         </a>
-                        <a href="#">
+                        <a href="muroTutor.html">
                             <img src="images/muro.png" alt="">
                             Muro
                         </a>
-                        <a href="#">
-                            <img src="images/comunidad.png" alt="">
-                            Comunidad
-                        </a>
-                        <a href="#">
+                        <a href="archivadosTutor.html">
                             <img src="images/descargar.png" alt="">
-                            Archivados
+                            Seguimiento
                         </a>
                     </nav>
                 </header>
             </section>
         </div>
+
+        <section class="leyenda_colores"> 
+            <div class="leyenda_colores--azul leyenda_item">
+                <div class="color_azul leyenda_color"></div>
+                <p class="texto_leyenda">Citas confirmadas (hacer click en dicha casilla para ver detalles)</p>
+            </div>
+            <div class="leyenda_colores--amarillo leyenda_item">
+                <div class="color_amarillo leyenda_color"></div>
+                <p class="texro_leyenda">Casillas que muestran su disponibilidad</p>
+            </div>
+        </section>
 
         <section class="horario__principal">
             <table border="1" class="tabla__horario">
@@ -460,7 +470,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                     </td>
                 </tr>
             </table>
-            <button href="#" onclick="showDialog()" class="boton_horario">Actualizar horario</button>
+            <button href="#" onclick="ShowDialogAll('dialog','blur','blurBackground')" class="boton_horario">Actualizar horario</button>
         </section>
     </div>
     <section class="horario__actualizar" id="dialog">
@@ -778,11 +788,37 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             <textarea id="razon" name="razon" class="razon_input razon_input--textarea"></textarea>
 
             <div class="buttons">
-                <button class="button button--yellow" onclick="toggleAmarillo()" type="submit">Finalizar</button>
-                <button class="button button--red" onclick="toggleRed()" type="submit">Suspender</button>
+                <button class="button button--yellow button--finalizar" id="button--finalizar" onclick="Finalizar()" type="submit">Finalizar</button>
+                <button class="button button--red button--suspender" id="button--suspender" onclick="Suspender()" type="submit">Suspender</button>
             </div>
         </form>
     </section>
+
+    <section class="formulario dialogSuspOTerminar" id="dialogSuspOTerminar">
+        <form action="" class="razon_tutoria">
+            <div class="razon__fecha_hora">
+                <p class="razon__txt" id="razon-Dia">Fecha: 28/01/23</p>
+                <p class="razon__txt" id="razon-Hora">Hora: 8:00 pm</p>
+            </div>
+
+            <label><input type="checkbox" id="concluido" value="first_checkbox"> El alumno realizo su tutoria</label><br>
+            <label><input type="checkbox" id="np" value="first_checkbox">El alumno no se presento</label><br>
+
+            <label for="razon" class="form_label">Observaciones</label>
+            <textarea id="razon" name="razon" class="razon_input razon_input--textarea"></textarea>
+
+            <div class="buttons">
+                <button class="button button--yellow" onclick="TerminarCitaTutoria()" type="submit">Finalizar</button>
+            </div>
+        </form>
+    </section>
+
+    <script>
+        function Finalizar() {
+            closeDialogAll('dialogInformacionCita','blur','blurBackground')
+            ShowDialogAll('dialogSuspOTerminar','blur','blurBackground');
+        }
+    </script>
 
     <script src="scripts/popup.js"></script>
     <script>
@@ -872,11 +908,11 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         console.log('Celdas P mostrandose en la rutina 8')
         console.log(celdas_P)
         for(let i = 0; i < celdas_P.length; i++){
+            console.log('Se muestra cada casilla')
             celdas_P[i].dataset.numero = i;
             
-            
             celdas_P[i].onclick = function() {
-                
+                console.log('Se dio click en una casilla azul')
                 //Restringir que al clickear otras celdas no pase nada
                 if (celdas_P[i].classList[2] == 'pintarAzul'){
 
@@ -899,7 +935,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                     document.getElementById("razon").value = razonTuto;
                 
                     //Mostrar y ocultar la ventana de informacion cuando sea necesario
-                    showDialogInformacion()
+                    ShowDialogAll('dialogInformacionCita','blur','blurBackground')
 
                 }
             }

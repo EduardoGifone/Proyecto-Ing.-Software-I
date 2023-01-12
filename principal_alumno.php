@@ -25,7 +25,7 @@ $resultadoConsulta = mysqli_query($conexion, $consulta);
 $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
 
 //Consultar si hay citas pendientes y confirmadas
-echo "<p>$alumno_codigo</p>";
+//echo "<p>$alumno_codigo</p>";
 $consultaCitaPend = "SELECT * FROM cita WHERE codigoAlumno = '$alumno_codigo' and (estado = 'pendiente' or estado = 'confirmado')";
 $resultadoConsultaCita = mysqli_query($conexion, $consultaCitaPend);
 $filasCitasDisponibles = mysqli_num_rows($resultadoConsultaCita);
@@ -41,7 +41,7 @@ if($filasCitasDisponibles){
         $horaInicio = $citaAlumno["horaInicio"];  
         $horaFin = $citaAlumno["horaFin"];  
         $estado = $citaAlumno["estado"];
-        echo "<p>$fechaConsulta</p>";
+        //echo "<p>$fechaConsulta</p>";
     }
 }
 
@@ -105,26 +105,38 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                 <hr class="line">
                 <header class="header_principal">
                     <nav class="navegacion_Principal">
-                        <a href="#">
+                        <a href="principal_alumno.php">
                             <img src="images/tutoria.png" alt="">
                             Tutoria
                         </a>
-                        <a href="#">
+                        <a href="muroAlumno.html#">
                             <img src="images/muro.png" alt="">
                             Muro
                         </a>
-                        <a href="#">
-                            <img src="images/comunidad.png" alt="">
-                            Comunidad
-                        </a>
-                        <a href="#">
+                        <a href="archivados.html">
                             <img src="images/descargar.png" alt="">
-                            Archivados
+                            Historial
                         </a>
                     </nav>
                 </header>
             </section>
         </div>
+
+        <section class="leyenda_colores"> 
+        <div class="leyenda_colores--amarillo leyenda_item">
+                <div class="color_amarillo leyenda_color"></div>
+                <p class="texro_leyenda">Casillas que muestran la disponibilidad de su tutor</p>
+            </div>
+            <div class="leyenda_colores--verde leyenda_item">
+                <div class="color_verde leyenda_color"></div>
+                <p class="texto_leyenda">Solicitud de cita esperando a ser respondida</p>
+            </div>
+            <div class="leyenda_colores--azul leyenda_item">
+                <div class="color_azul leyenda_color"></div>
+                <p class="texto_leyenda">Cita confirmada</p>
+            </div>
+        </section>
+
         <section class="horario__principal horario__alumno">
             <h2>Seleccione el espacio amarillo que desee para solicitar una cita</h2>
             <table border="1" class="tabla__horario">
@@ -440,7 +452,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                 casillasVerdes[i].classList.remove("pintarVerde");
                 console.log('Se removio')
             }
-            closeDialogA()
+            closeDialogAll('dialog','blurA','blurBackgroundA')
         }
 
         function toggleAmarillo() {
@@ -455,6 +467,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             let horaFin = datosHorario[2];
             let dia = datosHorario[0];
             var codAlumno = '<?php echo $alumno_codigo;?>';
+            console.log('cod Alumno : '+codAlumno)
             var razon =  document.getElementById("razon").value;
             console.log('Aqui viene la razon')
             console.log(razon);
@@ -478,7 +491,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                 console.log(res);
             })
 
-            closeDialogA()
+            closeDialogAll('dialog','blurA','blurBackgroundA')
         }
     </script>
     <script>
@@ -491,7 +504,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             celdas[i].onclick = function() {
                 if(celdas[i].classList[2] != "pintarVerde" && celdas[i].classList[1] == "pintarAmarillo")
                 {
-                    showDialogA()
+                    ShowDialogAll('dialog', 'blurA','blurBackgroundA')
                     this.classList.add("pintarVerde");
                     
                 }

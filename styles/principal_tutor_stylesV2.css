@@ -181,3 +181,46 @@ section.horario__actualizar a.pintarAzul {
     background-color: var(--azulCrema);
     cursor: pointer;
 }
+
+/* LEYENDA DE COLORES */
+.leyenda_colores {
+    text-align: center;
+    margin: 7rem 0 5rem 0;
+    color: var(--grisClaro);
+    font-family: var(--fuente);
+}
+
+.leyenda_item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    height: 35px;
+}
+
+.leyenda_colores .leyenda_color {
+    height: 10px;
+    width: 4rem;
+    background-color: var(--patito);
+    margin: 0 20px;
+    border-radius: 10px;
+}
+
+.leyenda_colores .color_azul {
+    background-color: var(--azulCrema);
+}
+
+.leyenda_colores .color_amarillo {
+    background-color: var(--amarilloCrema);
+}
+
+.leyenda_colores .color_verde {
+    background-color: var(--verdeCrema);
+}
+
+/* RUTINA NX : SUSPENDER UNA CITA */
+#dialogSuspOTerminar.show {
+    visibility: visible;
+    opacity: 1;
+    transform: 0.5s;
+}

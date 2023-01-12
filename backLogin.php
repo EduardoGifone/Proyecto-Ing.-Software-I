@@ -6,7 +6,7 @@ $pass = $_POST["password"];
 //Iniciar sesion
 session_start();
 //Conectar con la base de datos
-$conexion = mysqli_connect("localhost", "root","","dbtutorias");
+$conexion = mysqli_connect("localhost", "root","","dbtutorias", 3307);
 //Verificar existencia de usuario
 $queryAlumno = "SELECT * FROM alumno where correoAlumno='$user'";
 $resultadoAlumno = mysqli_query($conexion, $queryAlumno);
