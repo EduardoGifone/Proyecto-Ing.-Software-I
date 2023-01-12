@@ -81,9 +81,11 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     <title>Tutorias</title>
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/footer.css">
     <link rel="stylesheet" href="styles/principal_tutor_stylesV2.css">
     <link rel="stylesheet" href="styles/ocultarYMostrar.css">
     <link rel="stylesheet" href="styles/razon_tutoria_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   
 </head>
 <body id="blurBackgroundA" class="principal_alumno">
     <div id="blurA">
@@ -405,6 +407,19 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             </div>
         </form>
     </section>
+
+    <footer class="footer-distributed">
+        <div class="footer-right">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-linkedin"></i></a>
+            <a href="#"><i class="fa fa-github"></i></a>
+        </div>
+        <div class="footer-left">
+        <p>Sistema de tutorías que fortalece la comunicación de tutores y tutorados, con interacción más óptima...</p>
+        <p1>¡Estudiantes de Ingenieria Informática y de Sistemas al servicio de la Universidad! </p1>
+        </div>
+    </footer>
 
     <script src="scripts/popup.js"></script>
     <script src="scripts/dividirDisponibilidades.js"></script>  

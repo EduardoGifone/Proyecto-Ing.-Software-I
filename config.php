@@ -2,6 +2,6 @@
 
 //Realizar conexión con la base de datos
 // En mi caso le coloco el puerto 3307 por que estoy trabajando en ese puerto, usualmente es 3306
-$conexion = mysqli_connect("localhost", "root","","dbtutorias");
+$conexion = mysqli_connect("localhost", "root","192424","dbtutorias");
 
 ?>
