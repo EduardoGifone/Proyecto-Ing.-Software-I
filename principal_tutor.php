@@ -16,6 +16,8 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
 
 //para almacenar los codigos de las disponibilidades
 $disponibilidades = [];
+
+//Diccionario para obtener los codigos de un dia en espaniol
 $Dias = array(
     "Lunes" => "LU",
     "Martes" =>"MA",
@@ -24,9 +26,9 @@ $Dias = array(
     "Viernes" => "VI",
     "Sabado" => "SA",
     "Domingo" => "DO"
-
 );
 
+//Diccionario para obtener los codigos de un dia en ingles
 $Days = array(
     "Monday" => "LU",
     "Tuesday" =>"MA",
@@ -37,6 +39,7 @@ $Days = array(
     "Sunday" => "DO"
 
 );
+//Obtener el codigo de las casillas de las disponibilidades
 if($filasdisponibilidad > 0){
     while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     
@@ -60,6 +63,7 @@ $filasCitas = mysqli_num_rows($resConCitasPendientes);
 
 /*echo "<p>$filasCitas</p>";*/
 
+//Agregar en $InformacionCitasPendientes la informacion de cada cita pendiente
 $InformacionCitasPendientes = [];
 while($datosDisp = mysqli_fetch_assoc($resConCitasPendientes)){
     $InformacionCitasPendiente = array();
@@ -107,11 +111,13 @@ function obtenerNombreDiaFechaActual($fecha){
 //echo "<p>$fechasLunesDomingo[0]</p>";
 //echo "<p>$fechasLunesDomingo[1]</p>";
 
+//Obtener las citas confirmadas en la semana actual
 $consultaCitasConfirmadas = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$id_tutor' AND estado = 'CONFIRMADO' AND fecha >= '$fechasLunesDomingo[0]' AND fecha <= '$fechasLunesDomingo[1]'";
 $resCitasConfirmadas = mysqli_query($conexion, $consultaCitasConfirmadas);
 $filasCitasConf = mysqli_num_rows($resCitasConfirmadas);
 //echo "<p>$filasCitasConf</p>";
 
+//Agregar en $InformacionCitasConfirmadas la informacion de cada cita confirmada en la semana actual
 $InformacionCitasConfirmadas = [];
 while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
     $InformacionCitaConfirmada = array();
@@ -736,6 +742,8 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         </table>
         <button href="#" class="boton_horario" id="BtnActualizar">Actualizar</button>
     </section>
+
+    <!-- Interfaz de notificaciones -->
     <div class="notificacionesCita" id="dialogNoti">
     <!-- // MOSTRAR LA INTERFAZ DE NOTIFICACIONES : SUBRUTINA 1 -->
     <?php
@@ -771,6 +779,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
     ?>
     </div>
   
+    <!-- Interfaz de informacion de la cita -->
     <section class="formulario" id="dialogInformacionCita">
         <form action="" class="razon_tutoria">
             <div class="razon__fecha_hora">
@@ -794,6 +803,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         </form>
     </section>
 
+    <!-- Interfaz de finalizar una cita -->
     <section class="formulario dialogSuspOTerminar" id="dialogSuspOTerminar">
         <form action="" class="razon_tutoria">
             <div class="razon__fecha_hora">
@@ -813,6 +823,12 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         </form>
     </section>
 
+    <script src="scripts/popup.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="scripts/dividirDisponibilidades.js"></script>
+    <script src="scripts/actualizarHorario.js"></script>
+
+    <!-- Funcionalidad de finalizar una cita -->
     <script>
         function Finalizar() {
             closeDialogAll('dialogInformacionCita','blur','blurBackground')
@@ -820,7 +836,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         }
     </script>
 
-    <script src="scripts/popup.js"></script>
+    <!-- Pintar todas las casillas de disponibilidad -->
     <script>
         var arregloEnJson = '<?php echo json_encode($disponibilidades);?>';
         var ACodDisp = JSON.parse(arregloEnJson);
@@ -832,18 +848,17 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             celdasEleccion.classList.add("pintarAmarillo");
         }
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="scripts/dividirDisponibilidades.js"></script>
-    <script src="scripts/actualizarHorario.js"></script>
 
+    <!-- INTERACCION CON LAS NOTIFICACIONES -->
     <script>
         // MOSTRAR LA INTERFAZ DE NOTIFICACIONES : SUBRUTINA 1
         var citasPendientesJson = '<?php echo json_encode($InformacionCitasPendientes);?>'
         var InformacionCitasPendientes = JSON.parse(citasPendientesJson);
-        console.log('Arreglo de citas pendientes');
-        console.log(InformacionCitasPendientes);
 
-
+        //En caso de que haya mas citas en la misma hora no mostrar una vez que se acepte a alguna
+        // Esto para evitar que se acepte otra en la misma hora, de todas formas al actualizar la
+        //pagina ya no tendria que haber otra solicitud ya que automatiamente se debio de marcar
+        //en no aceptada
         function revisarOtrasCitasEnMismaHora(fecha, horaInicio){
 
             var citasMostradas = document.getElementsByClassName('notificacionCita');
@@ -891,6 +906,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         }
     </script>
 
+    <!-- Mostrar casillas de citas aceptadas y al hacer click mostrar informacion -->
     <script>
         // RUTINA 4 : Actualizar horario del tutor después de confirmar una cita
         var citasConfirmadasJson = '<?php echo json_encode($InformacionCitasConfirmadas);?>';

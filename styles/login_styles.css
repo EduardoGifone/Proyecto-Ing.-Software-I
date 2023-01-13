@@ -33,13 +33,13 @@ body {
     gap: 200px;
 }
 
-/*Estilos de robot de bienvenida*/
 .robot {
     background-image: url(../images/presentacion_inicio.png);
     background-repeat: no-repeat;
     background-size: cover;
-    width: 600px;
-    height: 600px;
+    width: 500px;
+    height: 500px;
+    
 }
 
 /*Estilos de login*/
