@@ -1,9 +1,10 @@
-
+/*Estilos del contenedor de los articulos*/
 .articulos {
     max-width: 1000px;
     margin: auto;
 }
 
+/*Estilos de cada articulo independietne*/
 .articulo {
     background-color: rgba(255, 255, 255, .8);
     margin: 30px;
@@ -20,6 +21,7 @@
     flex-direction: row-reverse;
 }
 
+/*Estilos de la imagen de articulo*/
 .articulo_img {
     height: 250px;
     width: 250px;
@@ -27,6 +29,7 @@
     object-fit: cover;
 }
 
+/*Estilos del contenedor de texto*/
 .articulo_textcont_tittle{
     color: #015d88;
     font-size: 1.15em;
@@ -37,6 +40,7 @@
     flex-direction: row-reverse;
 }
 
+/*Estilos de bonotes*/
 .button{
     background-color: #FEC401;
     padding: 10px 20px;
