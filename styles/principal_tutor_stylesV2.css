@@ -220,6 +220,16 @@ section.horario__actualizar a.pintarAzul {
     background-color: var(--verdeCrema);
 }
 
+.leyenda_Recomendacion {
+    background-color: var(--grisClaro);
+    border-radius: 20px;
+    color: var(--azul);
+    padding: 1px;
+    width: 70%;
+    margin: auto;
+    margin-top: 30px;
+}
+
 /* RUTINA NX : SUSPENDER UNA CITA */
 #dialogSuspOTerminar.show {
     visibility: visible;

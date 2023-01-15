@@ -89,6 +89,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     <div id="blurA">
         <div class="container_nav">
             <section class="navegacionGeneral">
+                <!-- Links supeiores para notificacion, usuario y salir -->
                 <header class="first_navegation">
                     <a href="#" onclick="efectoBlurANotificacion()">
                         <img src="images/notificacion.png" alt="logo">
@@ -103,6 +104,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                     </div>
                 </header>
                 <hr class="line">
+                <!-- Barra de navegacion entre las paginas -->
                 <header class="header_principal">
                     <nav class="navegacion_Principal">
                         <a href="principal_alumno.php">
@@ -122,6 +124,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             </section>
         </div>
 
+        <!-- Leyenda de colores e informacion -->
         <section class="leyenda_colores"> 
         <div class="leyenda_colores--amarillo leyenda_item">
                 <div class="color_amarillo leyenda_color"></div>
@@ -135,10 +138,14 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                 <div class="color_azul leyenda_color"></div>
                 <p class="texto_leyenda">Cita confirmada</p>
             </div>
+
+            <div class="leyenda_Recomendacion">
+                <p class="texto_leyenda">Aqui se muestra la disponibilidad de su profesor, elija la casilla donde desea reservar una cita</p>
+            </div>
         </section>
 
+        <!-- Tabla para mostrar la disponibilidad -->
         <section class="horario__principal horario__alumno">
-            <h2>Seleccione el espacio amarillo que desee para solicitar una cita</h2>
             <table border="1" class="tabla__horario">
                 <tr>
                     <th class="encabezado">HORAS</th>
