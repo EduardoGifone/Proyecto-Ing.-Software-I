@@ -171,6 +171,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
     <div id="blur">
         <div class="container_nav">
             <section class="navegacionGeneral">
+                <!-- Links supeiores para notificacion, usuario y salir -->
                 <header class="first_navegation">
                     <a href="#" onclick="efectoBlurANotificacion()">
                         <img src="images/notificacion.png" alt="logo">
@@ -185,6 +186,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                     </div>
                 </header>
                 <hr class="line">
+                <!-- Barra de navegacion entre las paginas -->
                 <header class="header_principal">
                     <nav class="navegacion_Principal">
                         <a href="principal_tutor.php">
@@ -204,6 +206,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             </section>
         </div>
 
+        <!-- Leyenda de colores e informacion -->
         <section class="leyenda_colores"> 
             <div class="leyenda_colores--azul leyenda_item">
                 <div class="color_azul leyenda_color"></div>
@@ -213,8 +216,13 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 <div class="color_amarillo leyenda_color"></div>
                 <p class="texro_leyenda">Casillas que muestran su disponibilidad</p>
             </div>
+
+            <div class="leyenda_Recomendacion">
+                <p class="texto_leyenda">Aqui se muestra su disponibilidad, para marcar las casillas de disponibilidad pulse en Actualizar horario</p>
+            </div>
         </section>
 
+        <!-- Tabla para mostrar la disponibilidad -->
         <section class="horario__principal">
             <table border="1" class="tabla__horario">
                 <tr>
@@ -479,6 +487,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             <button href="#" onclick="ShowDialogAll('dialog','blur','blurBackground')" class="boton_horario">Actualizar horario</button>
         </section>
     </div>
+    <!-- Tabla para cambiar la disponibilidad -->
     <section class="horario__actualizar" id="dialog">
         <table border="1" class="tabla__horario">
             <tr>

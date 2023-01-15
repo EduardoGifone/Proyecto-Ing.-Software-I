@@ -1,22 +1,6 @@
 <?php 
 //--------------Recuperar datos de "razon_tutoria" y enviar a la base de datos--------------
-//Recuperar datos
-/*
-$nombres = $_POST["nombres"];
-$apellidos = $_POST["apellidos"];
 
-$razon = $_POST["razon"];
-$horaInicio = $_POST["horaInicio"];
-$horaFin = $_POST["horaFin"];
-$nroDia = $_POST["nroDia"]; // (1:lunes, 2:martes,..., 7:domingo)
-$codigoAlumno = $_SESSION["codigo"];
-*/
-$codigoAlumno = '192999';
-$razon = "Proyecto de tesis";
-$horaInicio = 14;
-$horaFin = $horaInicio + 1;
-$nroDia = 4;
-$limite = 5;
 //--------------------- Obtener fecha actual ---------------------
 //Establecer zona horario (Perú)
 date_default_timezone_set('America/Lima');
