@@ -75,8 +75,9 @@ $fechaCreacionNotificacion = date('Y-m-d H:i');    //(numberDay, day, month, yea
 $diaCita = date("d", $fechaTs) + 1;
 $nombreMesCita = getMonthName($fechaTs);
 $respuestaNotificacion = $respuesta == "Confirmado" ? "aceptada": "rechazada";
+$estadoNotificacion = $respuesta;
 $mensajeNotificacionAlumno = "Tu solicitud de tutoría para el día ".$diaTutoria." ".$diaCita." de ".$nombreMesCita." a las ".$horaInicio." horas fue ".$respuestaNotificacion;
-$consultaCrearNotificacionAlumno = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje) VALUES('$codigoAlumno', '$fechaCreacionNotificacion','$mensajeNotificacionAlumno')";
+$consultaCrearNotificacionAlumno = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, estado, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionAlumno','$estadoNotificacion', 'No')";
 mysqli_query($conexion, $consultaCrearNotificacionAlumno);
 echo $mensajeNotificacionAlumno;
 // echo "El alumno ".$codigoAlumno." con cita pendiente el ".$fecha." a las ".$horaInicio.":00 "." tiene ahora la cita en estado ".$respuesta;

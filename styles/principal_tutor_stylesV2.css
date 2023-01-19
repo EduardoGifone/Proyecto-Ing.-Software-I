@@ -11,6 +11,7 @@
     --verdeCrema: #6AE677;
     --azulCrema: #6BD7E7;
     --amarilloCrema: #FFE783;
+    --amarilloCremaClaro: #FBF4DE;
 
     --fuente: "Montserrat", sans-serif;
 }
@@ -143,6 +144,13 @@ no me lo permite asi que le quito el evento */
     transform: 0.5s;
 }
 
+/* Colorear area de casillas marcadas de amarillo claro
+casillas no disponibles */
+.horario__alumno tr a.pintarAmarilloClaro {
+    cursor: none;
+    background-color: var(--amarilloCremaClaro);
+}
+
 /* Colorear area de casillas marcadas */
 .horario__principal tr a,
 .horario__actualizar tr a{
@@ -155,7 +163,7 @@ no me lo permite asi que le quito el evento */
     cursor: auto;
 }
 
-.horario__alumno tr a.pintarAmarillo{
+section.horario__principal a.pintarAmarillo{
     cursor: pointer;
 }
 
@@ -220,6 +228,11 @@ section.horario__actualizar a.pintarAzul {
     background-color: var(--verdeCrema);
 }
 
+.leyenda_colores .color_amarillo_claro {
+    background-color: var(--amarilloCremaClaro);
+
+}
+
 .leyenda_Recomendacion {
     background-color: var(--grisClaro);
     border-radius: 20px;
@@ -230,9 +243,21 @@ section.horario__actualizar a.pintarAzul {
     margin-top: 30px;
 }
 
-/* RUTINA NX : SUSPENDER UNA CITA */
-#dialogSuspOTerminar.show {
+/* RUTINA 9 : SUSPENDER UNA CITA */
+#dialogSuspender.show {
     visibility: visible;
     opacity: 1;
     transform: 0.5s;
 }
+
+/* RUTINA 10 : CONCLUIR UNA CITA */
+#dialogTerminar.show {
+    visibility: visible;
+    opacity: 1;
+    transform: 0.5s;
+}
+
+/* Evitar que se escriba algo */ 
+#razonTutoria.noEscribir {
+    pointer-events: none;
+}   

@@ -7,10 +7,10 @@ if (is_null($_SESSION["tipoUsuario"])){
 // include '../Proyecto-Ing.-Software-I/config.php';
 include 'config.php';
 
-// Obtener el codigo del estudiante
+// Obtener el codigo del tutor
 $id_tutor = $_SESSION['codigo'];
 
-$consulta = "SELECT * FROM disponibilidad WHERE codigoTutor = '$id_tutor' AND estado='libre'";
+$consulta = "SELECT * FROM disponibilidad WHERE codigoTutor = '$id_tutor'";
 $resultadoConsulta = mysqli_query($conexion, $consulta);
 $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
 
@@ -173,7 +173,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             <section class="navegacionGeneral">
                 <!-- Links supeiores para notificacion, usuario y salir -->
                 <header class="first_navegation">
-                    <a href="#" onclick="efectoBlurANotificacion()">
+                    <a href="#" onclick="efectoBlurANotificacion('dialogNoti','blur','blurBackground')">
                         <img src="images/notificacion.png" alt="logo">
                     </a>
                     <div>
@@ -197,7 +197,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                             <img src="images/muro.png" alt="">
                             Muro
                         </a>
-                        <a href="archivadosTutor.html">
+                        <a href="archivadosTutor.php">
                             <img src="images/descargar.png" alt="">
                             Seguimiento
                         </a>
@@ -806,43 +806,212 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             <textarea id="razon" name="razon" class="razon_input razon_input--textarea"></textarea>
 
             <div class="buttons">
-                <button class="button button--yellow button--finalizar" id="button--finalizar" onclick="Finalizar()" type="submit">Finalizar</button>
-                <button class="button button--red button--suspender" id="button--suspender" onclick="Suspender()" type="submit">Suspender</button>
+                <!-- siempre colocar type="button" para no recargar la pagina-->
+                <button type="button" class="button button--yellow button--finalizar" id="button--finalizar" onclick="Finalizar()" type="submit">Finalizar</button>
+                <button type="button" class="button button--red button--suspender" id="button--suspender" onclick="Suspender()" type="submit">Suspender</button>
             </div>
         </form>
     </section>
 
     <!-- Interfaz de finalizar una cita -->
-    <section class="formulario dialogSuspOTerminar" id="dialogSuspOTerminar">
+    <section class="formulario dialogSuspOTerminar" id="dialogTerminar">
         <form action="" class="razon_tutoria">
             <div class="razon__fecha_hora">
-                <p class="razon__txt" id="razon-Dia">Fecha: 28/01/23</p>
-                <p class="razon__txt" id="razon-Hora">Hora: 8:00 pm</p>
+                <p class="razon__txt" id="razon-Dia-Finalizar">Fecha: 28/01/23</p>
+                <p class="razon__txt" id="razon-Hora-Finalizar">Hora: 8:00 pm</p>
             </div>
 
-            <label><input type="checkbox" id="concluido" value="first_checkbox"> El alumno realizo su tutoria</label><br>
-            <label><input type="checkbox" id="np" value="first_checkbox">El alumno no se presento</label><br>
+            <label><input type="checkbox" onclick="verificarCheck()" id="concluido" value="first_checkbox"> El alumno realizo su tutoria</label><br>
+            <label><input type="checkbox" onclick="verificarCheck()" id="np" value="first_checkbox">El alumno no se presento</label><br>
 
             <label for="razon" class="form_label">Observaciones</label>
-            <textarea id="razon" name="razon" class="razon_input razon_input--textarea"></textarea>
+            <textarea id="razonTutoria" name="razon" class="razon_input razon_input--textarea"></textarea>
 
             <div class="buttons">
-                <button class="button button--yellow" onclick="TerminarCitaTutoria()" type="submit">Finalizar</button>
+                <button class="button button--yellow" onclick="TerminarCitaTutoria()" type="button">Finalizar</button>
+                <button class="button button--red" onclick="cancelar('dialogTerminar')" type="button">Cancelar</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Interfaz de suspender una cita -->
+    <section class="formulario dialogSuspOTerminar" id="dialogSuspender">
+        <form action="" class="razon_tutoria">
+            <div class="razon__fecha_hora">
+                <p class="razon__txt" id="razon-Dia-Suspender">Fecha: 28/01/23</p>
+                <p class="razon__txt" id="razon-Hora-Suspender">Hora: 8:00 pm</p>
+            </div>
+            
+            <label for="razon" class="form_label">Razon de la suspencion de cita</label>
+            <textarea id="razonSuspencion" name="razon" class="razon_input razon_input--textarea"></textarea>
+
+            <div class="buttons">
+                <button class="button button--yellow" onclick="SuspenderCitaTutoria()" type="button">Suspender</button>
+                <button class="button button--red" onclick="cancelar('dialogSuspender')" type="button">Cancelar</button>
             </div>
         </form>
     </section>
 
     <script src="scripts/popup.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    
     <script src="scripts/dividirDisponibilidades.js"></script>
     <script src="scripts/actualizarHorario.js"></script>
 
     <!-- Funcionalidad de finalizar una cita -->
     <script>
+        //Obtener informacion necesaria del alumno para actualizar la BD
+        function obtenerInformacionNecesariaParaActualizarBD(razonDiaId,razonHoraId){
+            var citasConfirmadasJson = '<?php echo json_encode($InformacionCitasConfirmadas);?>';
+            var InformacionCitasConfirmadas = JSON.parse(citasConfirmadasJson);
+            //Obtener la informacion de dia y hora ya establecidos
+            var diaTutoria = document.getElementById(razonDiaId).innerText
+            diaTutoria = diaTutoria.slice(7);
+        
+            var horaTutoria = document.getElementById(razonHoraId).innerText
+            horaTutoria = horaTutoria.slice(5,7);
+            if(horaTutoria[1] == ':'){
+                horaTutoria = horaTutoria.slice(0,1);
+            }
+
+            var codigoAlumnoTutoria = '';
+            for(let i = 0; i < InformacionCitasConfirmadas.length; i++){
+                if(InformacionCitasConfirmadas[i][5] == horaTutoria & InformacionCitasConfirmadas[i][3] == diaTutoria){
+                    codigoAlumnoTutoria = InformacionCitasConfirmadas[i][2]
+                }
+            }
+
+            var arregloInformacion = [];
+            arregloInformacion.push(diaTutoria);
+            arregloInformacion.push(horaTutoria);
+            arregloInformacion.push(codigoAlumnoTutoria);
+
+            return arregloInformacion;
+        }
+
+        // RUTINA 10 : CONCLUIR UNA CITA
+
         function Finalizar() {
             closeDialogAll('dialogInformacionCita','blur','blurBackground')
-            ShowDialogAll('dialogSuspOTerminar','blur','blurBackground');
+            ShowDialogAll('dialogTerminar','blur','blurBackground');
+
+            //Predeterminar el checkbox de concluido como marcado
+            var checkbox1 = document.getElementById("concluido");
+            checkbox1.value = true;
         }
+
+        //Terminar una cita
+        var checkbox1 = document.getElementById("concluido");
+        var checkbox2 = document.getElementById("np"); 
+        let observacion = document.getElementById('razonTutoria');
+        let razonSuspencion = document.getElementById('razonSuspencion');
+
+        //Predeterminar el checkbox de concluido como marcado
+        checkbox1.value = true;
+
+        //
+        function verificarCheck(){
+            checkbox1.onclick = function(){ 
+                if(checkbox1.checked != false){ 
+                    checkbox2.checked =null; 
+                }
+                observacion.classList.remove('noEscribir');
+            } 
+            checkbox2.onclick = function(){ 
+                if(checkbox2.checked != false){ 
+                    checkbox1.checked=null;
+                }
+                observacion.classList.add('noEscribir');
+                observacion.value = ''
+            } 
+        }
+
+        function TerminarCitaTutoria(){
+            console.log('Estoy terminando una cita')
+
+            var estadoCita = ''
+            if(checkbox1.checked == true){
+                estadoCita = 'Finalizado';
+            } else if (checkbox2.checked == true) {
+                estadoCita = 'NP';
+            //Este else evita que no se marque ninguno
+            } else {
+                alert('Debe marcar alguna casilla') 
+                estadoCita = "";
+            }
+
+            //Solo si el estado esta en Finalizado o NP, sino seguir mostrando interfaz
+            if( estadoCita == 'Finalizado' | estadoCita == 'NP'){
+                var arregloInformacion = obtenerInformacionNecesariaParaActualizarBD('razon-Dia-Finalizar','razon-Hora-Finalizar')
+                //Realizar una peticion ajax
+                //Obtener parametros para la peticion
+                var parametros = {
+                    "codigoAlumno" : arregloInformacion[2],
+                    "fecha" : arregloInformacion[0],
+                    "horaInicio" : arregloInformacion[1],
+                    "estadoFinal" : estadoCita,
+                    "observacion" : observacion.value
+                };
+
+                //Llamar al backend
+                $.ajax({
+                    data: parametros,
+                    url: 'scripts/datosRespuestaCita.php',
+                    type: 'POST',
+                    success: function(mensaje_mostrar){
+                            $('#mostrar').html(mensaje_mostrar);
+                        }
+                }).done(function(res){
+                    console.log(res);
+                })
+
+                //cerrar la ventana
+                closeDialogAll('dialogTerminar','blur','blurBackground')
+            }
+        }
+
+
+        // RUTINA 9 : SUSPENDER UNA CITA
+
+        function Suspender() {
+            closeDialogAll('dialogInformacionCita','blur','blurBackground')
+            ShowDialogAll('dialogSuspender','blur','blurBackground');
+        }
+
+        function SuspenderCitaTutoria() {
+            console.log('Estoy suspendiendo una cita')
+
+            var arregloInformacion = obtenerInformacionNecesariaParaActualizarBD("razon-Dia-Suspender","razon-Hora-Suspender")
+            //Realizar una peticion ajax
+            //Obtener parametros para la peticion
+            var parametros = {
+                "codigoAlumno" : arregloInformacion[2],
+                "fecha" : arregloInformacion[0],
+                "horaInicio" : arregloInformacion[1],
+                "estadoFinal" : "Postergado",
+                "observacion" : razonSuspencion.value
+            };
+            console.log('Suspencion parametros')
+            console.log(parametros)
+            //Llamar al backend
+            /*$.ajax({
+                data: parametros,
+                url: 'scripts/datosRespuestaCita.php',
+                type: 'POST',
+                success: function(mensaje_mostrar){
+                        $('#mostrar').html(mensaje_mostrar);
+                    }
+            }).done(function(res){
+                console.log(res);
+            })*/
+
+            closeDialogAll('dialogSuspender','blur','blurBackground')
+        }
+        
+        function cancelar(idConenedor) {
+            closeDialogAll(idConenedor,'blur','blurBackground')
+        }
+        
     </script>
 
     <!-- Pintar todas las casillas de disponibilidad -->
@@ -883,6 +1052,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         }
 
         // ACEPTAR UNA CITA : RUTINA 2 y 3
+        //1 : Aceptar, 0 : No aceptar
         function responderCita(codigoAlumno, fecha, horaInicio, idSolicitud, numRespuesta){
             var solicitud = document.getElementById(idSolicitud);
             solicitud.classList.add('noMostrar')
@@ -892,7 +1062,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             if(numRespuesta == 1){
                 respuesta = 'Aceptado';
             }
-            
+
             //Realizar una peticion ajax
             //Obtener parametros para la peticion
             var parametros = {
@@ -939,7 +1109,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             celdas_P[i].onclick = function() {
                 console.log('Se dio click en una casilla azul')
                 //Restringir que al clickear otras celdas no pase nada
-                if (celdas_P[i].classList[2] == 'pintarAzul'){
+                if (celdas_P[i].classList[3] == 'pintarAzul'){
 
                     //Obtener id de celda clickeada
                     var codCeldaClickeada = celdas_P[i].classList;
@@ -951,6 +1121,8 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                             var name = InformacionCitasConfirmadas[j][0]
                             var apellido = InformacionCitasConfirmadas[j][1]
                             var razonTuto = InformacionCitasConfirmadas[j][4]
+                            var horaCita = InformacionCitasConfirmadas[j][5]
+                            var fechaCita = InformacionCitasConfirmadas[j][3]
                         }
                     }
 
@@ -958,6 +1130,12 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                     document.getElementById("nombres").value = name;
                     document.getElementById("apellidos").value = apellido;
                     document.getElementById("razon").value = razonTuto;
+                    document.getElementById('razon-Dia').innerText = 'Fecha: '+fechaCita;
+                    document.getElementById('razon-Hora').innerText = 'Hora:'+horaCita+':00';
+                    document.getElementById('razon-Dia-Finalizar').innerText = 'Fecha: '+fechaCita;
+                    document.getElementById('razon-Hora-Finalizar').innerText = 'Hora:'+horaCita+':00';
+                    document.getElementById('razon-Dia-Suspender').innerText = 'Fecha: '+fechaCita;
+                    document.getElementById('razon-Hora-Suspender').innerText = 'Hora:'+horaCita+':00';
                 
                     //Mostrar y ocultar la ventana de informacion cuando sea necesario
                     ShowDialogAll('dialogInformacionCita','blur','blurBackground')

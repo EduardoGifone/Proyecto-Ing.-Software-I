@@ -21,7 +21,7 @@ $consulta = "UPDATE cita SET estado = 'RECHAZADO' WHERE codigoAlumno = '$alumno_
 mysqli_query($conexion,$consulta);
 
 //Mostrar la disponibilidad del tutor
-$consulta = "SELECT * FROM disponibilidad WHERE codigoTutor = '$id_tutor'";
+$consulta = "SELECT * FROM disponibilidad WHERE codigoTutor = '$id_tutor' AND estado = 'libre'";
 $resultadoConsulta = mysqli_query($conexion, $consulta);
 $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
 
@@ -84,6 +84,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     <link rel="stylesheet" href="styles/principal_tutor_stylesV2.css">
     <link rel="stylesheet" href="styles/ocultarYMostrar.css">
     <link rel="stylesheet" href="styles/razon_tutoria_style.css">
+    <link rel="stylesheet" href="styles/notificacionesTutorias.css">
 </head>
 <body id="blurBackgroundA" class="principal_alumno">
     <div id="blurA">
@@ -91,7 +92,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             <section class="navegacionGeneral">
                 <!-- Links supeiores para notificacion, usuario y salir -->
                 <header class="first_navegation">
-                    <a href="#" onclick="efectoBlurANotificacion()">
+                    <a href="#" onclick="efectoBlurANotificacion('dialogNotiAlumno','blurA','blurBackgroundA')">
                         <img src="images/notificacion.png" alt="logo">
                     </a>
                     <div>
@@ -126,9 +127,13 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
 
         <!-- Leyenda de colores e informacion -->
         <section class="leyenda_colores"> 
-        <div class="leyenda_colores--amarillo leyenda_item">
+            <div class="leyenda_colores--amarillo_claro leyenda_item">
+                <div class="color_amarillo_claro leyenda_color"></div>
+                <p class="texro_leyenda">Casillas que muestran la disponibilidad de su tutor no disponible</p>
+            </div>
+            <div class="leyenda_colores--amarillo leyenda_item">
                 <div class="color_amarillo leyenda_color"></div>
-                <p class="texro_leyenda">Casillas que muestran la disponibilidad de su tutor</p>
+                <p class="texro_leyenda">Casillas que muestran la disponibilidad de su tutor disponible</p>
             </div>
             <div class="leyenda_colores--verde leyenda_item">
                 <div class="color_verde leyenda_color"></div>
@@ -408,6 +413,59 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             </table>
         </section>
     </div>
+
+    <!-- RUTINA 12 : Mostrar notificaciones de alumno -->
+    <!-- Interfaz de notificaciones para el alumno -->
+    <div class="notificacionesCita" id="dialogNotiAlumno">
+    <!-- // MOSTRAR LA INTERFAZ DE NOTIFICACIONES : SUBRUTINA 1 -->
+    <?php
+
+    //Obtener las notificaciones para este alumno
+    $consultaNotifAlumno = "SELECT * FROM notificaciones WHERE codigoAlumno = '$alumno_cod' AND visto = 'No'";
+    $resConNotifAlumno = mysqli_query($conexion, $consultaNotifAlumno);
+    $filasNotif = mysqli_num_rows($resConNotifAlumno);
+    //echo "<p>$filasNotif</p>";
+
+    //Obtener toda la informacion necesaria de la consulta para usarla en el frontend
+    $InformacionNotificacionesAlumno = [];
+    while($datosDisp = mysqli_fetch_assoc($resConNotifAlumno)){
+        $InformacionNotificacionActual = array();
+
+        array_push($InformacionNotificacionActual, $datosDisp["idNotificacion"]);
+        array_push($InformacionNotificacionActual, $datosDisp["codigoAlumno"]);
+        array_push($InformacionNotificacionActual, $datosDisp["fecha"]);
+        array_push($InformacionNotificacionActual, $datosDisp["mensaje"]);
+        array_push($InformacionNotificacionActual, $datosDisp["estado"]);
+        array_push($InformacionNotificacionActual, $datosDisp["visto"]);
+
+        array_push($InformacionNotificacionesAlumno,$InformacionNotificacionActual);
+    }
+
+    $i = 0;
+    foreach($InformacionNotificacionesAlumno as &$InformacionCita){
+        $idNotificacion = $InformacionCita[0];
+        $codigoAlumno = $InformacionCita[1];
+        $fecha = $InformacionCita[2];
+        $mensaje = $InformacionCita[3];
+        $estado = $InformacionCita[4];  //Confirmado, Rechazado o Suspendido
+        $visto = $InformacionCita[5];   //Si o No
+
+        print "<div class='notificacionCita $i' id = '$i'>
+                    <div class='mesanjeNotificacion'>
+                        <p class='mensaje'>$mensaje</p>
+                    </div>
+                    <div class='botones'>
+                        <button class='boton' onclick='revisarNotificacion($idNotificacion, $i)' >OK</button>
+                    </div>
+                </div>";
+        //echo '<hr>';
+        $i++;
+    }
+    //onclick='responderNotificacion($codigoAlumno, `$fecha`, $horaInicio, $i, 1)'
+    ?>
+    </div>
+
+
     <!-- LA interfaz para solicitar una cita -->
     <section class="formulario" id="dialog">
         <form action="" class="razon_tutoria">
@@ -438,7 +496,34 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     <script src="./scripts/dividirDisponibilidades.js"></script>  
     <script src="./scripts/scroll.js"></script>
     
-    <!--  PINTAR LAS CASILLAS DE AMARILLO,AZUL O VERDE SI CORRESPONDE -->
+    <!-- RUTINA 12 : Mostrar notificaciones de alumno -->
+    <!-- Actualizar en base de datos para no mostrar una notificacion vista -->
+    <script>
+        function revisarNotificacion(idNotificacion, idSolicitud){
+            var solicitud = document.getElementById(idSolicitud);
+            solicitud.classList.add('noMostrar')
+
+            //Realizar una peticion ajax
+            //Obtener parametros para la peticion
+            var parametros = {
+                "idNotificacion" : idNotificacion,
+                "visto" : 'Si'
+            };
+            //Llamar al backend
+            $.ajax({
+                data: parametros,
+                url: 'scripts/datosRespuestaCita.php',
+                type: 'POST',
+                success: function(mensaje_mostrar){
+                        $('#mostrar').html(mensaje_mostrar);
+                    }
+            }).done(function(res){
+                console.log(res);
+            })
+        }
+    </script>
+
+    <!--  PINTAR LAS CASILLAS DE AMARILLO, AZUL O VERDE SI CORRESPONDE -->
     <script>
         //Obtener las citas pendientes del alumno
         var citasDisponibles = '<?php echo $filasCitasDisponibles;?>'
@@ -471,12 +556,63 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
         else{
             var arregloEnJson = '<?php echo json_encode($disponibilidades);?>';
             var ACodDisp = JSON.parse(arregloEnJson);
+            console.log('Las casillas disponibles')
+            console.log(ACodDisp)
+            ACodNoDisp = obtenerCasillasNoDisponiblesAMostrar(ACodDisp);
             
             for(let i = 0; i < ACodDisp.length; i++){
                 var celda = document.getElementById(ACodDisp[i]);
                 celda.classList.add("pintarAmarillo");
             }
+            //Bloquear las casillas que ya no estas disponibles para solicitar cita
+            for(let i = 0; i < ACodNoDisp.length; i++){
+                var celda = document.getElementById(ACodNoDisp[i]);
+                celda.classList.remove("pintarAmarillo");
+                celda.classList.add("pintarAmarilloClaro");
+            }
         }
+
+        //Obtener las casillas que ya no estan disponibles para solicitar cita
+        function obtenerCasillasNoDisponiblesAMostrar(codigoCasillas) {
+            var inicialesDiasDisp = [];
+            var nroDiaHoy = ObtenerNumeroDiaHoy()
+            //D7 L1 M2 Mi3 J4 V5 S6
+            nroDiaHoy = nroDiaHoy == 0? 7 : nroDiaHoy;
+            // Mapas (diccionarios)
+            let nroDias = new Map();
+            nroDias.set("LU",1);
+            nroDias.set("MA",2);
+            nroDias.set("MI",3);
+            nroDias.set("JU",4);
+            nroDias.set("VI",5);
+            nroDias.set("SA",6);
+            nroDias.set("DO",7);
+            //Colocar cada casilla del dia que ya haya pasado
+            for(let i = 0; i < codigoCasillas.length; i++){
+                var codDia = codigoCasillas[i].slice(0,2)
+                if(nroDias.get(codDia) <= nroDiaHoy){
+                    inicialesDiasDisp.push(codigoCasillas[i]);
+                }
+            }
+            console.log('Inicials: ',inicialesDiasDisp);
+            return inicialesDiasDisp
+        }
+
+        // Domingo -> 1, Lunes -> 2, ...
+        function ObtenerNumeroDiaHoy(){
+            // crea un nuevo objeto `Date`
+            var today = new Date();
+            // obtener la fecha de hoy en formato `MM/DD/YYYY`
+            var now = today.toLocaleDateString('en-US');
+
+            var Xmas95 = new Date(now);
+            //var Xmas95 = new Date('January 16, 2023 23:15:30');
+            var weekday = Xmas95.getDay();
+            console.log('hoy es:',weekday);
+
+            return weekday
+        }
+
     </script>
 
     <!-- MOSTRAR LA INTERFAZ PARA SOLICITAR CITA CON LOS VALORES ADECUADOS -->
@@ -586,6 +722,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             }
             closeDialogAll('dialog','blurA','blurBackgroundA')
         }
+
     </script>
 </body>
 </html>
