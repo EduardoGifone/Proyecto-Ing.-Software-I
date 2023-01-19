@@ -39,18 +39,28 @@ const closeDialogAll = (idContenedorAMostrar, Blur, BlurBackground) => {
 }
 
 //Para al hacer click en el icono de campanita se habran o cierren las notif
-const efectoBlurANotificacion = () => {
-    var notif = document.getElementById('dialogNoti')
+const efectoBlurANotificacion = (contenedor,Blur, BlurBackground) => {
+    var notif = document.getElementById(contenedor)
     if (notif.classList[1] == 'show'){
-        closeDialogAll('dialogNoti','blur','blurBackground')
+        closeDialogAll(contenedor,Blur,BlurBackground)
     }
     else
     {
-        ShowDialogAll('dialogNoti','blur','blurBackground')
+        ShowDialogAll(contenedor,Blur,BlurBackground)
     }
 }
 
 // Para cerrar al dar en un campo que no sea el contenedor dado
+window.addEventListener('click', function(e){
+    var notif = document.getElementById('dialogNotiAlumno')
+    if (notif.classList[1] == 'show'){
+        if (notif.contains(e.target)){
+        } else{
+            closeDialogAll('dialogNotiAlumno','blurA','blurBackgroundA')
+        }
+    }   
+})
+
 
 window.addEventListener('click', function(e){
     var notif = document.getElementById('dialogNoti')

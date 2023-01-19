@@ -73,11 +73,12 @@ select:focus {
 }
 
 .button {
-    padding: 4px 35px;
+    padding: 4px 27px;
     border-radius: 20px;
     color: white;
     border-style: none;
     transition: .4s;
+    height: 27px;
 }
 
 .button--red {

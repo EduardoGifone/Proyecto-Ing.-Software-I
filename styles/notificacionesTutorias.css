@@ -134,7 +134,15 @@ div.notificacionesCita {
     transition: 0.5s;
 }
 
+/* Mostrar notificaciones al tutor */ 
 #dialogNoti.show {
+    visibility: visible;
+    opacity: 1;
+    transition: 0.5s;
+}
+
+/* Mostrar notificaciones al alumno */ 
+#dialogNotiAlumno.show {
     visibility: visible;
     opacity: 1;
     transition: 0.5s;
@@ -151,6 +159,7 @@ div.notificacionesCita {
 }
 
 /* RUTINA 2 : Aceptar una cita */
+/* RUTINA 12 : Mostrar notificaciones de alumno */
 .notificacionesCita .noMostrar {
     display: none;  /*es como si no existiera*/
 }
