@@ -956,11 +956,12 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 //Llamar al backend
                 $.ajax({
                     data: parametros,
-                    url: 'scripts/datosRespuestaCita.php',
+                    url: 'scripts/datosConclusionCita.php',
                     type: 'POST',
                     success: function(mensaje_mostrar){
-                            $('#mostrar').html(mensaje_mostrar);
-                        }
+                        alert(mensaje_mostrar)
+                        // $('#mostrar').html(mensaje_mostrar);
+                    }
                 }).done(function(res){
                     console.log(res);
                 })
@@ -994,16 +995,16 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             console.log('Suspencion parametros')
             console.log(parametros)
             //Llamar al backend
-            /*$.ajax({
+            $.ajax({
                 data: parametros,
-                url: 'scripts/datosRespuestaCita.php',
+                url: 'scripts/datosConclusionCita.php',
                 type: 'POST',
                 success: function(mensaje_mostrar){
-                        $('#mostrar').html(mensaje_mostrar);
-                    }
+                    alert(mensaje_mostrar);
+                }
             }).done(function(res){
                 console.log(res);
-            })*/
+            })
 
             closeDialogAll('dialogSuspender','blur','blurBackground')
         }
