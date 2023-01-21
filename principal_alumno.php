@@ -512,7 +512,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             //Llamar al backend
             $.ajax({
                 data: parametros,
-                url: 'scripts/datosRespuestaCita.php',
+                url: 'scripts/datosLecturaNotificacion.php',
                 type: 'POST',
                 success: function(mensaje_mostrar){
                         $('#mostrar').html(mensaje_mostrar);

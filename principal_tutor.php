@@ -6,9 +6,68 @@ if (is_null($_SESSION["tipoUsuario"])){
 
 // include '../Proyecto-Ing.-Software-I/config.php';
 include 'config.php';
+//-----------------------Actualizar citas sin concluir(si existen) de la semana anterior---------------
+//Funcion para obtener el nombre de un día dado una fecha
+function getDayName($fecha){
+    $fechats = strtotime($fecha); 
+    //$fechats es de tipo timestamp
+    switch (date('w', $fechats)){
+        case 0: return "Domingo"; break;
+        case 1: return "Lunes"; break;
+        case 2: return "Martes"; break;
+        case 3: return "Miercoles"; break;
+        case 4: return "Jueves"; break;
+        case 5: return "Viernes"; break;
+        case 6: return "Sabado"; break;
+    }
+}
+//Función para obtener la fecha del último domingo
+function getLastSunday(){
+    //Obtener fecha actual
+    date_default_timezone_set('America/Lima');
+    // Obtener una lista con la fecha actual 
+    $fechaHoy = date('N-d-m-Y-H-i'); //(numberDay, day, month, year, hour, minute)
+    $lista = explode('-', $fechaHoy);
+    $nroDia = $lista[0];
+    //Restar días transcurridos desde el último domingo hasta el día actual
+    $fechaUltimoDomingo = strtotime('-'.$nroDia.' day', strtotime(date("d-m-Y")));
+    //Dar formato a la fecha conseguida
+    $fechaUltimoDomingo = date('Y-m-d', $fechaUltimoDomingo);
+    //Retornar fecha del último domingo
+    return $fechaUltimoDomingo;
+}
+//Función para actualizar citas sin responder que pertenezcan a la anterior semana
+function actualizarCitasSinResponder($codTutor){
+    include "config.php";
+    //Obtener la fecha del último domingo
+    $fechaDomingoAnterior = getLastSunday();
+    //Crear consulta para obtner citas en estado confirmado que pertenezcan a la anterior semama,
+    $consultaCitasConfirmadasAnteriorSemana = "SELECT codigoTutor,fecha, horaInicio, cita.codigoAlumno, estado FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$codTutor' AND DATE(fecha) <'$fechaDomingoAnterior' AND estado = 'Confirmado'";
+    //Ejecutar consulta
+    $resultadoCitasConfirmadasAnteriorSemana = mysqli_query($conexion, $consultaCitasConfirmadasAnteriorSemana);
+    //Recorrer datos
+    if (mysqli_num_rows($resultadoCitasConfirmadasAnteriorSemana)){
+        while ($datosCitasLastWeek = mysqli_fetch_assoc($resultadoCitasConfirmadasAnteriorSemana)){
+            //Obtener clave primaria de citas
+            $fechaCita = $datosCitasLastWeek["fecha"];
+            $dia = getDayName($fechaCita);
+            $horaIn = $datosCitasLastWeek["horaInicio"];
+            $codAlumno = $datosCitasLastWeek["codigoAlumno"];
+            //Actualizar estado de cita
+            $consultaActualizarEstadoCita = "UPDATE cita SET estado = 'NO CLASIFICADO' WHERE fecha='$fechaCita' AND horaInicio='$horaIn' AND codigoAlumno='$codAlumno'";
+            mysqli_query($conexion, $consultaActualizarEstadoCita);
+            //Marcar disponibilidad del tutor como libre
+            $consultaActualizarDisponibilidad = "UPDATE disponibilidad SET estado='libre' WHERE codigoTutor='$codTutor' AND horaInicio='$horaIn' AND dia='$dia'";
+            mysqli_query($conexion, $consultaActualizarDisponibilidad);
+        }
+    }
+}
 
+//-----------------------------------------------------------------------------------------------------
 // Obtener el codigo del tutor
 $id_tutor = $_SESSION['codigo'];
+//Actualizar citas confirmadas pertenecientes a la anterior semana
+actualizarCitasSinResponder($id_tutor);
 
 $consulta = "SELECT * FROM disponibilidad WHERE codigoTutor = '$id_tutor'";
 $resultadoConsulta = mysqli_query($conexion, $consulta);
