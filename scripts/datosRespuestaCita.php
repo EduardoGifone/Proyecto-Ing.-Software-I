@@ -44,7 +44,7 @@ $diaTutoria = getDayName($fechaTs);
 $respuesta = strtolower($_POST["respuesta"]) == "aceptado" ? "Confirmado":"Rechazado";   //Aceptado o Rechazado
 //-------------------------Actualizar estado en la base de datos-------------------------
 //Crear consulta
-$consultaActualizacion = "UPDATE cita SET estado = '$respuesta' WHERE codigoAlumno='$codigoAlumno' and fecha='$fecha'";
+$consultaActualizacion = "UPDATE cita SET estado = '$respuesta' WHERE codigoAlumno='$codigoAlumno' and horaInicio='$horaInicio' and fecha='$fecha'";
 //Ejecutar consulta
 mysqli_query($conexion, $consultaActualizacion);
 //Actualizar solicitudes de citas existentes para la misma hora en caso de que la cita haya sido aceptada
@@ -59,8 +59,9 @@ if (strtolower($respuesta) == "confirmado"){
             //Obtener clave primaria
             $codAlumnoCitaPendiente = $datosCita["codigoAlumno"];
             $fechaCitaPendiente = $datosCita["fecha"];
+            $horaInCitaPendiente = $datosCita["horaInicio"];
             //Actualizar estado
-            $consulta = "UPDATE cita Set estado = 'Rechazado' WHERE codigoAlumno = '$codAlumnoCitaPendiente' and fecha = '$fechaCitaPendiente'";
+            $consulta = "UPDATE cita Set estado = 'Rechazado' WHERE codigoAlumno = '$codAlumnoCitaPendiente' and horaInicio = '$horaInCitaPendiente' and fecha = '$fechaCitaPendiente'";
             mysqli_query($conexion, $consulta);
         }
     }
@@ -75,9 +76,9 @@ $fechaCreacionNotificacion = date('Y-m-d H:i');    //(numberDay, day, month, yea
 $diaCita = date("d", $fechaTs) + 1;
 $nombreMesCita = getMonthName($fechaTs);
 $respuestaNotificacion = $respuesta == "Confirmado" ? "aceptada": "rechazada";
-$estadoNotificacion = $respuesta;
+$asuntoNotificacion = $respuesta;
 $mensajeNotificacionAlumno = "Tu solicitud de tutoría para el día ".$diaTutoria." ".$diaCita." de ".$nombreMesCita." a las ".$horaInicio." horas fue ".$respuestaNotificacion;
-$consultaCrearNotificacionAlumno = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, estado, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionAlumno','$estadoNotificacion', 'No')";
+$consultaCrearNotificacionAlumno = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, asunto, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionAlumno', '$asuntoNotificacion', 'No')";
 mysqli_query($conexion, $consultaCrearNotificacionAlumno);
 echo $mensajeNotificacionAlumno;
 // echo "El alumno ".$codigoAlumno." con cita pendiente el ".$fecha." a las ".$horaInicio.":00 "." tiene ahora la cita en estado ".$respuesta;

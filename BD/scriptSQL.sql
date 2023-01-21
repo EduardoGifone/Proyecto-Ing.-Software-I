@@ -43,11 +43,11 @@ CREATE TABLE Cita(
     horaInicio int not null,
     horaFin int not null,
     codigoAlumno varchar(6) not null,
-    estado varchar(20) not null CHECK (estado in ("PENDIENTE","CONFIRMADO","RECHAZADO","POSTERGADO","REALIZADO","NP")),
+    estado varchar(20) not null CHECK (estado in ("PENDIENTE","CONFIRMADO","RECHAZADO","POSTERGADO","REALIZADO","NP","NO CLASIFICADO")),
     razon varchar(200),
     observacion varchar(100),
 
-    PRIMARY KEY(fecha,codigoAlumno),
+    PRIMARY KEY(fecha,horaInicio,codigoAlumno),
     FOREIGN KEY (codigoAlumno) REFERENCES alumno(codigoAlumno)
 );
 
@@ -67,7 +67,7 @@ CREATE TABLE Notificaciones(
     codigoAlumno varchar(6) not null,
     fecha datetime not null,
     mensaje varchar(200) not null,
-    estado varchar(20) not null CHECK (estado in ("PENDIENTE","CONFIRMADO","RECHAZADO","POSTERGADO","REALIZADO","NP")),
+    asunto varchar(20) not null CHECK (asunto in ("PENDIENTE","CONFIRMADO","RECHAZADO","POSTERGADO","REALIZADO","NP")),
     visto varchar(2) not null CHECK (visto in ("Si", "No")),
     
     PRIMARY KEY(idNotificacion),
