@@ -1,3 +1,18 @@
+/*Varialbes globales*/
+:root {
+    --azul: #005d89;
+    --grisClaro: #DFF2F8;
+    --patito: #FEC401;
+    --crema: #FFE783;
+
+    --verdeCrema: #6AE677;
+    --azulCrema: #6BD7E7;
+    --amarilloCrema: #FFE783;
+    --amarilloCremaClaro: #FBF4DE;
+
+    --fuente: "Montserrat", sans-serif;
+}
+
 /*Estilos del contenedor principal*/
 .container{
     max-width: 1700px;
@@ -56,4 +71,47 @@
     margin: 0;
     text-align: center;
     font-size: 18px;
+}
+
+/* Elementos del menu para elegir entre que mostrar */ 
+.menuSeguimiento {
+    background-color: var(--grisClaro);
+    border-radius: 20px;
+    color: var(--azul);
+    padding: 10px;
+    width: 70%;
+    margin: auto;
+    margin-top: 30px;
+    height: 47px;
+}
+
+.menuSeguimiento {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menuSeguimiento button{
+    text-decoration: none;
+    margin: 0 20px;
+    color: var(--azul);
+    background: none;
+    cursor: pointer;
+    border: 0;
+    transition: .4s;
+}
+
+.menuSeguimiento button:hover {
+    color: var(--amarilloCrema)
+}
+
+.menuSeguimiento button.abierto {
+    color: #FEC401;
+    border-bottom: solid 2px #FEC401;
+    padding-bottom: 5px;
+}
+
+/* Ocultar las cartas que se desea */
+.archivado.noMostrar {
+    display: none;  /*es como si no existiera*/
 }

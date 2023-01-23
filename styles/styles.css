@@ -84,12 +84,23 @@ body {
 }
 
 .navegacion_Principal a{
-    padding: 0 25px ;
+    margin: 0 25px ;
     transition: all 0.4s ease 0s;
 }
 
 .navegacion_Principal a:hover{
     color: var(--crema);
+}
+.navegacion_Principal a.abiert,
+.navegacion_Principal a.abierto {
+    color: var(--crema);
+    border-bottom: solid 2px var(--crema);
+    padding-bottom: 5px;
+}
+
+.navegacion_Principal a.abiert img
+.navegacion_Principal a.abierto img{
+    filter: invert(100%) sepia(22%) saturate(7256%) hue-rotate(308deg) brightness(114%) contrast(110%);
 }
 
 
