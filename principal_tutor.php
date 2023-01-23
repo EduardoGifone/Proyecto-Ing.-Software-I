@@ -189,15 +189,15 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 <!-- Barra de navegacion entre las paginas -->
                 <header class="header_principal">
                     <nav class="navegacion_Principal">
-                        <a href="principal_tutor.php">
+                        <a href="principal_tutor.php" id="tutoriaItem" class="alternativa abierto" onclick="elegirPagina('tutoriaItem')">
                             <img src="images/tutoria.png" alt="">
                             Tutoria
                         </a>
-                        <a href="muroTutor.html">
+                        <a href="muroTutor.html" id="muroItem" class="alternativa" onclick="elegirPagina('muroItem')">
                             <img src="images/muro.png" alt="">
                             Muro
                         </a>
-                        <a href="archivadosTutor.php">
+                        <a href="archivadosTutor.php" id="seguimItem" class="alternativa" onclick="elegirPagina('seguimItem')">
                             <img src="images/descargar.png" alt="">
                             Seguimiento
                         </a>
@@ -821,8 +821,8 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 <p class="razon__txt" id="razon-Hora-Finalizar">Hora: 8:00 pm</p>
             </div>
 
-            <label><input type="checkbox" onclick="verificarCheck()" id="concluido" value="first_checkbox"> El alumno realizo su tutoria</label><br>
-            <label><input type="checkbox" onclick="verificarCheck()" id="np" value="first_checkbox">El alumno no se presento</label><br>
+            <label><input type="radio" name="checkbox" onclick="verificarCheck()" id="concluido" value="first_checkbox" checked> El alumno realizo su tutoria</label><br>
+            <label><input type="radio" name="checkbox" onclick="verificarCheck()" id="np" value="first_checkbox">El alumno no se presento</label><br>
 
             <label for="razon" class="form_label">Observaciones</label>
             <textarea id="razonTutoria" name="razon" class="razon_input razon_input--textarea"></textarea>
@@ -852,6 +852,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         </form>
     </section>
 
+    <script src="scripts/navegacion.js"></script>
     <script src="scripts/popup.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     
@@ -994,7 +995,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             console.log('Suspencion parametros')
             console.log(parametros)
             //Llamar al backend
-            /*$.ajax({
+            $.ajax({
                 data: parametros,
                 url: 'scripts/datosRespuestaCita.php',
                 type: 'POST',
@@ -1003,7 +1004,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                     }
             }).done(function(res){
                 console.log(res);
-            })*/
+            })
 
             closeDialogAll('dialogSuspender','blur','blurBackground')
         }
@@ -1037,6 +1038,9 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         // Esto para evitar que se acepte otra en la misma hora, de todas formas al actualizar la
         //pagina ya no tendria que haber otra solicitud ya que automatiamente se debio de marcar
         //en no aceptada
+
+        /*
+        // por siaca ya que no sera necesario por ajax
         function revisarOtrasCitasEnMismaHora(fecha, horaInicio){
 
             var citasMostradas = document.getElementsByClassName('notificacionCita');
@@ -1049,14 +1053,14 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                     citaMostaraElem.classList.add('noMostrar')
                 }
             }
-        }
+        }*/
 
         // ACEPTAR UNA CITA : RUTINA 2 y 3
         //1 : Aceptar, 0 : No aceptar
         function responderCita(codigoAlumno, fecha, horaInicio, idSolicitud, numRespuesta){
             var solicitud = document.getElementById(idSolicitud);
             solicitud.classList.add('noMostrar')
-            revisarOtrasCitasEnMismaHora(fecha, horaInicio)
+            //revisarOtrasCitasEnMismaHora(fecha, horaInicio)
 
             var respuesta = 'Rechazado';
             if(numRespuesta == 1){
@@ -1076,9 +1080,12 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 data: parametros,
                 url: 'scripts/datosRespuestaCita.php',
                 type: 'POST',
-                success: function(mensaje_mostrar){
+                /*success: function(mensaje_mostrar){
                         $('#mostrar').html(mensaje_mostrar);
-                    }
+                    }*/
+                success: function(solicitudesCitas){
+                    $('#dialogNoti').html(solicitudesCitas);
+                }
             }).done(function(res){
                 console.log(res);
             })

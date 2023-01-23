@@ -108,15 +108,15 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                 <!-- Barra de navegacion entre las paginas -->
                 <header class="header_principal">
                     <nav class="navegacion_Principal">
-                        <a href="principal_alumno.php">
+                        <a href="principal_alumno.php" id="tutoriaItem" class="alternativa abierto" onclick="elegirPagina('tutoriaItem')">
                             <img src="images/tutoria.png" alt="">
                             Tutoria
                         </a>
-                        <a href="muroAlumno.html#">
+                        <a href="muroAlumno.html" id="muroItem" class="alternativa" onclick="elegirPagina('muroItem')">
                             <img src="images/muro.png" alt="">
                             Muro
                         </a>
-                        <a href="archivados.html">
+                        <a href="archivados.html" id="seguimItem" class="alternativa" onclick="elegirPagina('seguimItem')">
                             <img src="images/descargar.png" alt="">
                             Historial
                         </a>
@@ -490,6 +490,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
         </form>
     </section>
 
+    <script src="scripts/navegacion.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="./scripts/principalAlumnoFunciones.js"></script>
     <script src="./scripts/popup.js"></script>

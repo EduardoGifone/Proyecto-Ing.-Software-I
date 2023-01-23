@@ -79,6 +79,48 @@ $estadoNotificacion = $respuesta;
 $mensajeNotificacionAlumno = "Tu solicitud de tutoría para el día ".$diaTutoria." ".$diaCita." de ".$nombreMesCita." a las ".$horaInicio." horas fue ".$respuestaNotificacion;
 $consultaCrearNotificacionAlumno = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, estado, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionAlumno','$estadoNotificacion', 'No')";
 mysqli_query($conexion, $consultaCrearNotificacionAlumno);
-echo $mensajeNotificacionAlumno;
+
+//Devolver las solicitudes de cita que se deberian mostrar realmente
+//------------------------------------------------------------------
+// MOSTRAR LA INTERFAZ DE NOTIFICACIONES : SUBRUTINA 1
+$consulta = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$codigoTutor' AND estado = 'PENDIENTE'";
+$resConCitasPendientes = mysqli_query($conexion, $consulta);
+$filasCitas = mysqli_num_rows($resConCitasPendientes);
+
+//Agregar en $InformacionCitasPendientes la informacion de cada cita pendiente
+$InformacionCitasPendientes = [];
+$i = 0;
+while($datosDisp = mysqli_fetch_assoc($resConCitasPendientes)){
+    $InformacionCitasPendiente = array();
+
+    $nombreAlumno = $datosDisp["nombres"];
+    $apellidoAlumno = $datosDisp["apellidos"];
+    $codigoAlumno = $datosDisp["codigoAlumno"];
+    $fecha =  $datosDisp["fecha"];
+    $razon = $datosDisp["razon"];
+    $horaInicio = $datosDisp["horaInicio"];
+    $horaFin = $datosDisp["horaFin"];
+
+    echo "<div class='notificacionCita $fecha $horaInicio $i' id = '$i'>
+                <div class='fechaHora'>
+                    <p class='fecha'>Fecha '$fecha'</p>
+                    <p class='hora'>Hora: $horaInicio:00</p>
+                </div>
+                <div class='nombreTutorado'>
+                    <p>$nombreAlumno $apellidoAlumno</p>
+                </div>
+                <div class='razonTutoria'>
+                    <p>$razon</p>
+                </div>
+                <div class='botones'>
+                    <button class='boton btn_izq' onclick='responderCita($codigoAlumno, `$fecha`, $horaInicio, $i, 1)'>Aceptar</button>
+                    <button class='boton btn_der' onclick='responderCita($codigoAlumno, `$fecha`, $horaInicio, $i, 0)'>No aceptar</button>
+                </div>
+            </div>";
+    //echo '<hr>';
+    $i++;
+}
+
+//echo $mensajeNotificacionAlumno;
 // echo "El alumno ".$codigoAlumno." con cita pendiente el ".$fecha." a las ".$horaInicio.":00 "." tiene ahora la cita en estado ".$respuesta;
 ?>

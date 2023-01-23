@@ -30,15 +30,15 @@
                 <hr class="line">
                 <header class="header_principal">
                     <nav class="navegacion_Principal">
-                        <a href="principal_tutor.php">
+                        <a href="principal_tutor.php" id="tutoriaItem" class="alternativa" onclick="elegirPagina('tutoriaItem')">
                             <img src="images/tutoria.png" alt="">
                             Tutoria
                         </a>
-                        <a href="muroTutor.html">
+                        <a href="muroTutor.html" id="muroItem" class="alternativa abierto" onclick="elegirPagina('muroItem')">
                             <img src="images/muro.png" alt="">
                             Muro
                         </a>
-                        <a href="archivadosTutor.php">
+                        <a href="archivadosTutor.php" id="seguimItem" class="alternativa" onclick="elegirPagina('seguimItem')">
                             <img src="images/descargar.png" alt="">
                             Seguimiento
                         </a>
@@ -91,6 +91,7 @@
                 </div>
             </article>
         </section>
+        <script src="scripts/navegacion.js"></script>
         <script src="./scripts/scroll.js"></script>
 
     </body>
