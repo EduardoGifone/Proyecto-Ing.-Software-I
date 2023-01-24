@@ -244,18 +244,37 @@ section.horario__actualizar a.pintarAzul {
 }
 
 /* RUTINA 9 : SUSPENDER UNA CITA */
+#informacion_tutoria.noVer {
+    display: none;
+}
+
+#suspender_tutoria {
+    display: none;
+}
+#suspender_tutoria.Ver {
+    display: grid;
+}
+/*
 #dialogSuspender.show {
     visibility: visible;
     opacity: 1;
     transform: 0.5s;
-}
+}*/
 
 /* RUTINA 10 : CONCLUIR UNA CITA */
+#finalizar_tutoria {
+    display: none;
+}
+
+#finalizar_tutoria.Ver {
+    display: grid;
+}
+/*
 #dialogTerminar.show {
     visibility: visible;
     opacity: 1;
     transform: 0.5s;
-}
+}*/
 
 /* Evitar que se escriba algo */ 
 #razonTutoria.noEscribir {

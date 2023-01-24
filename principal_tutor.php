@@ -228,7 +228,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
 </head>
 <body id="blurBackground" class="principal_tutor">
     <div id="blur">
-        <div class="container_nav">
+        <div class="container_nav" id="blurNavegacionBackground">
             <section class="navegacionGeneral">
                 <!-- Links supeiores para notificacion, usuario y salir -->
                 <header class="first_navegation">
@@ -849,7 +849,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
   
     <!-- Interfaz de informacion de la cita -->
     <section class="formulario" id="dialogInformacionCita">
-        <form action="" class="razon_tutoria">
+        <form action="" class="razon_tutoria" id="informacion_tutoria">
             <div class="razon__fecha_hora">
                 <p class="razon__txt" id="razon-Dia">Fecha: 28/01/23</p>
                 <p class="razon__txt" id="razon-Hora">Hora: 8:00 pm</p>
@@ -870,11 +870,8 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 <button type="button" class="button button--red button--suspender" id="button--suspender" onclick="Suspender()" type="submit">Suspender</button>
             </div>
         </form>
-    </section>
 
-    <!-- Interfaz de finalizar una cita -->
-    <section class="formulario dialogSuspOTerminar" id="dialogTerminar">
-        <form action="" class="razon_tutoria">
+        <form action="" class="razon_tutoria" id="finalizar_tutoria">
             <div class="razon__fecha_hora">
                 <p class="razon__txt" id="razon-Dia-Finalizar">Fecha: 28/01/23</p>
                 <p class="razon__txt" id="razon-Hora-Finalizar">Hora: 8:00 pm</p>
@@ -888,14 +885,11 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
 
             <div class="buttons">
                 <button class="button button--yellow" onclick="TerminarCitaTutoria()" type="button">Finalizar</button>
-                <button class="button button--red" onclick="cancelar('dialogTerminar')" type="button">Cancelar</button>
+                <button class="button button--red" onclick="cancelar('finalizar_tutoria')" type="button">Cancelar</button>
             </div>
         </form>
-    </section>
 
-    <!-- Interfaz de suspender una cita -->
-    <section class="formulario dialogSuspOTerminar" id="dialogSuspender">
-        <form action="" class="razon_tutoria">
+        <form action="" class="razon_tutoria" id="suspender_tutoria">
             <div class="razon__fecha_hora">
                 <p class="razon__txt" id="razon-Dia-Suspender">Fecha: 28/01/23</p>
                 <p class="razon__txt" id="razon-Hora-Suspender">Hora: 8:00 pm</p>
@@ -906,7 +900,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
 
             <div class="buttons">
                 <button class="button button--yellow" onclick="SuspenderCitaTutoria()" type="button">Suspender</button>
-                <button class="button button--red" onclick="cancelar('dialogSuspender')" type="button">Cancelar</button>
+                <button class="button button--red" onclick="cancelar('suspender_tutoria')" type="button">Cancelar</button>
             </div>
         </form>
     </section>
@@ -952,12 +946,18 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         // RUTINA 10 : CONCLUIR UNA CITA
 
         function Finalizar() {
-            closeDialogAll('dialogInformacionCita','blur','blurBackground')
-            ShowDialogAll('dialogTerminar','blur','blurBackground');
+            //closeDialogAll('dialogInformacionCita','blur','blurBackground')
+            //ShowDialogAll('dialogTerminar','blur','blurBackground');
 
             //Predeterminar el checkbox de concluido como marcado
             var checkbox1 = document.getElementById("concluido");
             checkbox1.value = true;
+
+            //Mostrar la informacion necesaria
+            var contenedorFinalizar = document.getElementById('finalizar_tutoria');
+            contenedorFinalizar.classList.add('Ver')
+            var contenedorInformacion = document.getElementById('informacion_tutoria');
+            contenedorInformacion.classList.add('noVer')
         }
 
         //Terminar una cita
@@ -1027,7 +1027,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 })
 
                 //cerrar la ventana
-                closeDialogAll('dialogTerminar','blur','blurBackground')
+                closeDialogAll('dialogInformacionCita','blur','blurBackground')
             }
         }
 
@@ -1035,8 +1035,14 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         // RUTINA 9 : SUSPENDER UNA CITA
 
         function Suspender() {
-            closeDialogAll('dialogInformacionCita','blur','blurBackground')
-            ShowDialogAll('dialogSuspender','blur','blurBackground');
+            //closeDialogAll('dialogInformacionCita','blur','blurBackground')
+            //ShowDialogAll('dialogSuspender','blur','blurBackground');
+
+            //Mostrar la informacion necesaria
+            var contenedorSuspender = document.getElementById('suspender_tutoria');
+            contenedorSuspender.classList.add('Ver')
+            var contenedorInformacion = document.getElementById('informacion_tutoria');
+            contenedorInformacion.classList.add('noVer')
         }
 
         function SuspenderCitaTutoria() {
@@ -1066,11 +1072,17 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 console.log(res);
             })
 
-            closeDialogAll('dialogSuspender','blur','blurBackground')
+            closeDialogAll('dialogInformacionCita','blur','blurBackground')
         }
         
-        function cancelar(idConenedor) {
-            closeDialogAll(idConenedor,'blur','blurBackground')
+        function cancelar(contenedorQueLlama) {
+            closeDialogAll('dialogInformacionCita','blur','blurBackground')
+
+            //Mostrar la informacion necesaria
+            var contenedorFinalizar = document.getElementById(contenedorQueLlama);
+            contenedorFinalizar.classList.remove('Ver')
+            var contenedorInformacion = document.getElementById('informacion_tutoria');
+            contenedorInformacion.classList.remove('noVer')
         }
         
     </script>
