@@ -447,7 +447,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
         $codigoAlumno = $InformacionCita[1];
         $fecha = $InformacionCita[2];
         $mensaje = $InformacionCita[3];
-        $estadoCita = $InformacionCita[4];  //Confirmado, Rechazado o Suspendido
+        //$estadoCita = $InformacionCita[4]; 
         $visto = $InformacionCita[5];   //Si o No
 
         print "<div class='notificacionCita $i' id = '$i'>
