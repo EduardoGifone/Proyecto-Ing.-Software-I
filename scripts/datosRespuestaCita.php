@@ -78,7 +78,7 @@ $nombreMesCita = getMonthName($fechaTs);
 $respuestaNotificacion = $respuesta == "Confirmado" ? "aceptada": "rechazada";
 $asuntoNotificacion = $respuesta;
 $mensajeNotificacionAlumno = "Tu solicitud de tutoría para el día ".$diaTutoria." ".$diaCita." de ".$nombreMesCita." a las ".$horaInicio." horas fue ".$respuestaNotificacion;
-$consultaCrearNotificacionAlumno = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, estado, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionAlumno', '$asuntoNotificacion', 'No')";
+$consultaCrearNotificacionAlumno = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, asunto, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionAlumno', '$asuntoNotificacion', 'No')";
 mysqli_query($conexion, $consultaCrearNotificacionAlumno);
 
 //Devolver las solicitudes de cita que se deberian mostrar realmente

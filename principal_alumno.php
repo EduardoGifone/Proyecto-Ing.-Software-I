@@ -447,7 +447,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
         $codigoAlumno = $InformacionCita[1];
         $fecha = $InformacionCita[2];
         $mensaje = $InformacionCita[3];
-        //$estado = $InformacionCita[4];  //Confirmado, Rechazado o Suspendido
+        //$estadoCita = $InformacionCita[4]; 
         $visto = $InformacionCita[5];   //Si o No
 
         print "<div class='notificacionCita $i' id = '$i'>
@@ -484,8 +484,8 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             <textarea id="razon" name="razon" class="razon_input razon_input--textarea"></textarea>
 
             <div class="buttons">
-                <button class="button button--yellow" onclick="toggleAmarillo()" type="submit">Solicitar</button>
-                <button class="button button--red" onclick="toggleRed()" type="submit">Cancelar</button>
+                <button class="button button--yellow" onclick="toggleAmarillo()" type="button">Solicitar</button>
+                <button class="button button--red" onclick="toggleRed()" type="button">Cancelar</button>
             </div>
         </form>
     </section>
@@ -727,4 +727,3 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     </script>
 </body>
 </html>
-
