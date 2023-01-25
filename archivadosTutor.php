@@ -68,7 +68,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             </header>
             <hr class="line">
             <header class="header_principal">
-                    <nav class="navegacion_Principal">
+                <nav class="navegacion_Principal">
                     <a href="principal_tutor.php" id="tutoriaItem" class="alternativa" onclick="elegirPagina('tutoriaItem')">
                         <img src="images/tutoria.png" alt="">
                         Tutoria
@@ -114,17 +114,18 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
 
                 print "<!-- Archivados -->
                         <div class='archivado $estado'>
+                            <h4 class='archivado__prof'>$nombreAlumno $apellidoAlumno</h4>
                             <div class='archivado__info'>
                                 <div class='archivado__texto'>
-                                    <h4 class='archivado__prof'>$nombreAlumno $apellidoAlumno</h4>
                                     <p class='archivado__fecha'>$fecha</p>
                                     <p class='archivado__hora'>$horaInicio:00 - $horaFin:00</p>
                                 </div>
-                                <img src='images/img_prof_referencia.jpg' alt='imagen_profesor' class='archivado__img'>
+                                <img src='images/usuario_2.png' alt='imagen_profesor' class='archivado__img'>
                             </div>
                             <div class='archivado__infestado'>
                                 <p class='archivado__estado'>$estado</p>
                             </div>
+                            <button id='btnOpen' class='archivado__detalles--btn' onclick='actualizarInformacionCitaArchivada($codigoAlumno, `$fecha`, $horaInicio)'>Ver detalles</button>
                         </div>";
     
                 $i++;
@@ -135,9 +136,76 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
         }
         ?>
         </section>
+
+        <dialog id="informacionCitaArchivada">
+            <form action="" class="razon_tutoria" id="informacion_tutoria">
+                <div class="razon__fecha_hora">
+                    <p class="razon__txt" id="razon-Dia">Fecha: 28/01/23</p>
+                    <p class="razon__txt" id="razon-Hora">Hora: 8:00 pm</p>
+                </div>
+
+                <img src='images/usuario_2.png' alt='imagen_profesor' class='archivado__img'>
+
+                <label for="nombres" class="form_label nombres" id="nombres">Yerson Joab Chirinos Vilca</label>
+
+                <div class="tituloRazon">Razon para tutoria: </div>
+                <label for="razon" class="form_label razon" id="razon">Razon de la tutoria</label>
+
+                <div class="tituloObservacion">Observacion dada</div>
+                <label for="observacion" class="form_label observacion" id="observacion">Observacion de la tutoria</label>
+
+                <button type="button" class="button button--yellow button--cerrar" id="btnClose" onclick="Cerrar()" type="button">Cerrar</button>
+            </form>
+        </dialog>
     </main>
+    
 
     <script src="./scripts/scroll.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <!-- Mostrar la informacion adicional de la sesion requerida -->
+    <script>
+        function actualizarInformacionCitaArchivada(codigoAlumno, fecha, horaInicio){
+            console.log(codigoAlumno, fecha, horaInicio);
+            var citasArchivadasJson = '<?php echo json_encode($InformacionTodasCitas);?>';
+            //No se pueden tener caracteres como /n
+            var InformacionCitasArchivadas = JSON.parse(citasArchivadasJson);
+            console.log(InformacionCitasArchivadas)
+            for(InformacionCitasArchivada of InformacionCitasArchivadas){
+                console.log('----------------------------')
+                console.log(codigoAlumno+':'+InformacionCitasArchivada[2])
+                console.log(fecha+':'+InformacionCitasArchivada[3])
+                console.log(horaInicio+':'+InformacionCitasArchivada[4])
+                if(codigoAlumno == InformacionCitasArchivada[2] & fecha == InformacionCitasArchivada[3] & horaInicio == InformacionCitasArchivada[4]){
+
+                    document.getElementById("nombres").innerText = InformacionCitasArchivada[0]+' '+InformacionCitasArchivada[1];
+                    document.getElementById("razon-Dia").innerText = 'Fecha: '+InformacionCitasArchivada[3];
+                    document.getElementById('razon-Hora').innerText = 'Hora:'+InformacionCitasArchivada[4]+':00';
+                    document.getElementById('razon').innerText = InformacionCitasArchivada[7];
+                    document.getElementById('observacion').innerText = InformacionCitasArchivada[8];
+                }
+            }
+            abrirInformacion()
+        }
+
+    </script>
+
+
+    <!-- abrir detalles de la sesion requerida -->
+    <script>
+
+
+        const ventanaInformacion = document.querySelector("#informacionCitaArchivada")
+        const btnAbrir = document.querySelector("#btnOpen")
+        const btnCerrar = document.querySelector("#btnClose")
+        function abrirInformacion() {
+            ventanaInformacion.showModal()
+        }
+        function Cerrar() {
+            ventanaInformacion.close()
+        }
+
+    </script>
 
     <!-- mantener solo una opcion de eleccion activa -->
     <script>
