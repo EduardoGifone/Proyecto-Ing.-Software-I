@@ -7,9 +7,9 @@ const ShowDialogAll = (idContenedorAMostrar, Blur, BlurBackground) => {
     blur.classList.toggle('activate')
     var blur=document.getElementById(BlurBackground);
     blur.classList.toggle('activate');
-    /*var blur=document.getElementById('blurNavegacionBackground');
-    blur.classList.toggle('activate');*/
-    //para que asi no se agregue show al instante
+
+
+//para que asi no se agregue show al instante
     setTimeout(() => {
         document.getElementById(idContenedorAMostrar).classList.add('show')
     }, 1);
