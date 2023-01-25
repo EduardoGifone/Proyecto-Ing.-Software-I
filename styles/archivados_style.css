@@ -31,6 +31,8 @@
     background-color: #DFF2F8aa;
     padding: 20px;
     border-radius: 10px;
+    text-align: center;
+
 }
 
 .archivado__info {
@@ -38,27 +40,42 @@
     justify-content: center;
     align-items: center;
     font-size: 18px;
+    margin: 10px 0;
 }
 
 .archivado__prof {
     background-color: #FEC401;
     padding: 7px 20px;
     border-radius: 30px;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.archivado__texto {
+    margin-right: 30px;
 }
 
 .archivado__fecha {
     color: white;
+    border: solid 2px white;
+    text-align: center;
+    border-radius: 20px;
+    padding: 2px 20px;
 }
 
 .archivado__hora {
     color: white;
     font-weight: 700;
+    border: solid 2px white;
+    text-align: center;
+    border-radius: 20px;
+    padding: 2px 20px;
 }
 
 /*Estulos de la imagen de archivado*/
 .archivado__img{
-    width: 120px;
-    height: 120px;
+    width: 90px;
+    height: 90px;
     object-fit: cover;
     border-radius: 50%;
     margin: 10px;
@@ -71,6 +88,25 @@
     margin: 0;
     text-align: center;
     font-size: 18px;
+}
+
+.archivado__detalles--btn {
+    border: 0;
+    border: solid 2px var(--patito);
+    background-color: rgba(255, 155, 155, 0);
+    margin: 20px 0;
+    padding: 5px 50px;
+    border-radius: 20px;
+    color: var(--patito);
+    transition: .2s;
+}
+
+.archivado__detalles--btn:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+    background-color: rgba(236, 181, 0, 1);
+    color: white;
+    border: 0;
 }
 
 /* Elementos del menu para elegir entre que mostrar */ 
@@ -115,3 +151,90 @@
 .archivado.noMostrar {
     display: none;  /*es como si no existiera*/
 }
+
+
+/* MOstrar la informacion de cada cita archivada */
+#informacionCitaArchivada {
+    border: 0;
+    border-radius: 20px;
+}
+
+.razon_tutoria {
+    text-align: center;
+    display: grid;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 20px;
+    width: 320px;
+}
+
+.archivado__img {
+    display: block;
+    margin: 10px auto;
+
+}
+
+.razon__fecha_hora {
+    width: 280px;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    background-color: var(--verdeCrema);
+    border-radius: 10px;
+    padding: 0 20px;
+}
+
+.nombres {
+    width: 280px;
+    text-align: center;
+    border-radius: 10px;
+    color: var(--patito);
+    border: solid 2px var(--patito);
+    padding: 2px 0;
+    margin-bottom: 10px;
+}
+
+.tituloObservacion,
+.tituloRazon {
+    text-align: start;
+    color: black;
+    margin: 10px 0;
+}
+
+.observacion,
+.razon {
+    min-height: 70px;
+    width: 280px;
+    border-radius: 10px;
+    color: black;
+    border: solid 2px black;
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
+
+.button--cerrar {
+    background-color: red;
+    margin: 10px;
+    padding: 3px 10px;
+    border: 0;
+    border-radius: 10px;
+    width: 100px;
+    transition: .2s;
+}
+
+.button--cerrar:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+dialog::backdrop{
+    /* background-color: rgba(0,0,0,0.55); */
+    backdrop-filter: blur(5px);
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+
+

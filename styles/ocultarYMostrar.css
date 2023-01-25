@@ -53,10 +53,19 @@ section.horario__actualizar .boton_horario{
 
 }
 
+#blurNavegacionBackground.activate
 #blurNavA.activate,
 #blurA.activate {
     width: 100%;
     position: fixed!important;
+    filter: blur(20px);
+    pointer-events: none;
+    user-select: none;
+    position: relative;
+}
+
+#blurNavegacionBackground.activate {
+    width: 100%;
     filter: blur(20px);
     pointer-events: none;
     user-select: none;

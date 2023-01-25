@@ -68,7 +68,7 @@ if(strtolower($estadoFinalCita) == "np"){
     //Crear mensaje de notificación para el caso NP
     $mensajeNotificacionNP = "No te presentaste a tu cita programada para el ".$diaCita." ".$nroDiaCita." de ".$nombreMesCita;
     //Crear consulta para insertar notificacion
-    $consultaCrearNotificacionNP = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, asunto, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionNP','NP', 'No')";     
+    $consultaCrearNotificacionNP = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, estado, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionNP','NP', 'No')";     
     //Ejecutar consulta de insersión de notificación
     mysqli_query($conexion, $consultaCrearNotificacionNP);
 
@@ -77,7 +77,7 @@ if (strtolower($estadoFinalCita) =="postergado"){
     //Crear mensaje de notificación para el caso Postergado
     $mensajeNotificacionPostergado = "Tu cita programada para el ".$diaCita." ".$nroDiaCita." de ".$nombreMesCita." fue cancelada por tu docente, su motivo es: ".$observacion;
     //Crear consulta para insertar notificación
-    $consultaCrearNotificacionPostergado = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, asunto, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionPostergado','Postergado', 'No')";
+    $consultaCrearNotificacionPostergado = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, estado, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionPostergado','Postergado', 'No')";
     //Ejecutar consulta de insersión de notificación
     mysqli_query($conexion, $consultaCrearNotificacionPostergado);
 }

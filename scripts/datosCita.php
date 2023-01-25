@@ -44,7 +44,7 @@ if ($var){
     //Conectar con la base de datos
     include '../config.php';
     //Crear consulta
-    $consulta = "INSERT INTO cita values('$newDate','$horaInicio','$horaFin','$codigoAlumno','PENDIENTE','$razon',null)";
+    $consulta = "INSERT INTO cita values('$newDate','$horaInicio','$horaFin','$codigo','PENDIENTE','$razon',null)";
     //Ejecutar consulta
     if (mysqli_query($conexion, $consulta)){
         echo "Cita reservada ";
