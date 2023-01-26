@@ -1176,7 +1176,8 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             celdas_P[i].onclick = function() {
                 console.log('Se dio click en una casilla azul')
                 //Restringir que al clickear otras celdas no pase nada
-                if (celdas_P[i].classList[3] == 'pintarAzul'){
+                if (celdas_P[i].classList[2] == 'pintarAzul' | celdas_P[i].classList[3] == 'pintarAzul'){
+                    console.log('---')
 
                     //Obtener id de celda clickeada
                     var codCeldaClickeada = celdas_P[i].classList;
