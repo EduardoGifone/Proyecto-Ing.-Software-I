@@ -68,6 +68,7 @@ CREATE TABLE Notificaciones(
     fecha datetime not null,
     mensaje varchar(200) not null,
     asunto varchar(20) not null CHECK (asunto in ("PENDIENTE","CONFIRMADO","RECHAZADO","POSTERGADO","REALIZADO","NP")),
+    /* estado varchar(20) not null CHECK (estado in ("PENDIENTE","CONFIRMADO","RECHAZADO","POSTERGADO","REALIZADO","NP")), */
     visto varchar(2) not null CHECK (visto in ("Si", "No")),
     
     PRIMARY KEY(idNotificacion),

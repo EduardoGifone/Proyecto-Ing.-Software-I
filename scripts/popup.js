@@ -8,7 +8,7 @@ const ShowDialogAll = (idContenedorAMostrar, Blur, BlurBackground) => {
     var blur=document.getElementById(BlurBackground);
     blur.classList.toggle('activate');
 
-setTimeout(() => {
+    setTimeout(() => {
         document.getElementById(idContenedorAMostrar).classList.add('show')
     }, 1);
 
@@ -27,8 +27,8 @@ const closeDialogAll = (idContenedorAMostrar, Blur, BlurBackground) => {
     blur.classList.toggle('activate');
     var blur=document.getElementById(BlurBackground);
     blur.classList.toggle('activate');
-    var blur=document.getElementById('blurNavegacionBackground');
-    blur.classList.toggle('activate');
+    /*var blur=document.getElementById('blurNavegacionBackground');
+    blur.classList.toggle('activate');*/
 
     const body = document.body;
     const scrollY = body.style.top;

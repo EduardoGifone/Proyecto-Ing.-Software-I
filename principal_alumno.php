@@ -484,8 +484,8 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             <textarea id="razon" name="razon" class="razon_input razon_input--textarea"></textarea>
 
             <div class="buttons">
-                <button class="button button--yellow" onclick="toggleAmarillo()" type="button">Solicitar</button>
-                <button class="button button--red" onclick="toggleRed()" type="button">Cancelar</button>
+                <button class="button button--yellow" onclick="toggleAmarillo()" type="submit">Solicitar</button>
+                <button class="button button--red" onclick="toggleRed()" type="submit">Cancelar</button>
             </div>
         </form>
     </section>
@@ -629,7 +629,6 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                 {
                     ShowDialogAll('dialog', 'blurA','blurBackgroundA')
                     this.classList.add("pintarVerde");
-                    
                 }
                 
                 //obtener informacion de la interfaz y colocarla
@@ -673,49 +672,66 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
 
     <!-- REALIZAR ACCION AL SOLICITAR O CANCELAR UNA CITA -->
     <script>
+/*
+        setTimeout(() => {
+            //Despintar las casillas amarillas
+            var casillasAmarillas = document.getElementsByClassName("pintarAmarillo") 
+            console.log('Pintar las casillas amarillas ->>')
+            console.log(casillasAmarillas)
+            for(let i = 0; i < casillasAmarillas.length; i++){
+                casillasAmarillas[i].classList.remove("pintarAmarillo");
+                console.log('Se removio las casillas amarillas')
+            }
+        }, 2000);*/
+
+        
+
         //Funcion al pulsar un boton amarillo para solicitar una cita
         function toggleAmarillo() {
 
-        //Obtener los nombres y apellidos
-        var name = '<?php echo $alumno_nombre;?>';
-        var apellido = '<?php echo $alumno_apellido;?>';
+            //Obtener los nombres y apellidos
+            var name = '<?php echo $alumno_nombre;?>';
+            var apellido = '<?php echo $alumno_apellido;?>';
 
-        //Realizar la peticion ajax
-        let datosHorario = obtenerDatosCasilleroSeleccionado();
-        let horaInicio = datosHorario[1];
-        let horaFin = datosHorario[2];
-        let dia = datosHorario[0];
-        var codAlumno = '<?php echo $alumno_codigo;?>';
-        console.log('cod Alumno : '+codAlumno)
-        var razon =  document.getElementById("razon").value;
-        console.log('Aqui viene la razon')
-        console.log(razon);
-        //Obtener parametros para la peticion
-        var parametros = {
-            "horaInicio" : horaInicio,
-            "horaFin" : horaFin,
-            "dia" : dia,
-            "codigoAlumno" : codAlumno,
-            "razon" : razon
-        };
-        //Llamar al backend para actualizar los datos
-        $.ajax({
-            data: parametros,
-            url: 'scripts/datosCita.php',
-            type: 'POST',
-            success: function(mensaje_mostrar){
-                    $('#mostrar').html(mensaje_mostrar);
-                }
-        }).done(function(res){
-            console.log(res);
-        })
-        //cerrar la ventana de realizar una solicitud y volver a la pantalla principal
-        closeDialogAll('dialog','blurA','blurBackgroundA')
+            //Realizar la peticion ajax
+            let datosHorario = obtenerDatosCasilleroSeleccionado();
+            let horaInicio = datosHorario[1];
+            let horaFin = datosHorario[2];
+            let dia = datosHorario[0];
+            var codAlumno = '<?php echo $alumno_codigo;?>';
+            console.log('cod Alumno : '+codAlumno)
+            var razon =  document.getElementById("razon").value;
+            console.log('Aqui viene la razon')
+            console.log(razon);
+            //Obtener parametros para la peticion
+            var parametros = {
+                "horaInicio" : horaInicio,
+                "horaFin" : horaFin,
+                "dia" : dia,
+                "codigoAlumno" : codAlumno,
+                "razon" : razon
+            };
+            //Llamar al backend para actualizar los datos
+            $.ajax({
+                data: parametros,
+                url: 'scripts/datosCita.php',
+                type: 'POST',
+                success: function(mensaje_mostrar){
+                        $('#mostrar').html(mensaje_mostrar);
+                    }
+            }).done(function(res){
+                console.log(res);
+            })
+
+            //cerrar la ventana de realizar una solicitud y volver a la pantalla principal
+            closeDialogAll('dialog','blurA','blurBackgroundA')
         }
 
         //Solo colocar las actividades que realizara, no colocar otro toggle() por que para ese
         // nuevo toggle recien se activara en la siguiente vez que se presione el boton
         function toggleRed() {
+
+            //Despintar las casillas verdes
             var casillasVerdes = document.getElementsByClassName("pintarVerde") 
             for(let i = 0; i < casillasVerdes.length; i++){
                 casillasVerdes[i].classList.remove("pintarVerde");
