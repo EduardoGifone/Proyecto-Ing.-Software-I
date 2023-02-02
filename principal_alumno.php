@@ -325,34 +325,39 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
     <script>
         // Generar la interfaz para solicitar una cita
         // COMPONENTE : Actualizar datos del casillero seleccionado
-        var celdas = document.getElementsByClassName("celdaP")
         
-        for(let i = 0; i < celdas.length; i++){
-            celdas[i].dataset.numero = i;
+        //actualizar Datos Al Seleccionar Una Casilla Para Seleccionar una Cita
+        function actualizarDatosAlSeleccionarCita() {
+            var celdas = document.getElementsByClassName("celdaP")
+            for(let i = 0; i < celdas.length; i++){
+                celdas[i].dataset.numero = i;
 
-            celdas[i].onclick = function() {
-                if(celdas[i].classList[2] != "pintarVerde" && celdas[i].classList[1] == "pintarAmarillo")
-                {
-                    //ShowDialogAll('dialog', 'blurA','blurBackgroundA')
-                    showModalDialog('dialog')
-                    this.classList.add("pintarVerde");
+                celdas[i].onclick = function() {
+                    if(celdas[i].classList[2] != "pintarVerde" && celdas[i].classList[1] == "pintarAmarillo")
+                    {
+                        //ShowDialogAll('dialog', 'blurA','blurBackgroundA')
+                        showModalDialog('dialog')
+                        this.classList.add("pintarVerde");
+                    }
+                    
+                    //obtener informacion de la interfaz y colocarla
+                    let datosHorario = obtenerDatosCasilleroSeleccionado();
+                    console.log('--------')
+                    console.log(datosHorario)
+                    let hIni = datosHorario[1];
+                    let hFin = datosHorario[2];
+                    let day = datosHorario[0];
+
+                    let Hora = "Hora : " + hIni + ":00 - " + hFin + ":00";
+                    let Dia = "Dia : " + day;
+                    document.getElementById("razon-Dia").innerHTML = Hora
+                    document.getElementById("razon-Hora").innerHTML = Dia
+
                 }
-                
-                //obtener informacion de la interfaz y colocarla
-                let datosHorario = obtenerDatosCasilleroSeleccionado();
-                console.log('--------')
-                console.log(datosHorario)
-                let hIni = datosHorario[1];
-                let hFin = datosHorario[2];
-                let day = datosHorario[0];
-
-                let Hora = "Hora : " + hIni + ":00 - " + hFin + ":00";
-                let Dia = "Dia : " + day;
-                document.getElementById("razon-Dia").innerHTML = Hora
-                document.getElementById("razon-Hora").innerHTML = Dia
-
             }
         }
+
+        actualizarDatosAlSeleccionarCita()
 
         // COMPONENTE : Obtener datos del casillero seleccionado
         function obtenerDatosCasilleroSeleccionado() {
