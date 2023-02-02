@@ -1205,52 +1205,58 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         // RUTINA 8 : Mostrar informacion del alumno al hacer click en una casilla azul
         
         // COMPONENTE : ver información de la cita
-        var celdas_P = document.getElementsByClassName("celdaP")
-        console.log('Celdas P mostrandose en la rutina 8')
-        console.log(celdas_P)
-        for(let i = 0; i < celdas_P.length; i++){
-            console.log('Se muestra cada casilla')
-            celdas_P[i].dataset.numero = i;
-            
-            celdas_P[i].onclick = function() {
-                console.log('Se dio click en una casilla azul')
-                //Restringir que al clickear otras celdas no pase nada
-                if (celdas_P[i].classList[2] == 'pintarAzul' | celdas_P[i].classList[3] == 'pintarAzul'){
-                    console.log('---')
-
-                    //Obtener id de celda clickeada
-                    var codCeldaClickeada = celdas_P[i].classList;
-
-                    //Comparar con las los valores de las citas confirmadas
-                    for(var j = 0; j < InformacionCitasConfirmadas.length; j++){
-                        if(InformacionCitasConfirmadas[j][8] == codCeldaClickeada[1]){
-                            //Obtener los valores que necesitamos
-                            var name = InformacionCitasConfirmadas[j][0]
-                            var apellido = InformacionCitasConfirmadas[j][1]
-                            var razonTuto = InformacionCitasConfirmadas[j][4]
-                            var horaCita = InformacionCitasConfirmadas[j][5]
-                            var fechaCita = InformacionCitasConfirmadas[j][3]
-                        }
-                    }
-
-                    //Mostrar el que si corresponde
-                    document.getElementById("nombres").value = name;
-                    document.getElementById("apellidos").value = apellido;
-                    document.getElementById("razon").value = razonTuto;
-                    document.getElementById('razon-Dia').innerText = 'Fecha: '+fechaCita;
-                    document.getElementById('razon-Hora').innerText = 'Hora:'+horaCita+':00';
-                    document.getElementById('razon-Dia-Finalizar').innerText = 'Fecha: '+fechaCita;
-                    document.getElementById('razon-Hora-Finalizar').innerText = 'Hora:'+horaCita+':00';
-                    document.getElementById('razon-Dia-Suspender').innerText = 'Fecha: '+fechaCita;
-                    document.getElementById('razon-Hora-Suspender').innerText = 'Hora:'+horaCita+':00';
+        
+        function mostrarInformacionDelAlumnoConCitaReservada(){
+            var celdas_P = document.getElementsByClassName("celdaP")
+            console.log('Celdas P mostrandose en la rutina 8')
+            console.log(celdas_P)
+            for(let i = 0; i < celdas_P.length; i++){
+                console.log('Se muestra cada casilla')
+                celdas_P[i].dataset.numero = i;
                 
-                    //Mostrar y ocultar la ventana de informacion cuando sea necesario
-                    //ShowDialogAll('dialogInformacionCita','blur','blurBackground')
-                    showModalDialog('dialogInformacionCita')
+                celdas_P[i].onclick = function() {
+                    console.log('Se dio click en una casilla azul')
+                    //Restringir que al clickear otras celdas no pase nada
+                    if (celdas_P[i].classList[2] == 'pintarAzul' | celdas_P[i].classList[3] == 'pintarAzul'){
+                        console.log('---')
 
+                        //Obtener id de celda clickeada
+                        var codCeldaClickeada = celdas_P[i].classList;
+
+                        //Comparar con las los valores de las citas confirmadas
+                        for(var j = 0; j < InformacionCitasConfirmadas.length; j++){
+                            if(InformacionCitasConfirmadas[j][8] == codCeldaClickeada[1]){
+                                //Obtener los valores que necesitamos
+                                var name = InformacionCitasConfirmadas[j][0]
+                                var apellido = InformacionCitasConfirmadas[j][1]
+                                var razonTuto = InformacionCitasConfirmadas[j][4]
+                                var horaCita = InformacionCitasConfirmadas[j][5]
+                                var fechaCita = InformacionCitasConfirmadas[j][3]
+                            }
+                        }
+
+                        //Mostrar el que si corresponde
+                        document.getElementById("nombres").value = name;
+                        document.getElementById("apellidos").value = apellido;
+                        document.getElementById("razon").value = razonTuto;
+                        document.getElementById('razon-Dia').innerText = 'Fecha: '+fechaCita;
+                        document.getElementById('razon-Hora').innerText = 'Hora:'+horaCita+':00';
+                        document.getElementById('razon-Dia-Finalizar').innerText = 'Fecha: '+fechaCita;
+                        document.getElementById('razon-Hora-Finalizar').innerText = 'Hora:'+horaCita+':00';
+                        document.getElementById('razon-Dia-Suspender').innerText = 'Fecha: '+fechaCita;
+                        document.getElementById('razon-Hora-Suspender').innerText = 'Hora:'+horaCita+':00';
+                    
+                        //Mostrar y ocultar la ventana de informacion cuando sea necesario
+                        //ShowDialogAll('dialogInformacionCita','blur','blurBackground')
+                        showModalDialog('dialogInformacionCita')
+
+                    }
                 }
             }
         }
+
+        mostrarInformacionDelAlumnoConCitaReservada()
+        
     </script>
     <script src="./scripts/scroll.js"></script>
 </body>

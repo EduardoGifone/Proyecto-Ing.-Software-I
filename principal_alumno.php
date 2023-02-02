@@ -261,9 +261,7 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
             let horaFin = datosHorario[2];
             let dia = datosHorario[0];
             var codAlumno = '<?php echo $alumno_codigo;?>';
-            console.log('cod Alumno : '+codAlumno)
             var razon =  document.getElementById("razon").value;
-            console.log('Aqui viene la razon')
             //Obtener parametros para la peticion
             var parametros = {
                 "horaInicio" : horaInicio,
@@ -287,7 +285,7 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
             })
 
             //cerrar la ventana de realizar una solicitud y volver a la pantalla principal
-            console.log('llego hasta aqui, ya casi a cerrar')
+            //console.log('llego hasta aqui, ya casi a cerrar')
             hideModalDialog('dialog')
             //Se despintaran las casillas que no sea una verde
             DespintarDemasCasillas()
