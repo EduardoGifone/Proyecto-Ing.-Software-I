@@ -823,6 +823,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             </tr>
         </table>
         <button href="#" class="boton_horario" id="BtnActualizar">Actualizar</button>
+        <button class="botonCerrar cerrarHorarioActualizar" onclick="hideModalDialog('dialog')">x</button>
 </dialog>
 
     <!-- Interfaz de notificaciones -->
@@ -863,7 +864,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         }
         ?>
         </div>
-        <button class="botonCerrar" onclick="hideModalDialog('dialogNoti')">x</button>
+        <button class="botonCerrar cerrarNotificaciones" onclick="hideModalDialog('dialogNoti')">x</button>
     </dialog>
     <!--</section> -->
   
@@ -891,6 +892,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 <button type="button" class="button button--red button--suspender" id="button--suspender" onclick="Suspender()" type="submit">Suspender</button>
             </div>
         </form>
+        <button class="botonCerrar informacionTutoria" onclick="hideModalDialog('dialogInformacionCita')">x</button>
     </dialog>
 
     <!-- Interfaz de finalizar una cita -->

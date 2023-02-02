@@ -265,3 +265,33 @@ section.horario__principal a.pintarAmarillo{
 #razonTutoria.noEscribir {
     pointer-events: none;
 }   
+
+
+/* Botones para cerrar la ventana dialog */
+/* Estilos para el boton de cerrar la ventana de actualizar */
+.horario__actualizar .botonCerrar {
+    position: absolute;
+    background-color: red;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 0;
+    color: white;
+
+    height: 25px;
+    width: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.horario__actualizar .botonCerrar.cerrarHorarioActualizar {
+    top: 12px;
+    right: 12px;
+}
+
+.botonCerrar.informacionTutoria {
+    top: 6px;
+    right: 6px;
+}

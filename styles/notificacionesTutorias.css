@@ -45,16 +45,20 @@ body {
     height: 80%;
 }
 
+/*.horario__actualizar .botonCerrar,*/
 .botonCerrar {
     position: absolute;
     background-color: red;
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    top: 10px;
-    left: 255px;
     height: 25px;
     width: 25px;
+}
+
+.botonCerrar.cerrarNotificaciones {
+    top: 10px;
+    left: 255px;
 }
 
 /* Disenio a la interfaz general de citas */ 
