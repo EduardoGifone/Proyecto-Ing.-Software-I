@@ -10,6 +10,7 @@ include 'config.php';
 // Obtener el codigo del tutor
 $id_tutor = $_SESSION['codigo'];
 
+// COMPONENTE : obtener citas de la BD del tutor usaurio
 //Obtener todas las citas que tuvo el tutor
 $consulta = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$id_tutor'";
 $resultadoConsulta = mysqli_query($conexion, $consulta);
@@ -47,6 +48,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/archivados_style.css">
+    <link rel="stylesheet" href="styles/dialogShowAndHide.css">
 </head>
 <body>
     <!-- Contenedor de nav -->
@@ -98,6 +100,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
         <!-- Contenedor de archivados -->
         <section class="container">
         <?php
+        //COMPONENTE : Mostrar historia de cita
         $i = 0;
         if(count($InformacionTodasCitas) > 0){
             foreach($InformacionTodasCitas as &$InformacionCita){
@@ -137,6 +140,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
         ?>
         </section>
 
+        <!-- COMPONENTE : Mostrar informacion de la cita -->
         <dialog id="informacionCitaArchivada">
             <form action="" class="razon_tutoria" id="informacion_tutoria">
                 <div class="razon__fecha_hora">
@@ -162,7 +166,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
 
     <script src="./scripts/scroll.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-
+    <script src="./scripts/dialogShowAndHide.js"></script>
     <!-- Mostrar la informacion adicional de la sesion requerida -->
     <script>
         function actualizarInformacionCitaArchivada(codigoAlumno, fecha, horaInicio){
@@ -193,8 +197,6 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
 
     <!-- abrir detalles de la sesion requerida -->
     <script>
-
-
         const ventanaInformacion = document.querySelector("#informacionCitaArchivada")
         const btnAbrir = document.querySelector("#btnOpen")
         const btnCerrar = document.querySelector("#btnClose")

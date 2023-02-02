@@ -36,6 +36,7 @@ function getLastSunday(){
     //Retornar fecha del último domingo
     return $fechaUltimoDomingo;
 }
+
 //Función para actualizar citas sin responder que pertenezcan a la anterior semana
 function actualizarCitasSinResponder($codTutor){
     include "config.php";
@@ -63,19 +64,6 @@ function actualizarCitasSinResponder($codTutor){
     }
 }
 
-//-----------------------------------------------------------------------------------------------------
-// Obtener el codigo del tutor
-$id_tutor = $_SESSION['codigo'];
-//Actualizar citas confirmadas pertenecientes a la anterior semana
-actualizarCitasSinResponder($id_tutor);
-
-$consulta = "SELECT * FROM disponibilidad WHERE codigoTutor = '$id_tutor'";
-$resultadoConsulta = mysqli_query($conexion, $consulta);
-$filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
-
-//para almacenar los codigos de las disponibilidades
-$disponibilidades = [];
-
 //Diccionario para obtener los codigos de un dia en espaniol
 $Dias = array(
     "Lunes" => "LU",
@@ -98,6 +86,23 @@ $Days = array(
     "Sunday" => "DO"
 
 );
+
+//-----------------------------------------------------------------------------------------------------
+
+//COMPONENTE : Obtener disponibilidades de DB
+
+// Obtener el codigo del tutor
+$id_tutor = $_SESSION['codigo'];
+//Actualizar citas confirmadas pertenecientes a la anterior semana
+actualizarCitasSinResponder($id_tutor);
+
+$consulta = "SELECT * FROM disponibilidad WHERE codigoTutor = '$id_tutor'";
+$resultadoConsulta = mysqli_query($conexion, $consulta);
+$filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
+
+//para almacenar los codigos de las disponibilidades
+$disponibilidades = [];
+
 //Obtener el codigo de las casillas de las disponibilidades
 if($filasdisponibilidad > 0){
     while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
@@ -115,7 +120,11 @@ if($filasdisponibilidad > 0){
 // var_dump($disponibilidades);
 
 
+
+
 // MOSTRAR LA INTERFAZ DE NOTIFICACIONES : SUBRUTINA 1
+
+//COMPONENTE : Obtener citas pendientes de la BD
 $consulta = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE codigoTutor = '$id_tutor' AND estado = 'PENDIENTE'";
 $resConCitasPendientes = mysqli_query($conexion, $consulta);
 $filasCitas = mysqli_num_rows($resConCitasPendientes);
@@ -137,6 +146,8 @@ while($datosDisp = mysqli_fetch_assoc($resConCitasPendientes)){
 
     array_push($InformacionCitasPendientes,$InformacionCitasPendiente);
 }
+
+
 
 // RUTINA 4 : Actualizar horario del tutor después de confirmar una cita
 
@@ -225,6 +236,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
     <link rel="stylesheet" href="styles/principal_tutor_stylesV2.css">
     <link rel="stylesheet" href="styles/notificacionesTutorias.css">
     <link rel="stylesheet" href="styles/razon_tutoria_style.css">
+    <link rel="stylesheet" href="styles/dialogShowAndHide.css">
 </head>
 <body id="blurBackground" class="principal_tutor">
     <div id="blur">
@@ -232,7 +244,8 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             <section class="navegacionGeneral">
                 <!-- Links supeiores para notificacion, usuario y salir -->
                 <header class="first_navegation">
-                    <a href="#" onclick="efectoBlurANotificacion('dialogNoti','blur','blurBackground')">
+                    <!--<a href="#" onclick="efectoBlurANotificacion('dialogNoti','blur','blurBackground')"> -->
+                        <a href="#" onclick="showModalDialog('dialogNoti')">
                         <img src="images/notificacion.png" alt="logo">
                     </a>
                     <div>
@@ -543,11 +556,12 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                     </td>
                 </tr>
             </table>
-            <button href="#" onclick="ShowDialogAll('dialog','blur','blurBackground')" class="boton_horario">Actualizar horario</button>
+            <!-- <button href="#" onclick="ShowDialogAll('dialog','blur','blurBackground')" class="boton_horario">Actualizar horario</button> -->
+            <button href="#" onclick="showModalDialog('dialog')" class="boton_horario">Actualizar horario</button>
         </section>
     </div>
     <!-- Tabla para cambiar la disponibilidad -->
-    <section class="horario__actualizar" id="dialog">
+    <dialog class="horario__actualizar" id="dialog">
         <table border="1" class="tabla__horario">
             <tr>
                 <th class="encabezado">HORAS</th>
@@ -809,46 +823,53 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
             </tr>
         </table>
         <button href="#" class="boton_horario" id="BtnActualizar">Actualizar</button>
-    </section>
+</dialog>
 
     <!-- Interfaz de notificaciones -->
-    <div class="notificacionesCita" id="dialogNoti">
-    <!-- // MOSTRAR LA INTERFAZ DE NOTIFICACIONES : SUBRUTINA 1 -->
-    <?php
-    $i = 0;
-    foreach($InformacionCitasPendientes as &$InformacionPendiente){
-        $nombreAlumno = $InformacionPendiente[0];
-        $apellidoAlumno = $InformacionPendiente[1];
-        $codigoAlumno = $InformacionPendiente[2];
-        $fecha = $InformacionPendiente[3];
-        $razon = $InformacionPendiente[4];
-        $horaInicio = $InformacionPendiente[5];
-        $horaFin = $InformacionPendiente[6];
+    <!-- <section class="notificaciones">-->
+    <dialog class="notificaciones-container" id="dialogNoti"> 
+        <div class="notificacionesCita" id='contenedorNoifCitas'>
+        <!-- // MOSTRAR LA INTERFAZ DE NOTIFICACIONES : SUBRUTINA 1 -->
+        <?php
+        // COMPONENTE : mostrar solicitud de cita
+        $i = 0;
+        foreach($InformacionCitasPendientes as &$InformacionPendiente){
+            $nombreAlumno = $InformacionPendiente[0];
+            $apellidoAlumno = $InformacionPendiente[1];
+            $codigoAlumno = $InformacionPendiente[2];
+            $fecha = $InformacionPendiente[3];
+            $razon = $InformacionPendiente[4];
+            $horaInicio = $InformacionPendiente[5];
+            $horaFin = $InformacionPendiente[6];
 
-        print "<div class='notificacionCita $fecha $horaInicio $i' id = '$i'>
-                    <div class='fechaHora'>
-                        <p class='fecha'>Fecha '$fecha'</p>
-                        <p class='hora'>Hora: $horaInicio:00</p>
-                    </div>
-                    <div class='nombreTutorado'>
-                        <p>$nombreAlumno $apellidoAlumno</p>
-                    </div>
-                    <div class='razonTutoria'>
-                        <p>$razon</p>
-                    </div>
-                    <div class='botones'>
-                        <button class='boton btn_izq' onclick='responderCita($codigoAlumno, `$fecha`, $horaInicio, $i, 1)'>Aceptar</button>
-                        <button class='boton btn_der' onclick='responderCita($codigoAlumno, `$fecha`, $horaInicio, $i, 0)'>No aceptar</button>
-                    </div>
-                </div>";
-        //echo '<hr>';
-        $i++;
-    }
-    ?>
-    </div>
+            print "<div class='notificacionCita $fecha $horaInicio $i' id = '$i'>
+                        <div class='fechaHora'>
+                            <p class='fecha'>Fecha '$fecha'</p>
+                            <p class='hora'>Hora: $horaInicio:00</p>
+                        </div>
+                        <div class='nombreTutorado'>
+                            <p>$nombreAlumno $apellidoAlumno</p>
+                        </div>
+                        <div class='razonTutoria'>
+                            <p>$razon</p>
+                        </div>
+                        <div class='botones'>
+                            <button class='boton btn_izq' onclick='responderCita($codigoAlumno, `$fecha`, $horaInicio, $i, 1)'>Aceptar</button>
+                            <button class='boton btn_der' onclick='responderCita($codigoAlumno, `$fecha`, $horaInicio, $i, 0)'>No aceptar</button>
+                        </div>
+                    </div>";
+            //echo '<hr>';
+            $i++;
+        }
+        ?>
+        </div>
+        <button class="botonCerrar" onclick="hideModalDialog('dialogNoti')">x</button>
+    </dialog>
+    <!--</section> -->
   
+    <!-- COMPONENTE : ver informacion cita -->
     <!-- Interfaz de informacion de la cita -->
-    <section class="formulario" id="dialogInformacionCita">
+    <dialog class="formulario" id="dialogInformacionCita">
         <form action="" class="razon_tutoria">
             <div class="razon__fecha_hora">
                 <p class="razon__txt" id="razon-Dia">Fecha: 28/01/23</p>
@@ -870,10 +891,10 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 <button type="button" class="button button--red button--suspender" id="button--suspender" onclick="Suspender()" type="submit">Suspender</button>
             </div>
         </form>
-    </section>
+    </dialog>
 
     <!-- Interfaz de finalizar una cita -->
-    <section class="formulario dialogSuspOTerminar" id="dialogTerminar">
+    <dialog class="formulario dialogSuspOTerminar" id="dialogTerminar">
         <form action="" class="razon_tutoria">
             <div class="razon__fecha_hora">
                 <p class="razon__txt" id="razon-Dia-Finalizar">Fecha: 28/01/23</p>
@@ -891,10 +912,10 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 <button class="button button--red" onclick="cancelar('dialogTerminar')" type="button">Cancelar</button>
             </div>
         </form>
-    </section>
+    </dialog>
 
     <!-- Interfaz de suspender una cita -->
-    <section class="formulario dialogSuspOTerminar" id="dialogSuspender">
+    <dialog class="formulario dialogSuspOTerminar" id="dialogSuspender">
         <form action="" class="razon_tutoria">
             <div class="razon__fecha_hora">
                 <p class="razon__txt" id="razon-Dia-Suspender">Fecha: 28/01/23</p>
@@ -909,8 +930,9 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 <button class="button button--red" onclick="cancelar('dialogSuspender')" type="button">Cancelar</button>
             </div>
         </form>
-    </section>
+    </dialog>
 
+    <script src="./scripts/dialogShowAndHide.js"></script>
     <script src="scripts/navegacion.js"></script>
     <script src="scripts/popup.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -952,9 +974,10 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         // RUTINA 10 : CONCLUIR UNA CITA
 
         function Finalizar() {
-            closeDialogAll('dialogInformacionCita','blur','blurBackground')
-            ShowDialogAll('dialogTerminar','blur','blurBackground');
-
+            //closeDialogAll('dialogInformacionCita','blur','blurBackground')
+            hideModalDialog('dialogInformacionCita')
+            //ShowDialogAll('dialogTerminar','blur','blurBackground');
+            showModalDialog('dialogTerminar')
             //Predeterminar el checkbox de concluido como marcado
             var checkbox1 = document.getElementById("concluido");
             checkbox1.value = true;
@@ -985,6 +1008,8 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 observacion.value = ''
             } 
         }
+
+        //COMPONENTE : actualizar estado de cita en la BD a finalizado o NP
 
         function TerminarCitaTutoria(){
             console.log('Estoy terminando una cita')
@@ -1027,7 +1052,8 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 })
 
                 //cerrar la ventana
-                closeDialogAll('dialogTerminar','blur','blurBackground')
+                //closeDialogAll('dialogTerminar','blur','blurBackground')
+                hideModalDialog('dialogTerminar');
             }
         }
 
@@ -1035,10 +1061,13 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         // RUTINA 9 : SUSPENDER UNA CITA
 
         function Suspender() {
-            closeDialogAll('dialogInformacionCita','blur','blurBackground')
-            ShowDialogAll('dialogSuspender','blur','blurBackground');
+            //closeDialogAll('dialogInformacionCita','blur','blurBackground')
+            hideModalDialog('dialogInformacionCita');
+            //ShowDialogAll('dialogSuspender','blur','blurBackground');
+            showModalDialog('dialogSuspender');
         }
 
+        // COMPONENTE: actualizar estado de cita en la BD a suspendido
         function SuspenderCitaTutoria() {
             console.log('Estoy suspendiendo una cita')
 
@@ -1066,16 +1095,19 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 console.log(res);
             })
 
-            closeDialogAll('dialogSuspender','blur','blurBackground')
+            //closeDialogAll('dialogSuspender','blur','blurBackground')
+            hideModalDialog('dialogSuspender');
         }
         
         function cancelar(idConenedor) {
-            closeDialogAll(idConenedor,'blur','blurBackground')
+            //closeDialogAll(idConenedor,'blur','blurBackground')
+            hideModalDialog(idConenedor);
+
         }
-        
     </script>
 
-    <!-- Pintar todas las casillas de disponibilidad -->
+    
+    <!-- COMPONENTE : Pintar todas las casillas de disponibilidad -->
     <script>
         var arregloEnJson = '<?php echo json_encode($disponibilidades);?>';
         var ACodDisp = JSON.parse(arregloEnJson);
@@ -1117,9 +1149,11 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
 
         // ACEPTAR UNA CITA : RUTINA 2 y 3
         //1 : Aceptar, 0 : No aceptar
+
+        // COMPONENTE : Responder solicitud (aceptar o rechazar)
         function responderCita(codigoAlumno, fecha, horaInicio, idSolicitud, numRespuesta){
             var solicitud = document.getElementById(idSolicitud);
-            solicitud.classList.add('noMostrar')
+            // -- solicitud.classList.add('noMostrar')
             //revisarOtrasCitasEnMismaHora(fecha, horaInicio)
 
             var respuesta = 'Rechazado';
@@ -1135,6 +1169,8 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 "horaInicio" : horaInicio,
                 "respuesta" : respuesta
             };
+
+            // INTERFAZ : Enviar datos de estado de respuesta para cita
             //Llamar al backend
             $.ajax({
                 data: parametros,
@@ -1144,7 +1180,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                         $('#mostrar').html(mensaje_mostrar);
                     }*/
                 success: function(solicitudesCitas){
-                    $('#dialogNoti').html(solicitudesCitas);
+                    $('#contenedorNoifCitas').html(solicitudesCitas);
                 }
             }).done(function(res){
                 console.log(res);
@@ -1160,12 +1196,15 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         console.log('Citas confirmadas')
         console.log(InformacionCitasConfirmadas)
 
+        // COMPONENTE : Pintar casillas de citas aceptadas 
         for(let i = 0; i < InformacionCitasConfirmadas.length; i++){
             var celda = document.getElementById(InformacionCitasConfirmadas[i][8]);
             celda.classList.add("pintarAzul");
         }
 
         // RUTINA 8 : Mostrar informacion del alumno al hacer click en una casilla azul
+        
+        // COMPONENTE : ver información de la cita
         var celdas_P = document.getElementsByClassName("celdaP")
         console.log('Celdas P mostrandose en la rutina 8')
         console.log(celdas_P)
@@ -1206,7 +1245,8 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                     document.getElementById('razon-Hora-Suspender').innerText = 'Hora:'+horaCita+':00';
                 
                     //Mostrar y ocultar la ventana de informacion cuando sea necesario
-                    ShowDialogAll('dialogInformacionCita','blur','blurBackground')
+                    //ShowDialogAll('dialogInformacionCita','blur','blurBackground')
+                    showModalDialog('dialogInformacionCita')
 
                 }
             }

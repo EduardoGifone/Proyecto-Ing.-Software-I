@@ -76,21 +76,21 @@
 
 /* horario actualizar */
 /*section.formulario,*/
-section.horario__actualizar {
+.horario__actualizar {
     background-color: var(--grisClaro);
     border-radius: 10px;
     padding: 0 50px;
-    position: fixed;
+    /*position: fixed;*/
     left: 50%;
     top: 50%;
     margin-left: -587px;
     margin-top: -341.5px;
-    visibility: hidden; 
-    opacity: 0; 
+    /*visibility: hidden; 
+    opacity: 0; */
     transition: 0.5s;
 }
 
-section.horario__actualizar .boton_horario{
+.horario__actualizar .boton_horario{
     margin-top: -2rem;
     margin-bottom: 4rem;
 }
@@ -100,7 +100,7 @@ no me lo permite asi que le quito el evento */
 
 /* Si tiene algun color entonces si se le da el evento*/
 /* estp para que no se recargue la pagina */
-section a{
+dialog a{
     pointer-events: none;
 }
 
@@ -172,24 +172,28 @@ section.horario__principal a.pintarAmarillo{
 }
 
 
-section.horario__actualizar a:hover {
+.horario__actualizar a:hover {
     background-color: red;
 }
 
-section.horario__principal a.pintarAmarillo,
-section.horario__actualizar a.pintarAmarillo {
+.horario__principal a.pintarAmarillo,
+.horario__actualizar a.pintarAmarillo {
     background-color: var(--amarilloCrema);
 }
 
-section.horario__principal a.pintarVerde,
-section.horario__actualizar a.pintarVerde {
+.horario__principal a.pintarVerde,
+.horario__actualizar a.pintarVerde {
     background-color: var(--verdeCrema);
 }
 
-section.horario__principal a.pintarAzul,
-section.horario__actualizar a.pintarAzul {
+.horario__principal a.pintarAzul,
+.horario__actualizar a.pintarAzul {
     background-color: var(--azulCrema);
     cursor: pointer;
+}
+
+.horario__principal a.despintar {
+    background-color: var(--grisClaro);
 }
 
 /* LEYENDA DE COLORES */

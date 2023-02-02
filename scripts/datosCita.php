@@ -38,6 +38,7 @@ else if ($diference == 0){   //El día es hoy
 }
 if ($var){
     //-----------------------Enviar reserva a la base de datos-----------------------
+    // COMPONENTE : Crear una cita en estado pendiente en DB
     $fecha = date_create();
     date_add($fecha, date_interval_create_from_date_string($diference." days"));
     $newDate = date_format($fecha,"Y-m-d");
@@ -47,7 +48,7 @@ if ($var){
     $consulta = "INSERT INTO cita values('$newDate','$horaInicio','$horaFin','$codigo','PENDIENTE','$razon',null)";
     //Ejecutar consulta
     if (mysqli_query($conexion, $consulta)){
-        echo "Cita reservada ";
+        echo "Se reservo la cita";
     }
     else{
         echo "Error en Mysql";

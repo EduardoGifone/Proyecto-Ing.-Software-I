@@ -51,29 +51,38 @@ const efectoBlurANotificacion = (contenedor,Blur, BlurBackground) => {
     }
 }
 
+/*
 // Para cerrar al dar en un campo que no sea el contenedor dado
 window.addEventListener('click', function(e){
     var notif = document.getElementById('dialogNotiAlumno')
     if (notif.classList[1] == 'show'){
         if (notif.contains(e.target)){
+            console.log('click adentro')
         } else{
-            closeDialogAll('dialogNotiAlumno','blurA','blurBackgroundA')
+            //closeDialogAll('dialogNotiAlumno','blurA','blurBackgroundA')
+            console.log('Click afuera')
+            hideModalDialog('dialogNoti');
         }
     }   
 })
+*/
 
-
+/*
 window.addEventListener('click', function(e){
     var notif = document.getElementById('dialogNoti')
-    if (notif.classList[1] == 'show'){
+    //if (notif.classList[1] == 'show'){
+    if (notif.classList[1] == 'mostrarModal'){
+        console.log('Ingreso al event listener')
         if (notif.contains(e.target)){
         } else{
-            closeDialogAll('dialogNoti','blur','blurBackground')
+            //closeDialogAll('dialogNoti','blur','blurBackground')
+            hideModalDialog('dialogNoti');
         }
     }   
 })
+*/
 
-
+/*
 window.addEventListener('click', function(e){
     var notif = document.getElementById('dialogInformacionCita')
     if (notif.classList[1] == 'show'){
@@ -83,7 +92,7 @@ window.addEventListener('click', function(e){
         }
     }   
 })
-
+*/
 // Permitir que la pantalla se reajuste como se deba
 window.addEventListener('scroll', () => {
     document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}px`);
