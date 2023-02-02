@@ -280,12 +280,13 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
                 url: 'scripts/datosCita.php',
                 type: 'POST',
                 success: function(mensaje_mostrar){
-                        $('#mostrar').html(mensaje_mostrar);
-                    }
-            }).done(function(res){
-                console.log(res);
+                        //alert(mensaje_mostrar);
+                    },
+                error: function(){
+                    //alert("Ocurrio un error")
+                }
             })
-
+                    
             //cerrar la ventana de realizar una solicitud y volver a la pantalla principal
             console.log('llego hasta aqui, ya casi a cerrar')
             hideModalDialog('dialog')
