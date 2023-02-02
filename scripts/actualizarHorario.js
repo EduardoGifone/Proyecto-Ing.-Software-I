@@ -1,3 +1,5 @@
+// COMPONENTE : Seleccionar casillas de disponibilidad
+
 // Pintar y despintar de amarillo los casilleros a conveniencia
 // cada vez que el tutor de click en la casilla que requiera
 var celdas = document.getElementsByClassName("celda")
@@ -45,10 +47,16 @@ btnActualizar.onclick = function() {
             }
         } 
     }
-    closeDialogAll('dialog','blur','blurBackground');
+    //closeDialogAll('dialog','blur','blurBackground');
+    hideModalDialog('dialog');
+
     //console.log(arrayHorariosDisp)
     //Llamar a la funcion para ['MI10-11','JU14-15'] -> [[Miercoles,10,11],[Jueves,14,15]]
     const dispoMejorFormat = dividirArrayDisponibilidades(arrayHorariosDisp);
+
+    
+    //COMPONENTE : Enviar datos de disponibilidad para actualizar BD
+
     // Hacer la peticion ajax
     var parametros = {
         "disponibilidades": dispoMejorFormat

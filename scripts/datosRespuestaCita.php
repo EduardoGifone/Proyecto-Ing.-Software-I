@@ -31,6 +31,7 @@ function getMonthName($fechats){
         case 12: return "Diciembre"; break;
     }
 }
+
 //Obtener informacion de la peticion ajax
 $codigoAlumno = $_POST["codigoAlumno"];
 $fecha = $_POST["fecha"];
@@ -40,6 +41,9 @@ $fechaTs = strtotime($fecha);   //Obtener timestap de la fecha de solicitud de t
 $codigoTutor = $_SESSION["codigo"];
 //Obtener día de tutoria
 $diaTutoria = getDayName($fechaTs);
+
+
+// COMPONENTE : actualizar estado de cita en la BD  
 //Generar respuesta: si el envío de ajax es "aceptado" a este se asigna "confirmado", caso contrario "rechazado"
 $respuesta = strtolower($_POST["respuesta"]) == "aceptado" ? "Confirmado":"Rechazado";   //Aceptado o Rechazado
 //-------------------------Actualizar estado en la base de datos-------------------------
@@ -65,21 +69,12 @@ if (strtolower($respuesta) == "confirmado"){
             mysqli_query($conexion, $consulta);
         }
     }
+
+    // COMPONENTE : actualizar estado de disponibilidad a ocupado
     //Marcar hora en el horario del tutor como "ocupado"
     $consultaActualizacionHorarioTutor = "UPDATE disponibilidad Set estado='ocupado' where codigoTutor='$codigoTutor' and dia='$diaTutoria' and horaInicio='$horaInicio'";
     mysqli_query($conexion, $consultaActualizacionHorarioTutor);
 }
-// Obtener fecha y hora actual 
-date_default_timezone_set('America/Lima');
-$fechaCreacionNotificacion = date('Y-m-d H:i');    //(numberDay, day, month, year, hour, minute)
-//Crear notificación para el alumno 
-$diaCita = date("d", $fechaTs) + 1;
-$nombreMesCita = getMonthName($fechaTs);
-$respuestaNotificacion = $respuesta == "Confirmado" ? "aceptada": "rechazada";
-$asuntoNotificacion = $respuesta;
-$mensajeNotificacionAlumno = "Tu solicitud de tutoría para el día ".$diaTutoria." ".$diaCita." de ".$nombreMesCita." a las ".$horaInicio." horas fue ".$respuestaNotificacion;
-$consultaCrearNotificacionAlumno = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, asunto, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionAlumno', '$asuntoNotificacion', 'No')";
-mysqli_query($conexion, $consultaCrearNotificacionAlumno);
 
 //Devolver las solicitudes de cita que se deberian mostrar realmente
 //------------------------------------------------------------------
@@ -121,6 +116,19 @@ while($datosDisp = mysqli_fetch_assoc($resConCitasPendientes)){
     //echo '<hr>';
     $i++;
 }
+
+// COMPONENTE : Crear notificacion para el alumno
+// Obtener fecha y hora actual 
+date_default_timezone_set('America/Lima');
+$fechaCreacionNotificacion = date('Y-m-d H:i');    //(numberDay, day, month, year, hour, minute)
+//Crear notificación para el alumno 
+$diaCita = date("d", $fechaTs) + 1;
+$nombreMesCita = getMonthName($fechaTs);
+$respuestaNotificacion = $respuesta == "Confirmado" ? "aceptada": "rechazada";
+$asuntoNotificacion = $respuesta;
+$mensajeNotificacionAlumno = "Tu solicitud de tutoría para el día ".$diaTutoria." ".$diaCita." de ".$nombreMesCita." a las ".$horaInicio." horas fue ".$respuestaNotificacion;
+$consultaCrearNotificacionAlumno = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, asunto, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionAlumno', '$asuntoNotificacion', 'No')";
+mysqli_query($conexion, $consultaCrearNotificacionAlumno);
 
 //echo $mensajeNotificacionAlumno;
 // echo "El alumno ".$codigoAlumno." con cita pendiente el ".$fecha." a las ".$horaInicio.":00 "." tiene ahora la cita en estado ".$respuesta;

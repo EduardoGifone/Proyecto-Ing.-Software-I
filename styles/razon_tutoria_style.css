@@ -6,8 +6,8 @@
 
 
 
-section.formulario  {
-    display: flex;
+.formulario  {
+    /*display: flex;*/
     position: fixed;
     top: 50%;
     left: 50%;
@@ -16,6 +16,7 @@ section.formulario  {
     justify-content: center;
     align-items: center;
     background-color: white;
+    border-radius: 10px;
 }
 
 .razon_tutoria {
@@ -92,9 +93,9 @@ select:focus {
 /* RUTINA 8:  SECCION PARA MOSTRAR INFORMACION DEL ALUMNO AL TUTOR */
 
 /* Ocultar la informacion de la tutoria */
-.formulario {
+/*.formulario {
     visibility: hidden;
-}
+}*/
 
 /* Evitar que se escriba algo */ 
 #dialogInformacionCita #razon {

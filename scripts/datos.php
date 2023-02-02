@@ -1,5 +1,8 @@
 <?php
 
+// ACTUALIZAR DISPONIBILIDAD EN BD
+// -------------------------------
+
 include '../config.php';
 session_start();
 
