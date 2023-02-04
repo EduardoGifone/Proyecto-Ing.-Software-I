@@ -100,6 +100,11 @@ no me lo permite asi que le quito el evento */
 
 /* Si tiene algun color entonces si se le da el evento*/
 /* estp para que no se recargue la pagina */
+section a,
+dialog a{
+    pointer-events: none;
+}
+
 dialog a{
     pointer-events: none;
 }

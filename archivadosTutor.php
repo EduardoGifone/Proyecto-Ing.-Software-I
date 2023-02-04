@@ -57,7 +57,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
         <section class="navegacionGeneral">
             <header class="first_navegation">
                 <a href="#" onclick="efectoBlurANotificacion()">
-                    <img src="images/notificacion.png" alt="logo">
+                    <!-- <img src="images/notificacion.png" alt="logo"> -->
                 </a>
                 <div>
                     <a href="" class="esp_Der">

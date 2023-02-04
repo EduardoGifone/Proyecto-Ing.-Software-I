@@ -15,9 +15,14 @@ dialog {
   
   dialog::backdrop {
     /*background-color: rgba(0, 0, 0, 0.6);*/
-    animation: fadein .5s forwards;
+    animation: fadeinPerfil .5s forwards;
     transition: .5s;
     backdrop-filter: blur(5px);
+  }
+
+  dialog::backdrop.perfil {
+    animation: fadeinPerfil .5s forwards;
+    transition: .5s;
   }
   
   dialog.close[open] {
@@ -26,6 +31,10 @@ dialog {
   
   dialog.close::backdrop {
     animation: fadeout .5s forwards;
+  }
+
+  dialog.perfil::backdrop.close {
+    animation: fadeoutPerfil .5s forwards;
   }
   
   @keyframes fadein {
@@ -37,11 +46,29 @@ dialog {
       backdrop-filter: blur(5px);
     }
   }
+
+  @keyframes fadeinPerfil {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
   
   @keyframes fadeout {
     from {
       opacity: 1;
       backdrop-filter: blur(5px);
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fadeoutPerfil {
+    from {
+      opacity: 1;
     }
     to {
       opacity: 0;

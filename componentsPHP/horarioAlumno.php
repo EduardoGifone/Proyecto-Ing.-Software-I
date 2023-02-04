@@ -18,7 +18,7 @@ if($filasCitasDisponibles){
         $horaInicio = $citaAlumno["horaInicio"];  
         $horaFin = $citaAlumno["horaFin"];  
         $estado = $citaAlumno["estado"];
-        //echo "<p>$fechaConsulta</p>";
+        //echo "<p>$estado</p>";
     }
 }
 

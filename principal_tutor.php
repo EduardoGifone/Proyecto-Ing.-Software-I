@@ -237,6 +237,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
     <link rel="stylesheet" href="styles/notificacionesTutorias.css">
     <link rel="stylesheet" href="styles/razon_tutoria_style.css">
     <link rel="stylesheet" href="styles/dialogShowAndHide.css">
+    <link rel="stylesheet" href="styles/profile.css">
 </head>
 <body id="blurBackground" class="principal_tutor">
     <div id="blur">
@@ -249,7 +250,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                         <img src="images/notificacion.png" alt="logo">
                     </a>
                     <div>
-                        <a href="" class="esp_Der">
+                        <a href="#" class="esp_Der" onclick="showModalDialog('dialogPerfil')">
                             <img src="images/user.png" alt="">
                         </a>
                         <a href="destroySession.php">
@@ -934,6 +935,12 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         </form>
     </dialog>
 
+    <dialog class="perfil perfil-tutor" id="dialogPerfil">
+    <?php
+        include './componentsPHP/usuarioTutor.php';
+    ?>
+    </dialog>
+
     <script src="./scripts/dialogShowAndHide.js"></script>
     <script src="scripts/navegacion.js"></script>
     <script src="scripts/popup.js"></script>
@@ -948,7 +955,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         function obtenerInformacionNecesariaParaActualizarBD(razonDiaId,razonHoraId){
             var citasConfirmadasJson = '<?php echo json_encode($InformacionCitasConfirmadas);?>';
             var InformacionCitasConfirmadas = JSON.parse(citasConfirmadasJson);
-            //Obtener la informacion de dia y hora ya establecidos
+            //Obtener la informacion de dia y hora ya establecidos Hora: 8:00 pm
             var diaTutoria = document.getElementById(razonDiaId).innerText
             diaTutoria = diaTutoria.slice(7);
         
@@ -1127,27 +1134,6 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
         // MOSTRAR LA INTERFAZ DE NOTIFICACIONES : SUBRUTINA 1
         var citasPendientesJson = '<?php echo json_encode($InformacionCitasPendientes);?>'
         var InformacionCitasPendientes = JSON.parse(citasPendientesJson);
-
-        //En caso de que haya mas citas en la misma hora no mostrar una vez que se acepte a alguna
-        // Esto para evitar que se acepte otra en la misma hora, de todas formas al actualizar la
-        //pagina ya no tendria que haber otra solicitud ya que automatiamente se debio de marcar
-        //en no aceptada
-
-        /*
-        // por siaca ya que no sera necesario por ajax
-        function revisarOtrasCitasEnMismaHora(fecha, horaInicio){
-
-            var citasMostradas = document.getElementsByClassName('notificacionCita');
-            console.log(citasMostradas)
-            for(var i = 0; i < citasMostradas.length; i++){
-                console.log(citasMostradas[i].classList[1]+'  '+fecha)
-                console.log(citasMostradas[i].classList[2]+'  '+horaInicio)
-                if(citasMostradas[i].classList[1] == fecha & citasMostradas[i].classList[2] == horaInicio){
-                    var citaMostaraElem = document.getElementById(citasMostradas[i].classList[3]);
-                    citaMostaraElem.classList.add('noMostrar')
-                }
-            }
-        }*/
 
         // ACEPTAR UNA CITA : RUTINA 2 y 3
         //1 : Aceptar, 0 : No aceptar
