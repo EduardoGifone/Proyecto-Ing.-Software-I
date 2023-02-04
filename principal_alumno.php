@@ -73,7 +73,7 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
                             <img src="images/muro.png" alt="">
                             Muro
                         </a>
-                        <a href="archivados.html" id="seguimItem" class="alternativa" onclick="elegirPagina('seguimItem')">
+                        <a href="historialAlumno.php" id="seguimItem" class="alternativa" onclick="elegirPagina('seguimItem')">
                             <img src="images/descargar.png" alt="">
                             Historial
                         </a>
