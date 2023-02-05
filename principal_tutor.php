@@ -1212,7 +1212,8 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                         var codCeldaClickeada = celdas_P[i].classList;
 
                         //Comparar con las los valores de las citas confirmadas
-                        for(var j = 0; j < InformacionCitasConfirmadas.length; j++){
+                        var j = 0
+                        while(j < InformacionCitasConfirmadas.length){
                             if(InformacionCitasConfirmadas[j][8] == codCeldaClickeada[1]){
                                 //Obtener los valores que necesitamos
                                 var name = InformacionCitasConfirmadas[j][0]
@@ -1220,24 +1221,28 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                                 var razonTuto = InformacionCitasConfirmadas[j][4]
                                 var horaCita = InformacionCitasConfirmadas[j][5]
                                 var fechaCita = InformacionCitasConfirmadas[j][3]
+                            
+                                //Mostrar el que si corresponde
+                                document.getElementById("nombres").value = name;
+                                document.getElementById("apellidos").value = apellido;
+                                document.getElementById("razon").value = razonTuto;
+                                document.getElementById('razon-Dia').innerText = 'Fecha: '+fechaCita;
+                                document.getElementById('razon-Hora').innerText = 'Hora:'+horaCita+':00';
+                                document.getElementById('razon-Dia-Finalizar').innerText = 'Fecha: '+fechaCita;
+                                document.getElementById('razon-Hora-Finalizar').innerText = 'Hora:'+horaCita+':00';
+                                document.getElementById('razon-Dia-Suspender').innerText = 'Fecha: '+fechaCita;
+                                document.getElementById('razon-Hora-Suspender').innerText = 'Hora:'+horaCita+':00';
+                            
+                                //Mostrar y ocultar la ventana de informacion cuando sea necesario
+                                //ShowDialogAll('dialogInformacionCita','blur','blurBackground')
+                                showModalDialog('dialogInformacionCita')
+                                break;
                             }
+                            j++
                         }
-
-                        //Mostrar el que si corresponde
-                        document.getElementById("nombres").value = name;
-                        document.getElementById("apellidos").value = apellido;
-                        document.getElementById("razon").value = razonTuto;
-                        document.getElementById('razon-Dia').innerText = 'Fecha: '+fechaCita;
-                        document.getElementById('razon-Hora').innerText = 'Hora:'+horaCita+':00';
-                        document.getElementById('razon-Dia-Finalizar').innerText = 'Fecha: '+fechaCita;
-                        document.getElementById('razon-Hora-Finalizar').innerText = 'Hora:'+horaCita+':00';
-                        document.getElementById('razon-Dia-Suspender').innerText = 'Fecha: '+fechaCita;
-                        document.getElementById('razon-Hora-Suspender').innerText = 'Hora:'+horaCita+':00';
-                    
-                        //Mostrar y ocultar la ventana de informacion cuando sea necesario
-                        //ShowDialogAll('dialogInformacionCita','blur','blurBackground')
-                        showModalDialog('dialogInformacionCita')
-
+                        if(j == InformacionCitasConfirmadas.length){
+                            alert('No se pudo actualizar la informacion de la cita a reservar')
+                        }
                     }
                 }
             }
