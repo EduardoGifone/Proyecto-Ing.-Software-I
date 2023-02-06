@@ -17,7 +17,7 @@ $id_tutor = $_SESSION["codTutor"];  //obtener en base al alumno
 // RUTINA 5 : Actualizar horario del alumno despues de confirmar una cita
 // Primero colocar en RECHAZADO todas las citas que estan en pendiente pero 
 // que ya paso de fecha
-$consulta = "UPDATE cita SET estado = 'RECHAZADO' WHERE codigoAlumno = '$alumno_cod' AND fecha < NOW()";
+$consulta = "UPDATE cita SET estado = 'RECHAZADO' WHERE codigoAlumno = '$alumno_cod' AND estado='PENDIENTE' AND fecha < NOW()";
 mysqli_query($conexion,$consulta);
 
 //Mostrar la disponibilidad del tutor
