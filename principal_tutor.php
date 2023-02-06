@@ -266,7 +266,7 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                             <img src="images/tutoria.png" alt="">
                             Tutoria
                         </a>
-                        <a href="muroTutor.html" id="muroItem" class="alternativa" onclick="elegirPagina('muroItem')">
+                        <a href="muroTutor.php" id="muroItem" class="alternativa" onclick="elegirPagina('muroItem')">
                             <img src="images/muro.png" alt="">
                             Muro
                         </a>

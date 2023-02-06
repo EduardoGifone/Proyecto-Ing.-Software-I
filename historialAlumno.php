@@ -1,3 +1,19 @@
+<?php
+session_start();
+if (is_null($_SESSION["tipoUsuario"])){
+    header("location: login.html");
+}
+//Coneccion a la BD
+include 'config.php';
+
+// Obtener los datos del estudiante
+$alumno_cod = $_SESSION['codigo'];
+$alumno_nombre = $_SESSION['name'];
+$alumno_apellido = $_SESSION['surname'];
+$alumno_codigo = $_SESSION['codigo'];
+$id_tutor = $_SESSION["codTutor"];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +25,11 @@
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/archivados_style.css">
+    <link rel="stylesheet" href="styles/razon_tutoria_style.css">
+    <link rel="stylesheet" href="styles/dialogShowAndHide.css">
+    <link rel="stylesheet" href="styles/profile.css">
+    <link rel="stylesheet" href="styles/archivados_style.css">
+
 </head>
 <body>
     <!-- Contenedor de nav -->
@@ -20,7 +41,7 @@
                     <img src="images/notificacion.png" alt="logo">
                 </a>
                 <div>
-                    <a href="" class="esp_Der">
+                    <a href="#" class="esp_Der" onclick="showModalDialog('dialogPerfil')">
                         <img src="images/user.png" alt="">
                     </a>
                     <a href="destroySession.php">
@@ -35,7 +56,7 @@
                         <img src="images/tutoria.png" alt="">
                         Tutoria
                     </a>
-                    <a href="muroAlumno.html" id="muroItem" class="alternativa" onclick="elegirPagina('muroItem')">
+                    <a href="muroAlumno.php" id="muroItem" class="alternativa" onclick="elegirPagina('muroItem')">
                         <img src="images/muro.png" alt="">
                         Muro
                     </a>
@@ -47,6 +68,12 @@
             </header>
         </section>
     </div>
+
+    <dialog class="perfil perfil-alumno" id="dialogPerfil">
+    <?php
+        include './componentsPHP/usuarioAlumno.php';
+    ?>
+    </dialog>
     
     <!-- Main principal -->
     <main>

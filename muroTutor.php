@@ -1,3 +1,15 @@
+<?php
+session_start();
+if (is_null($_SESSION["tipoUsuario"])){
+    header("location: login.html");
+}
+//Coneccion a la BD
+include 'config.php';
+
+// Obtener el codigo del tutor
+$id_tutor = $_SESSION['codigo'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,18 +20,21 @@
     	<link rel="stylesheet" href="styles/normalize.css">
     	<link rel="stylesheet" href="styles/styles.css">
         <link rel="stylesheet" href="styles/muro_style.css">
+        <link rel="stylesheet" href="styles/dialogShowAndHide.css">
+        <link rel="stylesheet" href="styles/razon_tutoria_style.css">
+        <link rel="stylesheet" href="styles/profile.css">
     </head>
     <body>
         <!-- Contenedor de nav -->
-        <div class="container_nav">
+        <section class="container_nav">
             <!-- Navegacion principal -->
             <section class="navegacionGeneral">
                 <header class="first_navegation">
-                    <a href="#">
+                    <a href="#" onclick="efectoBlurANotificacion()">
                         <!-- <img src="images/notificacion.png" alt="logo"> -->
                     </a>
                     <div>
-                        <a href="" class="esp_Der">
+                        <a href="#" class="esp_Der" id="perfilBoton">
                             <img src="images/user.png" alt="">
                         </a>
                         <a href="destroySession.php">
@@ -30,22 +45,22 @@
                 <hr class="line">
                 <header class="header_principal">
                     <nav class="navegacion_Principal">
-                        <a href="principal_alumno.php" id="tutoriaItem" class="alternativa" onclick="elegirPagina('tutoriaItem')">
+                        <a href="principal_tutor.php" id="tutoriaItem" class="alternativa" onclick="elegirPagina('tutoriaItem')">
                             <img src="images/tutoria.png" alt="">
                             Tutoria
                         </a>
-                        <a href="muroAlumno.html" id="muroItem" class="alternativa abierto" onclick="elegirPagina('muroItem')">
+                        <a href="muroTutor.php" id="muroItem" class="alternativa abiert" onclick="elegirPagina('muroItem')">
                             <img src="images/muro.png" alt="">
                             Muro
                         </a>
-                        <a href="historialAlumno.php" id="seguimItem" class="alternativa" onclick="elegirPagina('seguimItem')">
+                        <a href="archivadosTutor.php" id="seguimItem" class="alternativa" onclick="elegirPagina('seguimItem')">
                             <img src="images/descargar.png" alt="">
-                            Historial
+                            Seguimiento
                         </a>
                     </nav>
                 </header>
             </section>
-        </div>
+        </section>
         
         <!-- Contenedor de links para articulos universitarios -->
         <section class="contenidoAdicional">
@@ -91,8 +106,49 @@
                 </div>
             </article>
         </section>
-        <script src="scripts/navegacion.js"></script>
+
+        <dialog class="perfil perfil-tutor" id="dialogPerfil">
+        <?php
+            include './componentsPHP/usuarioTutor.php';
+        ?>
+
+        </dialog>
+
+        <script>
+            const boton = document.getElementById('perfilBoton');
+            console.log("boton")
+
+            boton.addEventListener("click", function(evento){
+                console.log('click')
+                showModalDialog('dialogPerfil');
+            })
+
+            function showModalDialog(idDialog){
+                const modal = document.getElementById(idDialog);
+                setTimeout(() => {
+                    modal.classList.add('mostrarModal')
+                }, 1);
+                modal.showModal();
+            }
+
+            function hideModalDialog(idDialog){
+                const modal = document.getElementById(idDialog);
+                modal.classList.remove('mostrarModal');
+                modal.addEventListener('animationend', closeModal);
+                modal.classList.add('close');
+
+                function closeModal() {
+                    modal.close();
+                    modal.classList.remove('close');
+                    modal.removeEventListener('animationend', closeModal);
+                }
+            }
+        </script>
+
+        <script src="./scripts/dialogShowAndHide.js"></script>
+        <script src="./scripts/navegacion.js"></script>
         <script src="./scripts/scroll.js"></script>
 
+        
     </body>
 </html>

@@ -42,6 +42,7 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
     <link rel="stylesheet" href="styles/razon_tutoria_style.css">
     <link rel="stylesheet" href="styles/notificacionesTutorias.css">
     <link rel="stylesheet" href="styles/dialogShowAndHide.css">
+    <link rel="stylesheet" href="styles/profile.css">
 </head>
 <body id="blurBackgroundA" class="principal_alumno">
     <div id="blurA">
@@ -53,7 +54,7 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
                         <img src="images/notificacion.png" alt="logo">
                     </a>
                     <div>
-                        <a href="" class="esp_Der">
+                        <a href="#" class="esp_Der" onclick="showModalDialog('dialogPerfil')">
                             <img src="images/user.png" alt="">
                         </a>
                         <a href="destroySession.php">
@@ -69,7 +70,7 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
                             <img src="images/tutoria.png" alt="">
                             Tutoria
                         </a>
-                        <a href="muroAlumno.html" id="muroItem" class="alternativa" onclick="elegirPagina('muroItem')">
+                        <a href="muroAlumno.php" id="muroItem" class="alternativa" onclick="elegirPagina('muroItem')">
                             <img src="images/muro.png" alt="">
                             Muro
                         </a>
@@ -194,6 +195,12 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
                 <button class="button button--red" onclick="toggleRed()" type="button">Cancelar</button>
             </div>
         </form>
+    </dialog>
+
+    <dialog class="perfil perfil-alumno" id="dialogPerfil">
+    <?php
+        include './componentsPHP/usuarioAlumno.php';
+    ?>
     </dialog>
 
     <script src="./scripts/dialogShowAndHide.js"></script>
