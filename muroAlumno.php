@@ -1,3 +1,19 @@
+<?php
+session_start();
+if (is_null($_SESSION["tipoUsuario"])){
+    header("location: login.html");
+}
+//Coneccion a la BD
+include 'config.php';
+
+// Obtener los datos del estudiante
+$alumno_cod = $_SESSION['codigo'];
+$alumno_nombre = $_SESSION['name'];
+$alumno_apellido = $_SESSION['surname'];
+$alumno_codigo = $_SESSION['codigo'];
+$id_tutor = $_SESSION["codTutor"];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,6 +24,10 @@
     	<link rel="stylesheet" href="styles/normalize.css">
     	<link rel="stylesheet" href="styles/styles.css">
         <link rel="stylesheet" href="styles/muro_style.css">
+        <link rel="stylesheet" href="styles/notificacionesTutorias.css">
+        <link rel="stylesheet" href="styles/dialogShowAndHide.css">
+        <link rel="stylesheet" href="styles/profile.css">
+        <link rel="stylesheet" href="styles/archivados_style.css">
     </head>
     <body>
         <!-- Contenedor de nav -->
@@ -16,10 +36,10 @@
             <section class="navegacionGeneral">
                 <header class="first_navegation">
                     <a href="#">
-                        <!--<img src="images/notificacion.png" alt="logo">-->
+                        <!-- <img src="images/notificacion.png" alt="logo"> -->
                     </a>
                     <div>
-                        <a href="" class="esp_Der">
+                        <a href="#" class="esp_Der" onclick="showModalDialog('dialogPerfil')">
                             <img src="images/user.png" alt="">
                         </a>
                         <a href="destroySession.php">
@@ -30,17 +50,17 @@
                 <hr class="line">
                 <header class="header_principal">
                     <nav class="navegacion_Principal">
-                        <a href="principal_tutor.php" id="tutoriaItem" class="alternativa" onclick="elegirPagina('tutoriaItem')">
+                        <a href="principal_alumno.php" id="tutoriaItem" class="alternativa" onclick="elegirPagina('tutoriaItem')">
                             <img src="images/tutoria.png" alt="">
                             Tutoria
                         </a>
-                        <a href="muroTutor.html" id="muroItem" class="alternativa abierto" onclick="elegirPagina('muroItem')">
+                        <a href="muroAlumno.php" id="muroItem" class="alternativa abierto" onclick="elegirPagina('muroItem')">
                             <img src="images/muro.png" alt="">
                             Muro
                         </a>
-                        <a href="archivadosTutor.php" id="seguimItem" class="alternativa" onclick="elegirPagina('seguimItem')">
+                        <a href="historialAlumno.php" id="seguimItem" class="alternativa" onclick="elegirPagina('seguimItem')">
                             <img src="images/descargar.png" alt="">
-                            Seguimiento
+                            Historial
                         </a>
                     </nav>
                 </header>
@@ -91,6 +111,37 @@
                 </div>
             </article>
         </section>
+
+        <dialog class="perfil perfil-alumno" id="dialogPerfil">
+        <?php
+            include './componentsPHP/usuarioAlumno.php';
+        ?>
+        </dialog>
+
+        <script>
+
+            function showModalDialog(idDialog){
+                const modal = document.getElementById(idDialog);
+                setTimeout(() => {
+                    modal.classList.add('mostrarModal')
+                }, 1);
+                modal.showModal();
+            }
+
+            function hideModalDialog(idDialog){
+                const modal = document.getElementById(idDialog);
+                modal.classList.remove('mostrarModal');
+                modal.addEventListener('animationend', closeModal);
+                modal.classList.add('close');
+
+                function closeModal() {
+                    modal.close();
+                    modal.classList.remove('close');
+                    modal.removeEventListener('animationend', closeModal);
+                }
+            }
+        </script>
+
         <script src="scripts/navegacion.js"></script>
         <script src="./scripts/scroll.js"></script>
 

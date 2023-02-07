@@ -1,7 +1,7 @@
 <?php
 /*echo "<p>$id_tutor</p>";*/
-
-$id_tutor = 1234;
+/*
+$id_tutor = 1234;*/
 
 $consultaTutor = "SELECT * FROM tutor  WHERE codigoTutor = '$id_tutor' ";
 
@@ -24,7 +24,7 @@ if ($numTutores > 0){
 
 ?>
 
-<div class="container_user">
+<div class="container_user container_user--tutor">
     <img src="./images/usuario_2.png" alt="imagen_user" class="container_user__img">
     <div class="container_user__info">
         <div class="container_user__square">
@@ -41,7 +41,9 @@ if ($numTutores > 0){
     
 </div>
 
+<script src="./scripts/dialogShowAndHide.js"></script>
 <script>
+
     var datosTutoJson = '<?php echo json_encode($datosDelTutor);?>';
     var datosTutor = JSON.parse(datosTutoJson);
 

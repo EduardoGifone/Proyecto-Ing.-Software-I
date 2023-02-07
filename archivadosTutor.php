@@ -49,6 +49,8 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/archivados_style.css">
     <link rel="stylesheet" href="styles/dialogShowAndHide.css">
+    <link rel="stylesheet" href="styles/razon_tutoria_style.css">
+    <link rel="stylesheet" href="styles/profile.css">
 </head>
 <body>
     <!-- Contenedor de nav -->
@@ -60,7 +62,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                     <!-- <img src="images/notificacion.png" alt="logo"> -->
                 </a>
                 <div>
-                    <a href="" class="esp_Der">
+                    <a href="#" class="esp_Der" onclick="showModalDialog('dialogPerfil')">
                         <img src="images/user.png" alt="">
                     </a>
                     <a href="destroySession.php">
@@ -75,7 +77,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                         <img src="images/tutoria.png" alt="">
                         Tutoria
                     </a>
-                    <a href="muroTutor.html" id="muroItem" class="alternativa" onclick="elegirPagina('muroItem')">
+                    <a href="muroTutor.php" id="muroItem" class="alternativa" onclick="elegirPagina('muroItem')">
                         <img src="images/muro.png" alt="">
                         Muro
                     </a>
@@ -162,6 +164,12 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             </form>
         </dialog>
     </main>
+
+    <dialog class="perfil perfil-tutor" id="dialogPerfil">
+    <?php
+        include './componentsPHP/usuarioTutor.php';
+    ?>
+    </dialog>
     
 
     <script src="./scripts/scroll.js"></script>

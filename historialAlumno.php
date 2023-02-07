@@ -1,11 +1,17 @@
 <?php
-
 session_start();
 if (is_null($_SESSION["tipoUsuario"])){
     header("location: login.html");
 }
 //Coneccion a la BD
 include 'config.php';
+
+// Obtener los datos del estudiante
+$alumno_cod = $_SESSION['codigo'];
+$alumno_nombre = $_SESSION['name'];
+$alumno_apellido = $_SESSION['surname'];
+$alumno_codigo = $_SESSION['codigo'];
+$id_tutor = $_SESSION["codTutor"];
 
 // Obtener el codigo de alumno
 $id_alumno = $_SESSION['codigo'];
@@ -48,7 +54,15 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/archivados_style.css">
+<<<<<<< HEAD
+    <link rel="stylesheet" href="styles/razon_tutoria_style.css">
     <link rel="stylesheet" href="styles/dialogShowAndHide.css">
+    <link rel="stylesheet" href="styles/profile.css">
+    <link rel="stylesheet" href="styles/archivados_style.css">
+
+=======
+    <link rel="stylesheet" href="styles/dialogShowAndHide.css">
+>>>>>>> 29aae9009ed0f2343a721845f93df6bccfaf9328
 </head>
 <body>
     <!-- Contenedor de nav -->
@@ -60,7 +74,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                     <!-- <img src="images/notificacion.png" alt="logo"> -->
                 </a>
                 <div>
-                    <a href="" class="esp_Der">
+                    <a href="#" class="esp_Der" onclick="showModalDialog('dialogPerfil')">
                         <img src="images/user.png" alt="">
                     </a>
                     <a href="destroySession.php">
@@ -75,7 +89,11 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                         <img src="images/tutoria.png" alt="">
                         Tutoria
                     </a>
+<<<<<<< HEAD
+                    <a href="muroAlumno.php" id="muroItem" class="alternativa" onclick="elegirPagina('muroItem')">
+=======
                     <a href="muroTutor.html" id="muroItem" class="alternativa" onclick="elegirPagina('muroItem')">
+>>>>>>> 29aae9009ed0f2343a721845f93df6bccfaf9328
                         <img src="images/muro.png" alt="">
                         Muro
                     </a>
@@ -86,6 +104,15 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
                 </nav>
             </header>
         </section>
+<<<<<<< HEAD
+    </div>
+
+    <dialog class="perfil perfil-alumno" id="dialogPerfil">
+    <?php
+        include './componentsPHP/usuarioAlumno.php';
+    ?>
+    </dialog>
+=======
     </section>
 
     <section class="menuSeguimiento">
@@ -94,6 +121,7 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
         <button onclick="elegirAlternativaSeg('postergadas')" id="postergadas" class="alternativa">postergadas</button>
         <button onclick="elegirAlternativaSeg('ausentes')" id="ausentes" class="alternativa">no realizadas</button>
     </section>
+>>>>>>> 29aae9009ed0f2343a721845f93df6bccfaf9328
     
     <!-- Main principal -->
     <main>
