@@ -113,6 +113,10 @@ body {
     border-radius: 6px;
 }
 
+.notificacionCita--Alumno .boton{
+    background-color: var(--patito);
+}
+
 .razonTutoria p,
 .nombreTutorado p {
     margin: 0;

@@ -18,7 +18,7 @@ $id_alumno = $_SESSION['codigo'];
 
 // COMPONENTE : obtener citas de la BD del tutor usaurio
 //Obtener todas las citas que tuvo el tutor
-$consulta = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE alumno.codigoAlumno = '$id_alumno'";
+$consulta = "SELECT * FROM cita INNER JOIN alumno ON cita.codigoAlumno = alumno.codigoAlumno WHERE alumno.codigoAlumno = '$id_alumno' and estado = 'Realizado'";
 $resultadoConsulta = mysqli_query($conexion, $consulta);
 $numCitasTutor = mysqli_num_rows($resultadoConsulta);
 
@@ -54,15 +54,11 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/archivados_style.css">
-<<<<<<< HEAD
     <link rel="stylesheet" href="styles/razon_tutoria_style.css">
     <link rel="stylesheet" href="styles/dialogShowAndHide.css">
     <link rel="stylesheet" href="styles/profile.css">
     <link rel="stylesheet" href="styles/archivados_style.css">
 
-=======
-    <link rel="stylesheet" href="styles/dialogShowAndHide.css">
->>>>>>> 29aae9009ed0f2343a721845f93df6bccfaf9328
 </head>
 <body>
     <!-- Contenedor de nav -->
@@ -85,26 +81,21 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             <hr class="line">
             <header class="header_principal">
                 <nav class="navegacion_Principal">
-                    <a href="principal_tutor.php" id="tutoriaItem" class="alternativa" onclick="elegirPagina('tutoriaItem')">
+                    <a href="principal_alumno.php" id="tutoriaItem" class="alternativa" onclick="elegirPagina('tutoriaItem')">
                         <img src="images/tutoria.png" alt="">
                         Tutoria
                     </a>
-<<<<<<< HEAD
                     <a href="muroAlumno.php" id="muroItem" class="alternativa" onclick="elegirPagina('muroItem')">
-=======
-                    <a href="muroTutor.html" id="muroItem" class="alternativa" onclick="elegirPagina('muroItem')">
->>>>>>> 29aae9009ed0f2343a721845f93df6bccfaf9328
                         <img src="images/muro.png" alt="">
                         Muro
                     </a>
-                    <a href="archivadosTutor.php" id="seguimItem" class="alternativa abiert" onclick="elegirPagina('seguimItem')">
+                    <a href="historialAlumno.php" id="seguimItem" class="alternativa abiert" onclick="elegirPagina('seguimItem')">
                         <img src="images/descargar.png" alt="">
-                        Seguimiento
+                        Historial
                     </a>
                 </nav>
             </header>
         </section>
-<<<<<<< HEAD
     </div>
 
     <dialog class="perfil perfil-alumno" id="dialogPerfil">
@@ -112,16 +103,6 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
         include './componentsPHP/usuarioAlumno.php';
     ?>
     </dialog>
-=======
-    </section>
-
-    <section class="menuSeguimiento">
-        <button onclick="elegirAlternativaSeg('todas')" id="todas" class="alternativa abierto">Todas</button>
-        <button onclick="elegirAlternativaSeg('realizadas')" id="realizadas" class="alternativa">realizadas</button>
-        <button onclick="elegirAlternativaSeg('postergadas')" id="postergadas" class="alternativa">postergadas</button>
-        <button onclick="elegirAlternativaSeg('ausentes')" id="ausentes" class="alternativa">no realizadas</button>
-    </section>
->>>>>>> 29aae9009ed0f2343a721845f93df6bccfaf9328
     
     <!-- Main principal -->
     <main>
@@ -235,51 +216,6 @@ while($datosDisp = mysqli_fetch_assoc($resultadoConsulta)){
             ventanaInformacion.close()
         }
 
-    </script>
-
-    <!-- mantener solo una opcion de eleccion activa -->
-    <script>
-        function elegirAlternativaSeg(tipoAlternativa){
-            console.log('Estado clickeado: ',tipoAlternativa)
-            var alternativas = document.getElementsByClassName('alternativa')
-            for(alternativa of alternativas){
-                alternativa.classList.remove("abierto");
-            }
-            document.getElementById(tipoAlternativa).classList.add('abierto')
-        
-            var contenedoresCitas = document.getElementsByClassName('archivado')
-
-            if(tipoAlternativa == 'todas'){
-                for(contenedor of contenedoresCitas){
-                    contenedor.classList.remove('noMostrar')
-                }
-            }
-            if(tipoAlternativa == 'realizadas'){
-                for(contenedor of contenedoresCitas){
-                    contenedor.classList.remove('noMostrar')
-                    if(contenedor.classList[1] != 'REALIZADO' & contenedor.classList[1] != 'Realizado'){
-                        contenedor.classList.add('noMostrar')
-                    }
-                }
-            }
-            if(tipoAlternativa == 'postergadas'){
-                for(contenedor of contenedoresCitas){
-                    contenedor.classList.remove('noMostrar')
-                    if(contenedor.classList[1] != 'POSTERGADO' & contenedor.classList[1] != 'Postergado'){
-                        contenedor.classList.add('noMostrar')
-                    }
-                }
-            }
-            if(tipoAlternativa == 'ausentes'){
-                for(conenedor of contenedoresCitas){
-                    contenedor.classList.remove('noMostrar')
-                    if(conenedor.classList[1] != 'NP'){
-                        conenedor.classList.add('noMostrar')
-                    }
-                }
-            }
-        
-        }
     </script>
 
     <script src="scripts/navegacion.js"></script>

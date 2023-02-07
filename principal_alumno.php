@@ -155,7 +155,7 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
             $visto = $InformacionCita[5];   //Si o No
 
             // COMPONENTE : Mostrar notificacion
-            print "<div class='notificacionCita $i' id = '$i'>
+            print "<div class='notificacionCita $i notificacionCita--Alumno' id = '$i'>
                         <div class='mesanjeNotificacion'>
                             <p class='mensaje'>$mensaje</p>
                         </div>
