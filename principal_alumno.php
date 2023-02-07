@@ -43,6 +43,8 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
     <link rel="stylesheet" href="styles/notificacionesTutorias.css">
     <link rel="stylesheet" href="styles/dialogShowAndHide.css">
     <link rel="stylesheet" href="styles/profile.css">
+    <!-- SWEET ALERT -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body id="blurBackgroundA" class="principal_alumno">
     <div id="blurA">
@@ -124,7 +126,7 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
 
         // COMPONENTE: Obtener notificaciones de la BD
         //Obtener las notificaciones para este alumno
-        $consultaNotifAlumno = "SELECT * FROM notificaciones WHERE codigoAlumno = '$alumno_cod' AND visto = 'No'";
+        $consultaNotifAlumno = "SELECT * FROM notificaciones WHERE codigoAlumno = '$alumno_cod' AND visto = 'No' ORDER BY fecha DESC";
         $resConNotifAlumno = mysqli_query($conexion, $consultaNotifAlumno);
         $filasNotif = mysqli_num_rows($resConNotifAlumno);
         //echo "<p>$filasNotif</p>";
@@ -240,6 +242,18 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
 
     <!-- REALIZAR ACCION AL SOLICITAR O CANCELAR UNA CITA -->
     <script>
+        //Crear alerta
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
 /*
         setTimeout(() => {
             //Despintar las casillas amarillas
@@ -277,19 +291,33 @@ $filasdisponibilidad = mysqli_num_rows($resultadoConsulta);
                 "codigoAlumno" : codAlumno,
                 "razon" : razon
             };
-
+            
             //INTERFAZ : 
             //Llamar al backend para actualizar los datos
             $.ajax({
                 data: parametros,
                 url: 'scripts/datosCita.php',
                 type: 'POST',
-                success: function(mensaje_mostrar){
-                        //alert(mensaje_mostrar);
-                    },
-                error: function(){
-                    //alert("Ocurrio un error")
-                }
+                success: function(respuestaSolicitud){
+                        if(respuestaSolicitud == 'solicitudEnviada'){
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Éxito',
+                                text: "Tu solicitud de cita ha sido enviada. Ahora espera la respuesta de tu tutor",
+                                color: '#4DD707',
+                                backdrop: true                        
+                            })
+                        }
+                        else{
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: "Anteriormente ya hiciste una solicitud en esta hora y este día, ¡Prueba otro horario!",
+                                color: '#f0716a',
+                                backdrop: true                        
+                            })
+                        }
+                    }
             })
                     
             //cerrar la ventana de realizar una solicitud y volver a la pantalla principal

@@ -28,7 +28,7 @@ function validarDiaSeleccionado($nroDia, $horaInicio){
         $horaActual = $lista[4];
         //Validar hora
         if($horaInicio - $horaActual < $limite){
-            // echo "Nope";
+            echo "Una solicitud de cita deber tener un mínimo de 5 horas de anticipación, ¡Prueba otro horario!";
             return 0;
         }
     }
@@ -50,12 +50,14 @@ function enviarReservaBD($nroDia, $horaInicio, $horaFin, $codigo, $razon){
         //Crear consulta
         $consulta = "INSERT INTO cita values('$newDate','$horaInicio','$horaFin','$codigo','PENDIENTE','$razon',null)";
         //Ejecutar consulta
-        if (mysqli_query($conexion, $consulta)){
-            echo "Se reservo la cita";
+        try{
+            mysqli_query($conexion, $consulta);
+            echo 'solicitudEnviada';
+            //echo "Tu solicitud de cita ha sido enviada. Ahora espera la respuesta de tu tutor";
+        }catch(Exception $e){
+            echo 'errorRepeticion';
+            //echo "Anteriormente ya hiciste una solicitud en esta hora y este día, ¡Prueba otro horario!";
         }
-        else{
-            echo "Error en Mysql";
-        } 
     }
 }
 //Obtener informacion de la peticion ajax

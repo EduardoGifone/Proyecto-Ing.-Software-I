@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <!-- Insertar estilos -->
-    <link rel="stylesheet" href="styles/normalize.css">
-    <link rel="stylesheet" href="styles/login_styles.css">
-    <!-- <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"> -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>  
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
-</head>
-<body>
-    <!-- Contenedro principal del login -->
-    <div class="container_login">
-        <section class="robot">
-        </section>
-        <!-- Formulario de login -->
-        <section class="center">
-            <h1>Hola!</h1>
-            <h3>Bienvenido a TUTO</h3>
-            <form action="">
-                <div class="campo_txt">
-                    <input type="text" name="user" id="user" required>
-                    <span></span>
-                    <label for="">Correo electronico</label>
-                    <i class="uil uil-envelope icon"></i>  
-                </div>
-                <div class="campo_txt">
-                    <input type="password" name="password" id="pass" required>
-                    <span></span>
-                    <label for="">password</label>
-                    <i class="uil uil-lock icon"></i>  
-                </div>
-                <input type="button" value="Ingresar" id="send" onclick="validar();">  
-            </form>
-            <script src="scripts/backLogin.js"></script>
-        </section>
-    </div>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login</title>
+        <!-- Insertar estilos -->
+        <link rel="stylesheet" href="styles/normalize.css">
+        <link rel="stylesheet" href="styles/login_styles.css">
+        <!-- <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>  
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+    </head>
+    <body>
+        <!-- Contenedro principal del login -->
+        <div class="container_login">
+            <section class="robot">
+            </section>
+            <!-- Formulario de login -->
+            <section class="center">
+                <h1>Hola!</h1>
+                <h3>Bienvenido a TUTO</h3>
+                <form action="">
+                    <div class="campo_txt">
+                        <input type="text" name="user" id="user" required>
+                        <span></span>
+                        <label for="">Correo electronico</label>
+                        <i class="uil uil-envelope icon"></i>  
+                    </div>
+                    <div class="campo_txt">
+                        <input type="password" name="password" id="pass" required>
+                        <span></span>
+                        <label for="">password</label>
+                        <i class="uil uil-lock icon"></i>  
+                    </div>
+                    <input type="button" value="Ingresar" id="send" onclick="validar();">  
+                </form>
+                <script src="scripts/backLogin.js"></script>
+            </section>
+        </div>
+    </body>
 </html>
