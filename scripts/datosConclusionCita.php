@@ -55,7 +55,7 @@ mysqli_query($conexion, $consultaActualizarEstadoCita);
 $consultaActualizarDisponibilidad = "UPDATE disponibilidad SET estado='libre' WHERE dia='$diaCita' AND codigoTutor='$codigoTutor' AND horaInicio='$horaIn'";
 //Ejecutar consulta para actualizar disponibilidad
 mysqli_query($conexion, $consultaActualizarDisponibilidad);
-echo "Cita de fecha ".$diaCita." ".$fechaCita." actualizada a ".$estadoFinalCita."  con observación  ".$observacion;
+//echo "Cita de fecha ".$diaCita." ".$fechaCita." actualizada a ".$estadoFinalCita."  con observación  ".$observacion;
 //----------Notificar al alumno en caso su cita haya sido postergada o clasificada como NP----------
 // Obtener fecha y hora actual 
 date_default_timezone_set('America/Lima');
@@ -71,7 +71,7 @@ if(strtolower($estadoFinalCita) == "np"){
     $consultaCrearNotificacionNP = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, asunto, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionNP','NP', 'No')";     
     //Ejecutar consulta de insersión de notificación
     mysqli_query($conexion, $consultaCrearNotificacionNP);
-
+    echo "citaNP";
 }
 if (strtolower($estadoFinalCita) =="postergado"){
     //Crear mensaje de notificación para el caso Postergado
@@ -80,6 +80,16 @@ if (strtolower($estadoFinalCita) =="postergado"){
     $consultaCrearNotificacionPostergado = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, asunto, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionPostergado','Postergado', 'No')";
     //Ejecutar consulta de insersión de notificación
     mysqli_query($conexion, $consultaCrearNotificacionPostergado);
+    echo "citaPost";
+}
+if(strtolower($estadoFinalCita) == 'realizado'){
+    //Crear mensaje de notificación para realizado
+    $mensajeNotificacionRealizado = "Tu cita programada para el ".$diaCita." ".$nroDiaCita." de ".$nombreMesCita." fue archivada por tu docente, ¡Ya puedes verlo en el historial!";
+    //Crear consulta para insertar notificación en la base de datos
+    $consultaCrearNotificacionRealizado = "INSERT INTO notificaciones(codigoAlumno, fecha, mensaje, asunto, visto) VALUES('$codigoAlumno', '$fechaCreacionNotificacion', '$mensajeNotificacionRealizado','Realizado', 'No')";
+    //Ejecutra consulta
+    mysqli_query($conexion, $consultaCrearNotificacionRealizado);
+    echo "citaReal";
 }
 
 ?>

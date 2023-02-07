@@ -238,6 +238,8 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
     <link rel="stylesheet" href="styles/razon_tutoria_style.css">
     <link rel="stylesheet" href="styles/dialogShowAndHide.css">
     <link rel="stylesheet" href="styles/profile.css">
+    <!-- SWEET ALERT -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body id="blurBackground" class="principal_tutor">
     <div id="blur">
@@ -951,6 +953,18 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
 
     <!-- Funcionalidad de finalizar una cita -->
     <script>
+        //Crear alerta
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
         //Obtener informacion necesaria del alumno para actualizar la BD
         function obtenerInformacionNecesariaParaActualizarBD(razonDiaId,razonHoraId){
             var citasConfirmadasJson = '<?php echo json_encode($InformacionCitasConfirmadas);?>';
@@ -1052,9 +1066,34 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                     data: parametros,
                     url: 'scripts/datosConclusionCita.php',
                     type: 'POST',
-                    success: function(mensaje_mostrar){
-                        alert(mensaje_mostrar)
-                        // $('#mostrar').html(mensaje_mostrar);
+                    success: function(mensajeConclusion){
+                        if(mensajeConclusion == "citaNP"){
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Éxito',
+                                text: "Cita archivada como NP, ahora está disponible en la sección de seguimiento",
+                                color: '#4DD707',
+                                backdrop: true                        
+                            })
+                        }
+                        else if(mensajeConclusion == "citaPost"){
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Éxito',
+                                text: "Cita archivada como postergada, ahora está disponible en la sección de seguimiento",
+                                color: '#4DD707',
+                                backdrop: true                        
+                            })
+                        }
+                        else{
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Éxito',
+                                text: "Cita archivada como realizada, ahora está disponible en la sección de seguimiento",
+                                color: '#4DD707',
+                                backdrop: true                        
+                            })
+                        }
                     }
                 }).done(function(res){
                     console.log(res);
@@ -1098,7 +1137,15 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 url: 'scripts/datosConclusionCita.php',
                 type: 'POST',
                 success: function(mensaje_mostrar){
-                    alert(mensaje_mostrar);
+                    if(mensaje_mostrar == "citaPost"){
+                        Toast.fire({
+                                icon: 'success',
+                                title: 'Éxito',
+                                text: "Cita archivada como postergada, ahora está disponible en la sección de seguimiento",
+                                color: '#4DD707',
+                                backdrop: true                        
+                            })
+                    }
                 }
             }).done(function(res){
                 console.log(res);
@@ -1164,14 +1211,9 @@ while($datosDisp = mysqli_fetch_assoc($resCitasConfirmadas)){
                 data: parametros,
                 url: 'scripts/datosRespuestaCita.php',
                 type: 'POST',
-                /*success: function(mensaje_mostrar){
-                        $('#mostrar').html(mensaje_mostrar);
-                    }*/
                 success: function(solicitudesCitas){
                     $('#contenedorNoifCitas').html(solicitudesCitas);
                 }
-            }).done(function(res){
-                console.log(res);
             })
         }
     </script>
